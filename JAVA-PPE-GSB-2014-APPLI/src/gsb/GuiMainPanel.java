@@ -83,7 +83,7 @@ public class GuiMainPanel extends JFrame {
 	 * Create the frame.
 	 */
 	public GuiMainPanel() {
-		setTitle("GSB - PPE4");
+		setTitle("GSB - Compte Rendu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 950, 550);
 		contentPane = new JPanel();
