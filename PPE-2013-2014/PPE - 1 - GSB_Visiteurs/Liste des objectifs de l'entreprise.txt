@@ -1,0 +1,21 @@
+
+
+--> Les visiteurs vont devoir alimenter une base de données 
+par le biais d'un site Web.
+
+--> L'entreprise veut : 
+	- définir le profil d'une solution technique d'accès au site susceptible
+	d'être fournie aux visiteurs.
+	- organiser le système de préparation des matériels avant 
+	leur fourniture aux visiteurs.
+	- organiser le système de récupération d'un équipement suite à 
+	un retour (fin de contrat, défaillance matérielle,infection virale, etc.).
+
+Forme de l'objet :
+
+Il s'agit de définir les caractéristiques techniques (type d'appareil, processeur, mémoire, disque, système
+d'exploitation) d'un équipement mobile et l'environnement logiciel nécessaire à l'usage prévu.
+On préconisera un environnement de "masteurisation" (avec ou sans serveur) pour la gestion de la flotte de matériel
+On définira aussi les procédures à appliquer pour la préparation et la récupération des équipements.
+Des conseils en termes de sécurisation des données présentes sur le matériel et d'information aux utilisateurs
+doivent être fournis.

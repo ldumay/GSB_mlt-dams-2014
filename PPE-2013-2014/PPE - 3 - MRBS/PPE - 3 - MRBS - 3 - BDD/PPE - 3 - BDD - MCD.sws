@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?PowerDesigner signature="Workspace" version="15.1.0.2850"?>
+<!-- Veuillez ne pas modifier ce fichier -->
+
+<Workspace>
+	<Local Expanded="Yes">
+		<Model Expanded="Yes" ID="{92599A23-BC6E-4237-8854-96C9E7A4FD4C}" Name="PPE - 3 - BDD - MCD" Selected="Yes" Type="{FF4B6538-9856-42CF-B9B9-304ED370CEAA}" URL="PPE - 3 - BDD - MCD/PPE - 3 - BDD - MCD.prj"/>
+	</Local>
+	<BrowserModule Name="Référentiel"/>
+</Workspace>
