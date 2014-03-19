@@ -272,6 +272,8 @@ public class GuiMainPanel extends JFrame {
 		btnAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Infos infos = new Infos();
+				// Permet de centré la JFrame A propos
+				infos.setLocationRelativeTo(null);
 				infos.setVisible(true);
 			}
 		});
