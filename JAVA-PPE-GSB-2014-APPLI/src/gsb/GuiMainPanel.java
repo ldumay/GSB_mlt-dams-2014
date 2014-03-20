@@ -39,6 +39,11 @@ public class GuiMainPanel extends JFrame {
 	public static Object TypeUser;
 	public String TempTypeUser;
 	public String TempIDUserBDD;
+	// Instanciation des variable de l'actualisation de l'état du serveur
+	final static JButton btnRafraichir = new JButton("Rafraichir");
+	static boolean EtatConnexion = InfosConnexionBDD.connexion;
+	public static String EtatAff = null;
+	// Instanciation de toutes autres intéractions
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -54,14 +59,40 @@ public class GuiMainPanel extends JFrame {
 	private JTextField txtPraticienTypeCode;
 	private JTextField txtPraticienCP;
 	private JPasswordField txtMotDePasse;
+	// Méthode de vérification de l'état du serveur
+	public static void VerifServiceBDD(Boolean EtatConnexion){
+		// Vérification de la connexion avec la BDD
+		InfosConnexionBDD InfosConnexionBDD = new InfosConnexionBDD();
+		System.out.println("-> Classe de vérification BDD.");
+		
+		System.out.println("-> Etat du serveur - Entrée : " + EtatConnexion);
+		
+		// Affiche le bouton d'actualisation de l'état du serveur si inactif
+		if(EtatConnexion == true){
+			EtatAff = "ON";
+			btnRafraichir.setVisible(false);
+			
+			// Vérification console
+			System.out.println("-> Etat du serveur - Sortie : " + EtatConnexion);
+			System.out.println("-> Etat du serveur - Aff : " + EtatAff);
+		}
+		if(EtatConnexion == false){
+			EtatAff = "OFF";
+			btnRafraichir.setVisible(true);
+			
+			// Vérification console
+			System.out.println("-> Etat du serveur - Sortie : " + EtatConnexion);
+			System.out.println("-> Etat du serveur - Aff : " + EtatAff);
+		}
+	}
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		// Vérification de la connexion avec la BDD
-		InfosConnexionBDD InfosConnexionBDD = new InfosConnexionBDD();
-		
+		// Vérification de l'état du serveur BDD
+		VerifServiceBDD(EtatConnexion);
+		JOptionPane.showMessageDialog(null,EtatConnexion, "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
 		// Démarrage de l'interface primaire de l'application
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -104,12 +135,6 @@ public class GuiMainPanel extends JFrame {
 		panelMedicaments.setVisible(false);
 		panelPraticiens.setVisible(false);
 		panelAutresVisiteurs.setVisible(false);
-		
-		String EtatAff = "OFF";
-		boolean EtatConnexion = InfosConnexionBDD.connexion;
-		if(EtatConnexion == true){
-			EtatAff = "ON";
-		}
 		
 		panelLog.setVisible(true);
 		panelLog.setBounds(10, 11, 914, 489);
@@ -156,20 +181,24 @@ public class GuiMainPanel extends JFrame {
 					TempTypeUser = "praticien";
 					TempIDUserBDD = "PRA_NOM";
 				}
-				else{
+				
+				// Vérification de l'état du serveur BDD
+				VerifServiceBDD(EtatConnexion);
+				
+				if(EtatAff == "OFF"){
+					JOptionPane.showMessageDialog(null,"Dsl, le serveur ne semble pas accessible !", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(TypeUser == "Choisir un type"){
 					JOptionPane.showMessageDialog(null,"Veuillez choisir un type SVP", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
 				}
-				
-				// JOptionPane.showMessageDialog(null,"Nom : "+Identifiant+" & Mdp "+MotDePasse);
-				
-				if( (Identifiant == "") && (MotDePasse == "") ){
-					JOptionPane.showMessageDialog(null,"L'identifiant et le mot de passe n'ont pas été saisi invalide !");
+				else if((Identifiant.isEmpty()) && (MotDePasse.isEmpty()) ){
+					JOptionPane.showMessageDialog(null,"L'identifiant et le mot de passe n'ont pas été saisi !", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
 				}
-				else if( (Identifiant == "") && (MotDePasse != "") ){
-					JOptionPane.showMessageDialog(null,"L'identifiant n'a pas été saisi invalide !");
+				else if(Identifiant.isEmpty()){
+					JOptionPane.showMessageDialog(null,"L'identifiant n'a pas été saisi !", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
 				}
-				else if( (Identifiant != "") && (MotDePasse == "") ){
-					JOptionPane.showMessageDialog(null,"Le mot de passe n'a pas été saisi invalide !");
+				else if(MotDePasse.isEmpty()){
+					JOptionPane.showMessageDialog(null,"Le mot de passe n'a pas été saisi !", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
 				}
 				else{
 					String pilote = "com.mysql.jdbc.Driver";
@@ -264,7 +293,7 @@ public class GuiMainPanel extends JFrame {
 		lblEtatDuServeur.setBounds(115, 455, 95, 23);
 		panelLog.add(lblEtatDuServeur);
 		
-		JLabel lblEtat = new JLabel(EtatAff);
+		final JLabel lblEtat = new JLabel(EtatAff);
 		lblEtat.setBounds(220, 455, 29, 23);
 		panelLog.add(lblEtat);
 		
@@ -279,6 +308,26 @@ public class GuiMainPanel extends JFrame {
 		});
 		btnAbout.setBounds(16, 455, 89, 23);
 		panelLog.add(btnAbout);
+		
+		btnRafraichir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// Méthode d'actualisation l'état du serveur
+				InfosConnexionBDD InfosConnexionBDD = new InfosConnexionBDD();
+				
+				boolean EtatConnexion = InfosConnexionBDD.connexion;
+				if(EtatConnexion == true){
+					EtatAff = "ON";
+					lblEtat.setText(EtatAff);
+					btnRafraichir.setVisible(false);
+				}
+				else{
+					EtatAff = "OFF";
+					lblEtat.setText(EtatAff);
+				}
+			}
+		});
+		btnRafraichir.setBounds(269, 455, 95, 23);
+		panelLog.add(btnRafraichir);
 		
 		panelMenu.setBounds(10, 11, 198, 489);
 		contentPane.add(panelMenu);

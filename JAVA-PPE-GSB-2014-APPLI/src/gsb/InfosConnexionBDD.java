@@ -41,8 +41,9 @@ public class InfosConnexionBDD {
             System.out.println(indic + "Application connectee en tant que : '" + user + "'");
             connexion = true;
         } catch (Exception e){
-            e.printStackTrace();
+            // e.printStackTrace();
         }
+		System.out.println(indic + "Etat du serveur : " + connexion);
         System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
 	}
 }
