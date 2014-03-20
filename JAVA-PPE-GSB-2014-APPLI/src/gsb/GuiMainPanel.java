@@ -41,8 +41,8 @@ public class GuiMainPanel extends JFrame {
 	public String TempIDUserBDD;
 	// Instanciation des variable de l'actualisation de l'état du serveur
 	final static JButton btnRafraichir = new JButton("Rafraichir");
-	static boolean EtatConnexion = InfosConnexionBDD.connexion;
 	public static String EtatAff = null;
+	static boolean EtatConnexion = InfosConnexionBDD.EtatConnexion;
 	// Instanciation de toutes autres intéractions
 	private JTextField textField;
 	private JTextField textField_1;
@@ -59,39 +59,13 @@ public class GuiMainPanel extends JFrame {
 	private JTextField txtPraticienTypeCode;
 	private JTextField txtPraticienCP;
 	private JPasswordField txtMotDePasse;
-	// Méthode de vérification de l'état du serveur
-	public static void VerifServiceBDD(Boolean EtatConnexion){
-		// Vérification de la connexion avec la BDD
-		InfosConnexionBDD InfosConnexionBDD = new InfosConnexionBDD();
-		System.out.println("-> Classe de vérification BDD.");
-		
-		System.out.println("-> Etat du serveur - Entrée : " + EtatConnexion);
-		
-		// Affiche le bouton d'actualisation de l'état du serveur si inactif
-		if(EtatConnexion == true){
-			EtatAff = "ON";
-			btnRafraichir.setVisible(false);
-			
-			// Vérification console
-			System.out.println("-> Etat du serveur - Sortie : " + EtatConnexion);
-			System.out.println("-> Etat du serveur - Aff : " + EtatAff);
-		}
-		if(EtatConnexion == false){
-			EtatAff = "OFF";
-			btnRafraichir.setVisible(true);
-			
-			// Vérification console
-			System.out.println("-> Etat du serveur - Sortie : " + EtatConnexion);
-			System.out.println("-> Etat du serveur - Aff : " + EtatAff);
-		}
-	}
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		// Vérification de l'état du serveur BDD
-		VerifServiceBDD(EtatConnexion);
+		InfosConnexionBDD connexionTest = new InfosConnexionBDD();
 		JOptionPane.showMessageDialog(null,EtatConnexion, "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
 		// Démarrage de l'interface primaire de l'application
 		EventQueue.invokeLater(new Runnable() {
@@ -183,7 +157,7 @@ public class GuiMainPanel extends JFrame {
 				}
 				
 				// Vérification de l'état du serveur BDD
-				VerifServiceBDD(EtatConnexion);
+				InfosConnexionBDD connexionTest = new InfosConnexionBDD();
 				
 				if(EtatAff == "OFF"){
 					JOptionPane.showMessageDialog(null,"Dsl, le serveur ne semble pas accessible !", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
@@ -314,7 +288,7 @@ public class GuiMainPanel extends JFrame {
 				// Méthode d'actualisation l'état du serveur
 				InfosConnexionBDD InfosConnexionBDD = new InfosConnexionBDD();
 				
-				boolean EtatConnexion = InfosConnexionBDD.connexion;
+				boolean EtatConnexion = InfosConnexionBDD.EtatConnexion;
 				if(EtatConnexion == true){
 					EtatAff = "ON";
 					lblEtat.setText(EtatAff);
