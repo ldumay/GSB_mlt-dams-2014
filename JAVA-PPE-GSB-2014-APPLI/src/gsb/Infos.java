@@ -27,36 +27,36 @@ public class Infos extends JFrame {
 		titlePageSystem.setBounds(6, 6, 252, 16);
 		getContentPane().add(titlePageSystem);
 		
-		JLabel SystemName = new JLabel(" Système :");
-		SystemName.setBounds(75, 34, 61, 16);
+		JLabel SystemName = new JLabel("  Syst\u00E8me :");
+		SystemName.setBounds(64, 34, 80, 16);
 		getContentPane().add(SystemName);
 		
 		JLabel SystemArch = new JLabel("Architecture : ");
-		SystemArch.setBounds(64, 61, 72, 18);
+		SystemArch.setBounds(53, 61, 91, 18);
 		getContentPane().add(SystemArch);
 		
-		JLabel SystemVersion = new JLabel("   Version du Syst\u00E8me : ");
-		SystemVersion.setBounds(20, 90, 116, 16);
+		JLabel SystemVersion = new JLabel("    Version du Syst\u00E8me : ");
+		SystemVersion.setBounds(6, 90, 138, 16);
 		getContentPane().add(SystemVersion);
 		
 		JLabel SystemJavaVersion = new JLabel("Java Version :");
-		SystemJavaVersion.setBounds(64, 117, 72, 16);
+		SystemJavaVersion.setBounds(53, 117, 91, 16);
 		getContentPane().add(SystemJavaVersion);
 		
 		JLabel textSystemName = new JLabel(infosRunSystem[2]);
-		textSystemName.setBounds(148, 33, 77, 16);
+		textSystemName.setBounds(154, 33, 77, 16);
 		getContentPane().add(textSystemName);
 		
 		JLabel textSystemArch = new JLabel(infosRunSystem[1]);
-		textSystemArch.setBounds(148, 61, 61, 16);
+		textSystemArch.setBounds(154, 61, 61, 16);
 		getContentPane().add(textSystemArch);
 		
 		JLabel textSystemVersion = new JLabel(infosRunSystem[3]);
-		textSystemVersion.setBounds(148, 89, 35, 16);
+		textSystemVersion.setBounds(154, 89, 35, 16);
 		getContentPane().add(textSystemVersion);
 		
 		JLabel textSystemJavaVersion = new JLabel(infosRunSystem[4]);
-		textSystemJavaVersion.setBounds(148, 117, 61, 16);
+		textSystemJavaVersion.setBounds(154, 117, 61, 16);
 		getContentPane().add(textSystemJavaVersion);
 	}
 }
