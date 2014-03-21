@@ -59,24 +59,39 @@ public class GuiMainPanel extends JFrame {
 	private JTextField txtPraticienTypeCode;
 	private JTextField txtPraticienCP;
 	private JPasswordField txtMotDePasse;
+	// Code Erreur
+	public String ErrorLog = "Erreur de connexion";
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		// Vérification de l'état du serveur BDD
-		InfosConnexionBDD connexionTest = new InfosConnexionBDD();
-		JOptionPane.showMessageDialog(null,EtatConnexion, "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
 		// Démarrage de l'interface primaire de l'application
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					// Vérification de l'état du serveur BDD
+					InfosConnexionBDD connexionTest = new InfosConnexionBDD();
+					EtatConnexion = InfosConnexionBDD.EtatConnexion;
+					EtatAff = InfosConnexionBDD.EtatAff;
+					
 					// Fait appel à la JFrame principale
 					GuiMainPanel frame = new GuiMainPanel();
 					// Permet de centré la JFrame principale
 					frame.setLocationRelativeTo(null);
 					// Permet d'affiché la JFrame principale
 					frame.setVisible(true);
+					
+					final JLabel lblEtat = new JLabel(EtatAff);
+					// Vérification de EtatAff
+					if(EtatAff == "ON"){
+						lblEtat.setText(EtatAff);
+						btnRafraichir.setVisible(false);
+					}
+					if(EtatAff == "OFF"){
+						lblEtat.setText(EtatAff);
+						btnRafraichir.setVisible(true);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -95,6 +110,8 @@ public class GuiMainPanel extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		// Instanciation des variables réccurentes
 		final JPanel panelLog = new JPanel();
 		final JPanel panelMenu = new JPanel();
 		final JPanel panelAccueil = new JPanel();
@@ -102,6 +119,8 @@ public class GuiMainPanel extends JFrame {
 		final JPanel panelMedicaments = new JPanel();
 		final JPanel panelAutresVisiteurs = new JPanel();
 		final JPanel panelPraticiens = new JPanel();
+		
+		final JLabel lblEtat = new JLabel(EtatAff);
 		
 		panelMenu.setVisible(false);
 		panelRapport.setVisible(false);
@@ -157,22 +176,26 @@ public class GuiMainPanel extends JFrame {
 				}
 				
 				// Vérification de l'état du serveur BDD
-				InfosConnexionBDD connexionTest = new InfosConnexionBDD();
+				InfosConnexionBDD connexionTest2 = new InfosConnexionBDD();
+				EtatConnexion = InfosConnexionBDD.EtatConnexion;
+				EtatAff = InfosConnexionBDD.EtatAff;
 				
 				if(EtatAff == "OFF"){
-					JOptionPane.showMessageDialog(null,"Dsl, le serveur ne semble pas accessible !", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
+					lblEtat.setText(EtatAff);
+					btnRafraichir.setVisible(true);
+					JOptionPane.showMessageDialog(null,"Dsl, le serveur ne semble pas accessible !", ErrorLog, JOptionPane.WARNING_MESSAGE);
 				}
 				else if(TypeUser == "Choisir un type"){
-					JOptionPane.showMessageDialog(null,"Veuillez choisir un type SVP", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Veuillez choisir un type SVP", ErrorLog, JOptionPane.WARNING_MESSAGE);
 				}
 				else if((Identifiant.isEmpty()) && (MotDePasse.isEmpty()) ){
-					JOptionPane.showMessageDialog(null,"L'identifiant et le mot de passe n'ont pas été saisi !", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"L'identifiant et le mot de passe n'ont pas été saisi !", ErrorLog, JOptionPane.WARNING_MESSAGE);
 				}
 				else if(Identifiant.isEmpty()){
-					JOptionPane.showMessageDialog(null,"L'identifiant n'a pas été saisi !", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"L'identifiant n'a pas été saisi !", ErrorLog, JOptionPane.WARNING_MESSAGE);
 				}
 				else if(MotDePasse.isEmpty()){
-					JOptionPane.showMessageDialog(null,"Le mot de passe n'a pas été saisi !", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Le mot de passe n'a pas été saisi !", ErrorLog, JOptionPane.WARNING_MESSAGE);
 				}
 				else{
 					String pilote = "com.mysql.jdbc.Driver";
@@ -229,7 +252,7 @@ public class GuiMainPanel extends JFrame {
 								panelAccueil.setVisible(true);
 							}
 							else{
-								JOptionPane.showMessageDialog(null,"Oups, le mot de passe n'est pas correcte ! \n\n Assurez-vous d'entrer les 3 premières lettres du mois \n dans le mot de passe, tel que : XX-XXX-XX", "Erreur de connexion", JOptionPane.WARNING_MESSAGE);
+								JOptionPane.showMessageDialog(null,"Oups, le mot de passe n'est pas correcte ! \n\n Assurez-vous d'entrer les 3 premières lettres du mois \n dans le mot de passe, tel que : XX-XXX-XX", ErrorLog, JOptionPane.WARNING_MESSAGE);
 								// JOptionPane.showMessageDialog(null,txtMotDePasse.getText().length()+" et " +date_emb.length());
 							}
 						}
@@ -267,7 +290,6 @@ public class GuiMainPanel extends JFrame {
 		lblEtatDuServeur.setBounds(115, 455, 95, 23);
 		panelLog.add(lblEtatDuServeur);
 		
-		final JLabel lblEtat = new JLabel(EtatAff);
 		lblEtat.setBounds(220, 455, 29, 23);
 		panelLog.add(lblEtat);
 		
@@ -285,18 +307,18 @@ public class GuiMainPanel extends JFrame {
 		
 		btnRafraichir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Méthode d'actualisation l'état du serveur
-				InfosConnexionBDD InfosConnexionBDD = new InfosConnexionBDD();
-				
-				boolean EtatConnexion = InfosConnexionBDD.EtatConnexion;
-				if(EtatConnexion == true){
-					EtatAff = "ON";
+				// Vérification de l'état du serveur BDD
+				InfosConnexionBDD connexionTest2 = new InfosConnexionBDD();
+				EtatConnexion = InfosConnexionBDD.EtatConnexion;
+				EtatAff = InfosConnexionBDD.EtatAff;
+				// Vérification de EtatAff
+				if(EtatAff == "ON"){
 					lblEtat.setText(EtatAff);
 					btnRafraichir.setVisible(false);
 				}
-				else{
-					EtatAff = "OFF";
+				if(EtatAff == "OFF"){
 					lblEtat.setText(EtatAff);
+					btnRafraichir.setVisible(true);
 				}
 			}
 		});

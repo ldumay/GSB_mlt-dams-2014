@@ -52,13 +52,13 @@ public class InfosConnexionBDD {
             // e.printStackTrace();
         }
 		System.out.println(indic + "Etat du serveur : " + EtatConnexion);
-		VerifServiceBDD();
+		VerifServiceBDD(EtatConnexion);
         System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
         return EtatConnexion;
 	}
 	
 	// Méthode de vérification de l'état du serveur
-	public static void VerifServiceBDD(){
+	public static String VerifServiceBDD(boolean EtatConnexion){
 		
 		// Affiche le bouton d'actualisation de l'état du serveur si inactif
 		if(EtatConnexion == true){
@@ -75,5 +75,7 @@ public class InfosConnexionBDD {
 			// Vérification console
 			System.out.println("-> Etat du serveur : " + EtatAff);
 		}
+		
+		return EtatAff;
 	}
 }
