@@ -239,6 +239,8 @@ public class GuiMainPanel extends JFrame {
 								case "12" : {mois = "dec"; break;}
 								default : {break;}
 							}
+							
+							annee = annee.substring(2, 4);
 							String date_emb = jour + "-" + mois + "-" + annee;
 							String mdp = txtMotDePasse.getText();
 							
