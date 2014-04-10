@@ -9,6 +9,9 @@ GSB_mtl-dams ...
 
 Connexion les plus utilisées : 
 
+	- lgoin : Villechalane
+	- mdp   : 11-dec-92
+	
 	- login : Andre
 	- mdp   : 26-aug-91
 	

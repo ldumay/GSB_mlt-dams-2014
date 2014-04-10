@@ -29,6 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPasswordField;
+import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
 
 public class GuiMainPanel extends JFrame {
 
@@ -113,21 +115,21 @@ public class GuiMainPanel extends JFrame {
 		
 		// Instanciation des variables réccurentes
 		final JPanel panelLog = new JPanel();
-		final JPanel panelMenu = new JPanel();
 		final JPanel panelAccueil = new JPanel();
+		final JPanel panelMenu = new JPanel();
 		final JPanel panelRapport = new JPanel();
 		final JPanel panelMedicaments = new JPanel();
-		final JPanel panelAutresVisiteurs = new JPanel();
 		final JPanel panelPraticiens = new JPanel();
+		final JPanel panelAutresVisiteurs = new JPanel();
+		final JPanel panelNewRapport = new JPanel();
 		
 		final JLabel lblEtat = new JLabel(EtatAff);
-		
-		panelMenu.setVisible(false);
 		panelRapport.setVisible(false);
 		panelAccueil.setVisible(false);
 		panelMedicaments.setVisible(false);
 		panelPraticiens.setVisible(false);
 		panelAutresVisiteurs.setVisible(false);
+		panelNewRapport.setVisible(false);
 		
 		panelLog.setVisible(true);
 		panelLog.setBounds(10, 11, 914, 489);
@@ -327,6 +329,8 @@ public class GuiMainPanel extends JFrame {
 		btnRafraichir.setBounds(269, 455, 95, 23);
 		panelLog.add(btnRafraichir);
 		
+		panelMenu.setVisible(false);
+		
 		panelMenu.setBounds(10, 11, 198, 489);
 		contentPane.add(panelMenu);
 		panelMenu.setLayout(null);
@@ -355,6 +359,7 @@ public class GuiMainPanel extends JFrame {
 				panelMedicaments.setVisible(false);
 				panelPraticiens.setVisible(false);
 				panelAutresVisiteurs.setVisible(false);
+				panelNewRapport.setVisible(false);
 			}
 		});
 		btnAccueil.setBounds(10, 56, 178, 37);
@@ -370,6 +375,7 @@ public class GuiMainPanel extends JFrame {
 				panelMedicaments.setVisible(true);
 				panelPraticiens.setVisible(false);
 				panelAutresVisiteurs.setVisible(false);
+				panelNewRapport.setVisible(false);
 			}
 		});
 		btnMedicaments.setBounds(10, 152, 178, 37);
@@ -383,6 +389,7 @@ public class GuiMainPanel extends JFrame {
 				panelMedicaments.setVisible(false);
 				panelPraticiens.setVisible(true);
 				panelAutresVisiteurs.setVisible(false);
+				panelNewRapport.setVisible(false);
 			}
 		});
 		btnPraticiens.setBounds(10, 200, 178, 37);
@@ -396,10 +403,26 @@ public class GuiMainPanel extends JFrame {
 				panelMedicaments.setVisible(false);
 				panelPraticiens.setVisible(false);
 				panelAutresVisiteurs.setVisible(true);
+				panelNewRapport.setVisible(false);
 			}
 		});
 		btnAutresVisiteurs.setBounds(10, 248, 178, 37);
 		panelMenu.add(btnAutresVisiteurs);
+		
+		JButton btnAjoutRapport = new JButton("Nouveau Rapport");
+		btnAjoutRapport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panelMenu.setVisible(true);
+				panelRapport.setVisible(false);
+				panelAccueil.setVisible(false);
+				panelMedicaments.setVisible(false);
+				panelPraticiens.setVisible(false);
+				panelAutresVisiteurs.setVisible(false);
+				panelNewRapport.setVisible(true);
+			}
+		});
+		btnAjoutRapport.setBounds(10, 329, 178, 37);
+		panelMenu.add(btnAjoutRapport);
 		
 		JButton btnLogOut = new JButton("D\u00E9connexion");
 		btnLogOut.addActionListener(new ActionListener() {
@@ -414,11 +437,16 @@ public class GuiMainPanel extends JFrame {
 				panelMedicaments.setVisible(false);
 				panelPraticiens.setVisible(false);
 				panelAutresVisiteurs.setVisible(false);
+				panelNewRapport.setVisible(false);
 				panelLog.setVisible(true);
 			}
 		});
+		
 		btnLogOut.setBounds(10, 441, 178, 37);
 		panelMenu.add(btnLogOut);
+		
+		// Masquage
+		panelMenu.setVisible(false);
 		
 		panelAccueil.setBounds(214, 11, 710, 489);
 		contentPane.add(panelAccueil);
@@ -669,8 +697,43 @@ public class GuiMainPanel extends JFrame {
 		lblTitleAutresVisiteurs.setBounds(10, 11, 690, 24);
 		panelAutresVisiteurs.add(lblTitleAutresVisiteurs);
 		
-		// Masquage
-		panelMenu.setVisible(false);
+		panelNewRapport.setBounds(10, 11, 914, 489);
+		contentPane.add(panelNewRapport);
+		panelNewRapport.setLayout(null);
+		
+		JLabel lblNewRapportBilan = new JLabel("Bilan : ");
+		lblNewRapportBilan.setBounds(344, 72, 46, 14);
+		panelNewRapport.add(lblNewRapportBilan);
+		
+		JLabel lblNewRapportMotif = new JLabel("Motif : ");
+		lblNewRapportMotif.setBounds(344, 231, 46, 14);
+		panelNewRapport.add(lblNewRapportMotif);
+		
+		final JTextPane textNewRapportBilan = new JTextPane();
+		textNewRapportBilan.setBounds(344, 97, 485, 123);
+		panelNewRapport.add(textNewRapportBilan);
+		
+		final JTextPane textNewRapportMotif = new JTextPane();
+		textNewRapportMotif.setBounds(344, 256, 485, 123);
+		panelNewRapport.add(textNewRapportMotif);
+		
+		JButton btnNewRapportEffacer = new JButton("EFFACER");
+		btnNewRapportEffacer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textNewRapportBilan.setText("");
+				textNewRapportMotif.setText("");
+			}
+		});
+		btnNewRapportEffacer.setBounds(344, 413, 89, 23);
+		panelNewRapport.add(btnNewRapportEffacer);
+		
+		JButton btnNewRapportValider = new JButton("VALIDER");
+		btnNewRapportValider.setBounds(443, 413, 89, 23);
+		panelNewRapport.add(btnNewRapportValider);
+		
+		JLabel lblNouveauRapportDe = new JLabel("Nouveau rapport de visite");
+		lblNouveauRapportDe.setBounds(502, 27, 136, 14);
+		panelNewRapport.add(lblNouveauRapportDe);
 		panelAccueil.setVisible(false);
 		panelAutresVisiteurs.setVisible(false);
 		// panelLog.setVisible(false);
