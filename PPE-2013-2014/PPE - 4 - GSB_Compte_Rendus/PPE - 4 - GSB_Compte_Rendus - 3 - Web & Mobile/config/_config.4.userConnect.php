@@ -11,14 +11,8 @@
 			if(!isset($_SESSION['User_login'])){
 				$_SESSION['User_login']='';
 			}
-			if(!isset($_SESSION['User_mdp'])){
-				$_SESSION['User_mdp']='';
-			}
 			if(!isset($_SESSION['User_type'])){
 				$_SESSION['User_type']='';
-			}
-			if(!isset($_SESSION['User_grade'])){
-				$_SESSION['User_grade']='';
 			}
 
 		// = Pour PPE = Start
@@ -51,44 +45,5 @@
 			}
 			if(!isset($_SESSION['User_Ajout'])){
 				$_SESSION['User_Ajout'] = '';
-			}
-		// = Pour PPE = End
-
-		// Vérification des coordonnées d'un utilisateurs connecté
-			if(!isset($_SESSION["User_Nom"])){
-				$_SESSION["User_Nom"]='';
-			}
-			if(!isset($_SESSION["User_Prenom"])){
-				$_SESSION["User_Prenom"]='';
-			}
-			if(!isset($_SESSION["User_Age"])){
-				$_SESSION["User_Age"]='';
-			}
-			if(!isset($_SESSION["User_Email"])){
-				$_SESSION["User_Email"]='';
-			}
-			if(!isset($_SESSION["User_Adresse"])){
-				$_SESSION["User_Adresse"]='';
-			}
-			if(!isset($_SESSION["User_Ville"])){
-				$_SESSION["User_Ville"]='';
-			}
-			if(!isset($_SESSION["User_CP"])){
-				$_SESSION["User_CP"]='';
-			}
-			if(!isset($_SESSION["User_Pays"])){
-				$_SESSION["User_Pays"]='';
-			}
-			if(!isset($_SESSION["User_Date"])){
-				$_SESSION["User_Date"]='';
-			}
-			if(!isset($_SESSION["User_Time"])){
-				$_SESSION["User_Time"]='';
-			}
-			if(!isset($_SESSION["User_CraftPoint"])){
-				$_SESSION["User_CraftPoint"]='';
-			}
-			if(!isset($_SESSION["User_TtlConnexion"])){
-				$_SESSION["User_TtlConnexion"]='';
 			}
 ?>

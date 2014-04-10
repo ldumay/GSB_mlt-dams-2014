@@ -61,6 +61,7 @@
       ?>
       </select>
       <hr />
+      <label class="titre">AUTEUR :</label>
       <i style="color:red;">A masquer</i>
       <input type="text" id="PRA_NUM" name="PRA_NUM" value="<?php echo $_SESSION['User_idPracticien']; ?>"/>
       <hr />

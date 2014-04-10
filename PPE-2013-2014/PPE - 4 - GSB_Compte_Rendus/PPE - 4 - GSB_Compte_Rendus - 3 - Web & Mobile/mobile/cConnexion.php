@@ -79,7 +79,7 @@
     <div class="box">
       <div class="content">
         <!-- Login Formular -->
-        <form class="form-vertical login-form" action="../config/_post.mobile.connexion.php" method="post">
+        <form class="form-vertical login-form" action="cConnexion-post.php" method="post">
 
           <!-- Logo -->
           <div class="logo">

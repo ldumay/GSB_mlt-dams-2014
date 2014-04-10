@@ -41,7 +41,7 @@
 	function verifConnexion(){
 		// page inaccessible si visiteur non connecté
 		if ($_SESSION['User_actif']==false){
-			header("Location: ../desktop/cSeConnecter.php");
+			header("Location: ../desktop/cConnexion.php");
 		}
 	}
 ?>

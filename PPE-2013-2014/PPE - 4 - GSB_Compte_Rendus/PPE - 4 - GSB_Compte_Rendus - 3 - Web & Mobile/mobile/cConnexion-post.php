@@ -1,7 +1,13 @@
-<?php
-# ========================================================================== #
-  # [ Vérification de connexion ] #
-  # ========================================================================== #
+<?php  
+/** 
+ * Script de contrôle et d'affichage du cas d'utilisation "Se connecter"
+ * @package default
+ * @todo  RAS
+ */
+  $repInclude = './include/';
+  require($repInclude . "_init.inc.php");
+
+  // = = = [ Vérification de connexion ] = = = //
 
     // récupération des information de connexion
     $login = $_POST['txtLogin'];
@@ -13,46 +19,32 @@
     // Vérification des erreurs de saisie 
     if( (empty($login)) && (empty($mdp)) ){
       $_SESSION['Erreur_Log'] = "Le login et le mot de passe n'a passe été saisie.";
-      header('location: '.$ReturnConnexion.'.php');
+      header('location: cConnexion.php');
     }
     else if(empty($login)){
       $_SESSION['Erreur_Log'] = "Le login n'a pas été saisie.";
-      header('location: '.$ReturnConnexion.'.php');
+      header('location: cConnexion.php');
     }
     else if(empty($mdp)){
       $_SESSION['Erreur_Log'] = "Le mot de passe n'a pas été saisie.";
-      header('location: '.$ReturnConnexion.'.php');
+      header('location: cConnexion.php');
     }
     else{
-      // Vérification du type d'utlisateur
-        require("_verif.typeUser.php");
-        // Vérification de la création de donnée type : 
-        if(empty($UserType)){
-          $_SESSION['Erreur_Log'] = "Impossible de trouvé votre niveau hiérarchique.";
-          header('location: '.$ReturnConnexion.'.php');
-        }
-      // echo '<br />Type d\'utlisateur : '.$UserType;
+      // echo '<br /> test : '.$_SESSION['Erreur_Log'];
+      // echo '<br />ok';
 
       // récupération des données du client dans la BDD
       $TmpDonnees = $bdd->query("SELECT * FROM visiteur WHERE VIS_NOM='".$login."'");
       while($Donnees = $TmpDonnees-> fetch()){
-        // mémorisation des données de l'utilisateur en session
-
-        $_SESSION['User_id'] = $Donnees["VIS_MATRICULE"];
-        $_SESSION['User_login'] = $Donnees["VIS_NOM"];
-        $_SESSION['User_type'] = $UserType;
-
-        // cryptage mot de passe
+        $_SESSION['User_idVisiteur'] = $Donnees["VIS_MATRICULE"];
         $date = $Donnees["VIS_DATEEMBAUCHE"];
-        
         // echo '<br />'.$date.'<br />';
-
         // Formatage de la date
         $annee = substr($date, 0, 4);
         $mois = substr($date, 5, 2);
         $jour = substr($date, 8, 2);
-        // echo $annee.' - ';
-        // echo $mois.' - ';
+        // echo $annee.'<br />';
+        // echo $mois.'<br />';
         // echo $jour.'<br />';
 
 
@@ -74,25 +66,22 @@
         }
         $annee = substr($annee, 2, 2);
         $date = $jour.'-'.$mois.'-'.$annee;
-        // echo 'Date crypte : '.$date;
-        // echo '<br />Mdp : '.$mdp;
+        // echo $date.'<br />';
+        // echo $mdp;
       }
       if(isset($date)){
         if($date==$mdp){
-          $_SESSION['User_actif']=true;
           $_SESSION['User_Connexion'] = true;
-          header('location: '.$ReturnHome.'.php');
+          header('location: cAccueil.php');
         }
         else{
           $_SESSION['Erreur_Log'] = "Le mot de passe est incorrect";
-          header('location: '.$ReturnConnexion.'.php');
+          header('location: cConnexion.php');
         }
       }
       else{
         $_SESSION['Erreur_Log'] = "Le mot de passe est incorrect ou erreur dans la BDD.";
-        header('location: '.$ReturnConnexion.'.php');
+        header('location: cConnexion.php');
       }
     }
-
-    // echo '<br /> SESSION : '.$_SESSION['Erreur_Log'];
 ?>
