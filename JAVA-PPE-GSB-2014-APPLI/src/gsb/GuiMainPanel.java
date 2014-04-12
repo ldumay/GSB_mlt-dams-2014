@@ -445,7 +445,6 @@ public class GuiMainPanel extends JFrame {
 		JLabel lblClientTitle = new JLabel("Bonjour,");
 		lblClientTitle.setBounds(10, 70, 138, 14);
 		panelAccueil.add(lblClientTitle);
-		
 		JLabel lblClientStatut = new JLabel("Vous \u00EAtes : ");
 		lblClientStatut.setBounds(10, 95, 138, 14);
 		panelAccueil.add(lblClientStatut);
