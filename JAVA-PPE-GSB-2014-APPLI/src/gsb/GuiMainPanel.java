@@ -38,9 +38,7 @@ public class GuiMainPanel extends JFrame {
 	private JTextField txtIdentifiant;
 	public static String Identifiant;
 	public String MotDePasse;
-	public static Object TypeUser;
-	public String TempTypeUser;
-	public String TempIDUserBDD;
+	public static String TypeUser;
 	// Instanciation des variable de l'actualisation de l'état du serveur
 	final static JButton btnRafraichir = new JButton("Rafraichir");
 	public static String EtatAff = null;
@@ -138,13 +136,8 @@ public class GuiMainPanel extends JFrame {
 		
 		JLabel lblConnexion = new JLabel("Connexion");
 		lblConnexion.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblConnexion.setBounds(798, 328, 106, 23);
+		lblConnexion.setBounds(798, 365, 106, 23);
 		panelLog.add(lblConnexion);
-		
-		final JComboBox logType = new JComboBox();
-		logType.setModel(new DefaultComboBoxModel(new String[] {"Choisir un type", "Visiteur", "Praticien"}));
-		logType.setBounds(764, 362, 140, 20);
-		panelLog.add(logType);
 		
 		JLabel lblIdentifiant = new JLabel("Identifiant :");
 		lblIdentifiant.setBounds(741, 399, 64, 14);
@@ -166,16 +159,6 @@ public class GuiMainPanel extends JFrame {
 				// Récupération des Inputs de Log
 				Identifiant = txtIdentifiant.getText();
 				MotDePasse = txtMotDePasse.getText();
-				TypeUser = logType.getSelectedItem();
-				
-				if(TypeUser == "Visiteur"){
-					TempTypeUser = "visiteur";
-					TempIDUserBDD = "VIS_NOM";
-				}
-				else if(TypeUser == "Praticien"){
-					TempTypeUser = "praticien";
-					TempIDUserBDD = "PRA_NOM";
-				}
 				
 				// Vérification de l'état du serveur BDD
 				InfosConnexionBDD connexionTest2 = new InfosConnexionBDD();
@@ -216,7 +199,7 @@ public class GuiMainPanel extends JFrame {
 				
 						ResultSet resultat = null;
 						
-						resultat = stmt.executeQuery("SELECT * FROM " + TempTypeUser + " WHERE "+ TempIDUserBDD + "='"+ txtIdentifiant.getText() + "'");
+						resultat = stmt.executeQuery("SELECT * FROM visiteur WHERE VIS_NOM='"+ txtIdentifiant.getText() + "'");
 						if (resultat.next()) {
 							String idClient = resultat.getString("VIS_MATRICULE");
 							String date = resultat.getString("VIS_DATEEMBAUCHE");
@@ -250,6 +233,8 @@ public class GuiMainPanel extends JFrame {
 							// JOptionPane.showMessageDialog(null,"DONNEES : "+date_emb+" - "+mdp);
 							
 							if( mdp.equals(date_emb)){
+								// Récupération des informations du client connecté
+								DonneesClient Client = new DonneesClient();
 								// Passage en client connecter
 								panelLog.setVisible(false);
 								panelMenu.setVisible(true);

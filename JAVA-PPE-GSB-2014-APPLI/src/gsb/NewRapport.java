@@ -5,12 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 public class NewRapport {
-	// Données à insérer : 
-	private int PRA_NUM = 0;
-	private int VIS_MATRICULE = 0;
-	private String RAP_BILAN = "";
-	private String RAP_MOTIF = "";
-			
+	// Données à insérer :
+	public int PRA_NUM = 0;
+	public int VIS_MATRICULE = 0;
+	public String RAP_BILAN = "";
+	public String RAP_MOTIF = "";
+	
 	public NewRapport(){
 		
 		// Données de connexion : 

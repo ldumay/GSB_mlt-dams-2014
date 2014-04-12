@@ -1,17 +1,16 @@
 <?php
 	// Vérification Visiteur : 
-  $TmpTypeUser1 = $bdd->query("SELECT VIS_NOM FROM visiteur");
+  $TmpTypeUser1 = $bdd->query("SELECT VIS_NOM,SEC_CODE FROM visiteur WHERE VIS_NOM='".$login."'");
   
   while($TypeUser1 = $TmpTypeUser1-> fetch()){
     
     $tmpLoginType1 = $TypeUser1['VIS_NOM'];
-    
-    if( ($login==$tmpLoginType1) && ($TypeUser1['SEC_CODE']=='NULL') ){
-      $UserType = 'Visiteur';
-    }
 
-    if( ($login==$tmpLoginType1) && ($TypeUser1['SEC_CODE']!='NULL') ){
+    if(!empty($TypeUser1['SEC_CODE'])){
       $UserType = 'Délégué';
+    }
+    else{
+      $UserType = 'Visiteur';
     }
   }
 
