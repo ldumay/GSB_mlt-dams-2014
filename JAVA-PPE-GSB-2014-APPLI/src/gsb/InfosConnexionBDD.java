@@ -11,13 +11,39 @@ public class InfosConnexionBDD {
 	public static boolean EtatConnexion = false;
 	final static JButton btnRafraichir = new JButton("Rafraichir");
 	public static String EtatAff = null;
-
+	// Choix du serveur
+	public static String serveur = GuiMainPanel.serveur;
+	public static String tmpBDD = null;
+	public static String tmpURL = null;
+	public static String tmpUser = null;
+	public static String tmpPass = null;
 	
 	public static String[] InfosConnexionBDD(){
-        String BDD = "gsb";
-        String url = "jdbc:mysql://localhost:3306/" + BDD;
-        String user = "root";
-        String passwd = "";
+		/*
+		serveur = InfosConnexionBDD.serveur;
+		if (serveur == "localhost"){
+			tmpBDD = "gsb";
+			tmpURL = "localhost";
+			tmpUser = "root";
+			tmpPass = "";
+		}
+		else if (serveur == "hitema"){
+			tmpBDD = "dumayl";
+			tmpURL = "89.158.158.137";
+			tmpUser = "dumayl";
+			tmpPass = "221093o";
+		}
+		*/
+		
+		tmpBDD = "gsb";
+		tmpURL = "localhost";
+		tmpUser = "root";
+		tmpPass = "";
+		
+        String BDD = tmpBDD;
+        String url = "jdbc:mysql://" + tmpURL + ":3306/" + BDD;
+        String user = tmpUser;
+        String passwd = tmpPass;
         
         String TotalInfosBDD[] = {BDD, url, user, passwd};
 		return TotalInfosBDD;
@@ -29,7 +55,7 @@ public class InfosConnexionBDD {
 	
 	public boolean ConnexionBDD(){
 		System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
-    	System.out.println("Connexion a la BDD");
+    	System.out.println("Connexion a la BDD - "+serveur);
         String indic = "-> ";
         
         // Méthode de récupération des information de connexion à la BDD

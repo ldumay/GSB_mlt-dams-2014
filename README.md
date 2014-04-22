@@ -7,13 +7,19 @@ GSB_mtl-dams
 
 GSB_mtl-dams ...
 
-Connexion les plus utilisées : 
+Connexion :
+
+=> Visteur :
 
 	- lgoin : Villechalane
 	- mdp   : 11-dec-92
-	
+
+=> Délégué Régional :
+
 	- login : Andre
 	- mdp   : 26-aug-91
-	
+
+=> Responsable Secteur :
+
 	- login : Cadic
 	- mdp   : 06-dec-93

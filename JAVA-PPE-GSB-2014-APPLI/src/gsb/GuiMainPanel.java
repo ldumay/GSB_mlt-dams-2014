@@ -38,11 +38,16 @@ public class GuiMainPanel extends JFrame {
 	private JTextField txtIdentifiant;
 	public static String Identifiant;
 	public String MotDePasse;
+	// Type d'utilisateur
 	public static String TypeUser;
 	// Instanciation des variable de l'actualisation de l'état du serveur
 	final static JButton btnRafraichir = new JButton("Rafraichir");
 	public static String EtatAff = null;
 	static boolean EtatConnexion = InfosConnexionBDD.EtatConnexion;
+	// Choix du serveur
+	final JComboBox serveurListe = new JComboBox();
+	private Object serveurchoix;
+	public static String serveur = null;
 	// Instanciation de toutes autres intéractions
 	private JTextField textField;
 	private JTextField textField_1;
@@ -71,9 +76,10 @@ public class GuiMainPanel extends JFrame {
 			public void run() {
 				try {
 					// Vérification de l'état du serveur BDD
-					InfosConnexionBDD connexionTest = new InfosConnexionBDD();
-					EtatConnexion = InfosConnexionBDD.EtatConnexion;
-					EtatAff = InfosConnexionBDD.EtatAff;
+					// InfosConnexionBDD connexionTest = new InfosConnexionBDD();
+					// EtatConnexion = InfosConnexionBDD.EtatConnexion;
+					// EtatAff = InfosConnexionBDD.EtatAff;
+					EtatAff = "OFF";
 					
 					// Fait appel à la JFrame principale
 					GuiMainPanel frame = new GuiMainPanel();
@@ -92,6 +98,9 @@ public class GuiMainPanel extends JFrame {
 						lblEtat.setText(EtatAff);
 						btnRafraichir.setVisible(true);
 					}
+					
+					// Beta
+					JOptionPane.showMessageDialog(null,"Merci de sélectionné un serveur actif.\n >>>>>>> En cours <<<<<<", "Version Beta - Serveur Multiples", JOptionPane.WARNING_MESSAGE);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -134,6 +143,13 @@ public class GuiMainPanel extends JFrame {
 		contentPane.add(panelLog);
 		panelLog.setLayout(null);
 		
+		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = CHOIX SERVEUR = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+		
+		serveurListe.setModel(new DefaultComboBoxModel (new String[] {"Veulliez choisir un serveur", "Serveur Local", "Serveur Hitema", "Serveur Personnel"}));
+		serveurListe.setBounds(10, 458, 188, 20);
+		panelLog.add(serveurListe);
+		
+		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = CONNEXION = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 		JLabel lblConnexion = new JLabel("Connexion");
 		lblConnexion.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblConnexion.setBounds(798, 365, 106, 23);
@@ -143,7 +159,7 @@ public class GuiMainPanel extends JFrame {
 		lblIdentifiant.setBounds(741, 399, 64, 14);
 		panelLog.add(lblIdentifiant);
 		
-		JLabel lblMotDePasse = new JLabel("Mot de passe :");
+		JLabel lblMotDePasse = new JLabel("  Mot de passe :");
 		lblMotDePasse.setBounds(716, 427, 89, 14);
 		panelLog.add(lblMotDePasse);
 		
@@ -198,6 +214,20 @@ public class GuiMainPanel extends JFrame {
 						Statement stmt = con.createStatement();
 				
 						ResultSet resultat = null;
+						
+						String idUser = null;
+						
+						// Vérification du type d'utilisateur
+						/*
+						resultat = stmt.executeQuery("SELECT VIS_MATRICULE,VIS_NOM FROM visiteur WHERE VIS_NOM='"+ txtIdentifiant.getText() + "'");
+						if (resultat.next()) {
+							idUser = resultat.getString("VIS_MATRICULE");
+						}
+						resultat = stmt.executeQuery("SELECT VIS_MATRICULE,JJMMAA,TRA_ROLE FROM travailler WHERE JJMMAA=(SELECT max(JJMMAA) FROM travailler WHERE VIS_MATRICULE='" + idUser + "') AND VIS_MATRICULE='" + idUser + "'");
+						if (resultat.next()) {
+							idUser = resultat.getString("TRA_ROLE");
+						}
+						*/
 						
 						resultat = stmt.executeQuery("SELECT * FROM visiteur WHERE VIS_NOM='"+ txtIdentifiant.getText() + "'");
 						if (resultat.next()) {
@@ -276,10 +306,10 @@ public class GuiMainPanel extends JFrame {
 		panelLog.add(btnAnnuler);
 		
 		JLabel lblEtatDuServeur = new JLabel("Etat du serveur : ");
-		lblEtatDuServeur.setBounds(115, 455, 95, 23);
+		lblEtatDuServeur.setBounds(208, 455, 95, 23);
 		panelLog.add(lblEtatDuServeur);
 		
-		lblEtat.setBounds(220, 455, 29, 23);
+		lblEtat.setBounds(313, 455, 29, 23);
 		panelLog.add(lblEtat);
 		
 		JButton btnAbout = new JButton("A propos");
@@ -291,11 +321,23 @@ public class GuiMainPanel extends JFrame {
 				infos.setVisible(true);
 			}
 		});
-		btnAbout.setBounds(16, 455, 89, 23);
+		btnAbout.setBounds(10, 425, 89, 23);
 		panelLog.add(btnAbout);
 		
 		btnRafraichir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// Vérification de la sélection
+				serveurchoix = serveurListe.getSelectedItem();
+				if(serveurchoix == "Serveur Local"){
+					serveur = "localhost";
+				}
+				else if(serveurchoix == "Serveur Hitema"){
+					serveur = "hitema";
+				}
+				else if(serveurchoix == "Serveur Personnel"){
+					serveur = "personnel";
+				}
+				JOptionPane.showMessageDialog(null," " + serveurchoix + " - " + serveur, ErrorLog, JOptionPane.WARNING_MESSAGE);
 				// Vérification de l'état du serveur BDD
 				InfosConnexionBDD connexionTest2 = new InfosConnexionBDD();
 				EtatConnexion = InfosConnexionBDD.EtatConnexion;
@@ -311,7 +353,7 @@ public class GuiMainPanel extends JFrame {
 				}
 			}
 		});
-		btnRafraichir.setBounds(269, 455, 95, 23);
+		btnRafraichir.setBounds(352, 457, 95, 23);
 		panelLog.add(btnRafraichir);
 		
 		panelMenu.setVisible(false);
