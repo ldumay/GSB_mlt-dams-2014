@@ -1,5 +1,29 @@
 <?php
-# ========================================================================== #
+
+  # ========================================================================== #
+  # [ Démarrage des sessions ] #
+  # ========================================================================== #
+  session_start();
+
+  # ========================================================================== #
+  # [ Directeur ] #
+  # ========================================================================== #
+
+  $dirDesktop = 'desktop';
+  $dirMobile = 'mobile';
+
+  # ========================================================================== #
+  # [ Connexion à la base de donnée ] #
+  # ========================================================================== #
+  require("_config.2.bdGestionDonnees.php");
+
+  # ========================================================================== #
+  # [ Gestion des erreurs ] #
+  # ========================================================================== #
+
+  require("_config.3.errors.php");
+
+  # ========================================================================== #
   # [ Vérification de connexion ] #
   # ========================================================================== #
 
@@ -40,7 +64,16 @@
 
         $_SESSION['User_id'] = $Donnees["VIS_MATRICULE"];
         $_SESSION['User_login'] = $Donnees["VIS_NOM"];
+        // Autres cordonnées
+        $_SESSION['User_nom'] = $Donnees["VIS_NOM"];
+        $_SESSION['User_prenom'] = $Donnees["VIS_PRENOM"];
         $_SESSION['User_type'] = $UserType;
+        $_SESSION['User_adresse'] = $Donnees["VIS_ADRESSE"];
+        $_SESSION['User_cp'] = $Donnees["VIS_CP"];
+        $_SESSION['User_ville'] = $Donnees["VIS_VILLE"];
+        $_SESSION['User_dateEmbauche'] = $Donnees["VIS_DATEEMBAUCHE"];
+        $_SESSION['User_Sec-Code'] = $Donnees["SEC_CODE"];
+        $_SESSION['User_Lab-Code'] = $Donnees["LAB_CODE"];
 
         // cryptage mot de passe
         $date = $Donnees["VIS_DATEEMBAUCHE"];

@@ -26,17 +26,7 @@
 	# [ Gestion des données de l'utilisateur connecté ] #
 	# ========================================================================== #
 	require("_config.4.userConnect.php");
-
-	# ========================================================================== #
-	# [ Autres ] #
-	# ========================================================================== #
-	if(empty($_SESSION['id_Prat'])){
-		$_SESSION['id_Prat'] = '';
-	}
-	if(isset($_POST['PratAction'])){
-		$id_Prat = $_POST['id_Prat'];
-		$_SESSION['id_Prat'] = $id_Prat;
-	}
+	
 	# ========================================================================== #
 	function verifConnexion(){
 		// page inaccessible si visiteur non connecté

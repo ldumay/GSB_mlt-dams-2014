@@ -121,6 +121,7 @@
           <?php
         }
         ?>
+        <br />
         <input type='submit' name="supp" value='Precedent' />
         <?php echo $PratNum.'/'.$_SESSION['User_PratListMax']; ?>
         <input type='submit' name="add" value='Suivant' />

@@ -11,8 +11,33 @@
 			if(!isset($_SESSION['User_login'])){
 				$_SESSION['User_login']='';
 			}
+			// Autres cordonnées
+			if(!isset($_SESSION['User_nom'])){
+				$_SESSION['User_nom']='';
+			}
+			if(!isset($_SESSION['User_prenom'])){
+				$_SESSION['User_prenom']='';
+			}
 			if(!isset($_SESSION['User_type'])){
 				$_SESSION['User_type']='';
+			}
+			if(!isset($_SESSION['User_adresse'])){
+				$_SESSION['User_adresse']='';
+			}
+			if(!isset($_SESSION['User_cp'])){
+				$_SESSION['User_cp']='';
+			}
+			if(!isset($_SESSION['User_ville'])){
+				$_SESSION['User_ville']='';
+			}
+			if(!isset($_SESSION['User_dateEmbauche'])){
+				$_SESSION['User_dateEmbauche']='';
+			}
+			if(!isset($_SESSION['User_Sec-Code'])){
+				$_SESSION['User_Sec-Code']='';
+			}
+			if(!isset($_SESSION['User_Lab-Code'])){
+        		$_SESSION['User_Lab-Code']='';
 			}
 
 		// = Pour PPE = Start

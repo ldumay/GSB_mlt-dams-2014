@@ -15,7 +15,7 @@
 	require($repInclude . "_sommaire.inc.php");
 
   // vérifiation de compte connecter
-  $vist = $_SESSION['User_idVisiteur'];
+  $vist = $_SESSION['User_id'];
   $pract = $_SESSION['User_idPracticien'];
 ?>
 
@@ -26,7 +26,7 @@
     <form name="formRAPPORT_VISITE" method="post" action="formRAPPORT_VISITE.php">
       <?php
         // =====
-        $req3 = $bdd->query('SELECT DISTINCT  VIS_MATRICULE, RAP_NUM, SUBSTRING(RAP_DATE,1,10) AS dateRapport FROM rapport_visite WHERE PRA_NUM="'.$pract.'" AND VIS_MATRICULE="'.$vist.'" ');
+        $req3 = $bdd->query('SELECT DISTINCT  VIS_MATRICULE, RAP_NUM, SUBSTRING(RAP_DATE,1,10) AS dateRapport FROM rapport_visite WHERE VIS_MATRICULE="'.$vist.'" ');
       ?>
         <tr> 
           <td><select name="lstmnt" class="titre">

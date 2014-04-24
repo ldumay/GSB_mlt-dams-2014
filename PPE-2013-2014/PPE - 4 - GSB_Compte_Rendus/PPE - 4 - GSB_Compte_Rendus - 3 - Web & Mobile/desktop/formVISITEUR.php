@@ -124,13 +124,14 @@
       $VisDonnees = $donneesVis -> fetch();
 
       $nom = utf8_encode($VisDonnees['VIS_NOM']);
-      $prenom = utf8_encode($VisDonnees['Vis_PRENOM']);
+      $prenom = utf8_encode($VisDonnees['VIS_PRENOM']);
       $adresse = utf8_encode($VisDonnees['VIS_ADRESSE']);
       $cp = utf8_encode($VisDonnees['VIS_CP']);
       $ville = utf8_encode($VisDonnees['VIS_VILLE']);
       $code = utf8_encode($VisDonnees['SEC_CODE']);
     ?>
 
+    <br />
     <label class="titre">NOM :</label>
       <input type="text"class="zone"  size="25" name="VIS_NOM" value="<?php echo $nom; ?>"/>
     <br />
@@ -148,6 +149,7 @@
     <br />
     <label class="titre">SECTEUR :</label>
       <input type="text"class="zone"  size="1" name="SEC_CODE" value="<?php echo $code; ?>"/>
+    <br />
     <br />
     <label class="titre"><!-- &nbsp; --></label>
       <input class="zone" type="submit" name="supp" value="<"></input>
