@@ -66,6 +66,21 @@ public class GuiMainPanel extends JFrame {
 	private JPasswordField txtMotDePasse;
 	// Code Erreur
 	public String ErrorLog = "Erreur de connexion";
+	public String DEBUGG_MODE = "DEBUGG MODE : ";
+	// Instanciation du type client connecté avec un cast de modification entre l'objet et le string de la donnée transférée
+	public String ClientType = DonneesClient.ClientType;
+    // Instanciation des données Communes
+	public String Nom = DonneesClient.Nom;
+	public String Prenom = DonneesClient.Prenom;
+	public String Adresse = DonneesClient.Adresse;
+	public String CP = DonneesClient.CP;
+	public String Ville = DonneesClient.Ville;
+	// Instanciation des données Visiteur
+	public String Matricule = DonneesClient.Matricule;
+	public String Login = DonneesClient.Login;
+	public String DateEmbauche = DonneesClient.DateEmbauche;
+	public String CodeSEC = DonneesClient.CodeSEC;
+	public String CodeLAB = DonneesClient.CodeLAB;
 
 	/**
 	 * Launch the application.
@@ -100,7 +115,7 @@ public class GuiMainPanel extends JFrame {
 					}
 					
 					// Beta
-					JOptionPane.showMessageDialog(null,"Merci de sélectionné un serveur actif.\n >>>>>>> En cours <<<<<<", "Version Beta - Serveur Multiples", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Merci de sélectionné un serveur actif.\n>>>>>>>>>>>> En cours <<<<<<<<<<<\n\nDSL. Ne fonctionne pour le moment \nseulement un serveur installé \nen local.", "Version Beta - Serveur Multiples", JOptionPane.WARNING_MESSAGE);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -112,7 +127,7 @@ public class GuiMainPanel extends JFrame {
 	 * Create the frame.
 	 */
 	public GuiMainPanel() {
-		setTitle("GSB - Compte Rendu");
+		setTitle("GSB - Compte Rendu - v1.12.35");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 950, 550);
 		contentPane = new JPanel();
@@ -265,6 +280,10 @@ public class GuiMainPanel extends JFrame {
 							if( mdp.equals(date_emb)){
 								// Récupération des informations du client connecté
 								DonneesClient Client = new DonneesClient();
+								
+								// Vérification des données de l'utilisateur connecté
+								JOptionPane.showMessageDialog(null,"\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville + "\nMatricule : " + Matricule + "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Données Clients", JOptionPane.INFORMATION_MESSAGE);
+								
 								// Passage en client connecter
 								panelLog.setVisible(false);
 								panelMenu.setVisible(true);
@@ -337,7 +356,7 @@ public class GuiMainPanel extends JFrame {
 				else if(serveurchoix == "Serveur Personnel"){
 					serveur = "personnel";
 				}
-				JOptionPane.showMessageDialog(null," " + serveurchoix + " - " + serveur, ErrorLog, JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null," " + serveurchoix + " - " + serveur, "Informations du serveur choisit", JOptionPane.WARNING_MESSAGE);
 				// Vérification de l'état du serveur BDD
 				InfosConnexionBDD connexionTest2 = new InfosConnexionBDD();
 				EtatConnexion = InfosConnexionBDD.EtatConnexion;
@@ -345,11 +364,11 @@ public class GuiMainPanel extends JFrame {
 				// Vérification de EtatAff
 				if(EtatAff == "ON"){
 					lblEtat.setText(EtatAff);
-					btnRafraichir.setVisible(false);
+					// btnRafraichir.setVisible(false);
 				}
 				if(EtatAff == "OFF"){
 					lblEtat.setText(EtatAff);
-					btnRafraichir.setVisible(true);
+					// btnRafraichir.setVisible(true);
 				}
 			}
 		});
@@ -484,10 +503,10 @@ public class GuiMainPanel extends JFrame {
 		lblTitleHome.setBounds(10, 11, 690, 24);
 		panelAccueil.add(lblTitleHome);
 		
-		JLabel lblClientTitle = new JLabel("Bonjour,");
+		JLabel lblClientTitle = new JLabel("Bonjour, " + Nom + " " + Prenom + " .");
 		lblClientTitle.setBounds(10, 70, 138, 14);
 		panelAccueil.add(lblClientTitle);
-		JLabel lblClientStatut = new JLabel("Vous \u00EAtes : ");
+		JLabel lblClientStatut = new JLabel("Vous \u00EAtes : " + ClientType + " .");
 		lblClientStatut.setBounds(10, 95, 138, 14);
 		panelAccueil.add(lblClientStatut);
 		
@@ -760,8 +779,10 @@ public class GuiMainPanel extends JFrame {
 		JLabel lblNouveauRapportDe = new JLabel("Nouveau rapport de visite");
 		lblNouveauRapportDe.setBounds(502, 27, 136, 14);
 		panelNewRapport.add(lblNouveauRapportDe);
+		/* A vérifié
 		panelAccueil.setVisible(false);
 		panelAutresVisiteurs.setVisible(false);
 		// panelLog.setVisible(false);
+		*/
 	}
 }

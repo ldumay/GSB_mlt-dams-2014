@@ -55,7 +55,6 @@ public class InfosConnexionBDD {
 	
 	public boolean ConnexionBDD(){
 		System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
-    	System.out.println("Connexion a la BDD - "+serveur);
         String indic = "-> ";
         
         // Méthode de récupération des information de connexion à la BDD
@@ -71,6 +70,8 @@ public class InfosConnexionBDD {
 
             Connection conn = DriverManager.getConnection(url, user, passwd);
             System.out.println(indic + "Connexion reussi !");
+            System.out.println(indic + "Serveur connecté : " + serveur);
+            System.out.println(indic + "Adresse du serveur : " + url);
             System.out.println(indic + "Base de donnee connectee : '" + BDD + "'");
             System.out.println(indic + "Application connectee en tant que : '" + user + "'");
             EtatConnexion = true;
