@@ -379,11 +379,11 @@ public class GuiMainPanel extends JFrame {
 					// Vérification de EtatAff
 					if(EtatAff == "ON"){
 						lblEtat.setText(EtatAff);
-						btnRafraichir.setVisible(false);
+						// btnRafraichir.setVisible(false);
 					}
 					if(EtatAff == "OFF"){
 						lblEtat.setText(EtatAff);
-						btnRafraichir.setVisible(true);
+						// btnRafraichir.setVisible(true);
 					}
 				}
 				else{
