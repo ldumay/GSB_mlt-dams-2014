@@ -12,33 +12,57 @@ public class InfosConnexionBDD {
 	final static JButton btnRafraichir = new JButton("Rafraichir");
 	public static String EtatAff = null;
 	// Choix du serveur
-	public static String serveur = GuiMainPanel.serveur;
 	public static String tmpBDD = null;
 	public static String tmpURL = null;
 	public static String tmpUser = null;
 	public static String tmpPass = null;
 	
 	public static String[] InfosConnexionBDD(){
-		/*
-		serveur = InfosConnexionBDD.serveur;
+		
+		// Liste des serveurs de l'application
+		String serveur = GuiMainPanel.serveur;
 		if (serveur == "localhost"){
 			tmpBDD = "gsb";
 			tmpURL = "localhost";
 			tmpUser = "root";
 			tmpPass = "";
 		}
-		else if (serveur == "hitema"){
+		else if (serveur == "localhostMac"){
+			tmpBDD = "gsb";
+			tmpURL = "localhost";
+			tmpUser = "root";
+			tmpPass = "root";
+		}
+		else if (serveur == "hitemaLoic"){
 			tmpBDD = "dumayl";
 			tmpURL = "89.158.158.137";
 			tmpUser = "dumayl";
 			tmpPass = "221093o";
 		}
-		*/
-		
-		tmpBDD = "gsb";
-		tmpURL = "localhost";
-		tmpUser = "root";
-		tmpPass = "";
+		else if (serveur == "hitemaDamien"){
+			tmpBDD = "";
+			tmpURL = "";
+			tmpUser = "";
+			tmpPass = "";
+		}
+		else if (serveur == "personnelLoic"){
+			tmpBDD = "dumayloi_mtl";
+			tmpURL = "web1.quatdev.fr";
+			tmpUser = "dumayloi_mtl";
+			tmpPass = "BPJrtj34r5A4";
+		}
+		else if (serveur == "personnelDamien"){
+			tmpBDD = "";
+			tmpURL = "";
+			tmpUser = "";
+			tmpPass = "";
+		}
+		else{
+			tmpBDD = null;
+			tmpURL = null;
+			tmpUser = null;
+			tmpPass = null;
+		}
 		
         String BDD = tmpBDD;
         String url = "jdbc:mysql://" + tmpURL + ":3306/" + BDD;
@@ -54,6 +78,8 @@ public class InfosConnexionBDD {
 	}
 	
 	public boolean ConnexionBDD(){
+		String serveur = GuiMainPanel.serveur;
+		
 		System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
         String indic = "-> ";
         

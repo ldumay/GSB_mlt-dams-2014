@@ -72,8 +72,7 @@ public class DonneesClient {
 				CodeSEC = resultat.getString("SEC_CODE");
 				CodeLAB = resultat.getString("LAB_CODE");
 			}
-			
-        } catch (Exception e){
+		} catch (Exception e){
             e.printStackTrace();
         }
 	}

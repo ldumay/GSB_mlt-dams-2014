@@ -67,20 +67,20 @@ public class GuiMainPanel extends JFrame {
 	// Code Erreur
 	public String ErrorLog = "Erreur de connexion";
 	public String DEBUGG_MODE = "DEBUGG MODE : ";
-	// Instanciation du type client connecté avec un cast de modification entre l'objet et le string de la donnée transférée
-	public String ClientType = DonneesClient.ClientType;
+	// Instanciation du type client connecté
+	public String ClientType = null;
     // Instanciation des données Communes
-	public String Nom = DonneesClient.Nom;
-	public String Prenom = DonneesClient.Prenom;
-	public String Adresse = DonneesClient.Adresse;
-	public String CP = DonneesClient.CP;
-	public String Ville = DonneesClient.Ville;
+	public String Nom = null;
+	public String Prenom = null;
+	public String Adresse = null;
+	public String CP = null;
+	public String Ville = null;
 	// Instanciation des données Visiteur
-	public String Matricule = DonneesClient.Matricule;
-	public String Login = DonneesClient.Login;
-	public String DateEmbauche = DonneesClient.DateEmbauche;
-	public String CodeSEC = DonneesClient.CodeSEC;
-	public String CodeLAB = DonneesClient.CodeLAB;
+	public String Matricule = null;
+	public String Login = null;
+	public String DateEmbauche = null;
+	public String CodeSEC = null;
+	public String CodeLAB = null;
 
 	/**
 	 * Launch the application.
@@ -127,7 +127,7 @@ public class GuiMainPanel extends JFrame {
 	 * Create the frame.
 	 */
 	public GuiMainPanel() {
-		setTitle("GSB - Compte Rendu - v1.12.35");
+		setTitle("GSB - Compte Rendu - v1.13.20");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 950, 550);
 		contentPane = new JPanel();
@@ -160,8 +160,8 @@ public class GuiMainPanel extends JFrame {
 		
 		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = CHOIX SERVEUR = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 		
-		serveurListe.setModel(new DefaultComboBoxModel (new String[] {"Veulliez choisir un serveur", "Serveur Local", "Serveur Hitema", "Serveur Personnel"}));
-		serveurListe.setBounds(10, 458, 188, 20);
+		serveurListe.setModel(new DefaultComboBoxModel (new String[] {"Veulliez choisir un serveur", "Serveur Local", "Serveur Local Mac", "Serveur Hitema [DUMAY Loic]", "Serveur Hitema [COUTEILLON Damien]", "Serveur Personnel [DUMAY Loic]", "Serveur Personnel [COUTEILLON Damien]"}));
+		serveurListe.setBounds(10, 458, 277, 20);
 		panelLog.add(serveurListe);
 		
 		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = CONNEXION = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
@@ -284,6 +284,11 @@ public class GuiMainPanel extends JFrame {
 								// Vérification des données de l'utilisateur connecté
 								JOptionPane.showMessageDialog(null,"\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville + "\nMatricule : " + Matricule + "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Données Clients", JOptionPane.INFORMATION_MESSAGE);
 								
+								recupDonneesClient();
+
+								// Vérification des données de l'utilisateur connecté
+								JOptionPane.showMessageDialog(null,"\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville + "\nMatricule : " + Matricule + "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Données Clients", JOptionPane.INFORMATION_MESSAGE);
+								
 								// Passage en client connecter
 								panelLog.setVisible(false);
 								panelMenu.setVisible(true);
@@ -325,10 +330,10 @@ public class GuiMainPanel extends JFrame {
 		panelLog.add(btnAnnuler);
 		
 		JLabel lblEtatDuServeur = new JLabel("Etat du serveur : ");
-		lblEtatDuServeur.setBounds(208, 455, 95, 23);
+		lblEtatDuServeur.setBounds(297, 453, 95, 23);
 		panelLog.add(lblEtatDuServeur);
 		
-		lblEtat.setBounds(313, 455, 29, 23);
+		lblEtat.setBounds(402, 453, 29, 23);
 		panelLog.add(lblEtat);
 		
 		JButton btnAbout = new JButton("A propos");
@@ -347,32 +352,46 @@ public class GuiMainPanel extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// Vérification de la sélection
 				serveurchoix = serveurListe.getSelectedItem();
-				if(serveurchoix == "Serveur Local"){
-					serveur = "localhost";
+				if(serveurchoix != "Veulliez choisir un serveur"){
+					if(serveurchoix == "Serveur Local"){
+						serveur = "localhost";
+					}
+					if(serveurchoix == "Serveur Local Mac"){
+						serveur = "localhostMac";
+					}
+					else if(serveurchoix == "Serveur Hitema [DUMAY Loic]"){
+						serveur = "hitemaLoic";
+					}
+					else if(serveurchoix == "Serveur Hitema [COUTEILLON Damien]"){
+						serveur = "hitemaDamien";
+					}
+					else if(serveurchoix == "Serveur Personnel [DUMAY Loic]"){
+						serveur = "personnelLoic";
+					}
+					else if(serveurchoix == "Serveur Personnel [COUTEILLON Damien]"){
+						serveur = "personnelDamien";
+					}
+					// JOptionPane.showMessageDialog(null," " + serveurchoix + " - " + serveur, "Informations du serveur choisit", JOptionPane.WARNING_MESSAGE);
+					// Vérification de l'état du serveur BDD
+					InfosConnexionBDD connexionTest2 = new InfosConnexionBDD();
+					EtatConnexion = InfosConnexionBDD.EtatConnexion;
+					EtatAff = InfosConnexionBDD.EtatAff;
+					// Vérification de EtatAff
+					if(EtatAff == "ON"){
+						lblEtat.setText(EtatAff);
+						btnRafraichir.setVisible(false);
+					}
+					if(EtatAff == "OFF"){
+						lblEtat.setText(EtatAff);
+						btnRafraichir.setVisible(true);
+					}
 				}
-				else if(serveurchoix == "Serveur Hitema"){
-					serveur = "hitema";
-				}
-				else if(serveurchoix == "Serveur Personnel"){
-					serveur = "personnel";
-				}
-				JOptionPane.showMessageDialog(null," " + serveurchoix + " - " + serveur, "Informations du serveur choisit", JOptionPane.WARNING_MESSAGE);
-				// Vérification de l'état du serveur BDD
-				InfosConnexionBDD connexionTest2 = new InfosConnexionBDD();
-				EtatConnexion = InfosConnexionBDD.EtatConnexion;
-				EtatAff = InfosConnexionBDD.EtatAff;
-				// Vérification de EtatAff
-				if(EtatAff == "ON"){
-					lblEtat.setText(EtatAff);
-					// btnRafraichir.setVisible(false);
-				}
-				if(EtatAff == "OFF"){
-					lblEtat.setText(EtatAff);
-					// btnRafraichir.setVisible(true);
+				else{
+					JOptionPane.showMessageDialog(null, "Oups ! " + serveurchoix + ", SVP !", ErrorLog, JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
-		btnRafraichir.setBounds(352, 457, 95, 23);
+		btnRafraichir.setBounds(441, 455, 95, 23);
 		panelLog.add(btnRafraichir);
 		
 		panelMenu.setVisible(false);
@@ -784,5 +803,22 @@ public class GuiMainPanel extends JFrame {
 		panelAutresVisiteurs.setVisible(false);
 		// panelLog.setVisible(false);
 		*/
+	}
+	
+	public void recupDonneesClient(){
+		// Récupération et enregistrement des données du client connecté
+		ClientType = DonneesClient.ClientType;
+	    // Instanciation des données Communes
+		Nom = DonneesClient.Nom;
+		Prenom = DonneesClient.Prenom;
+		Adresse = DonneesClient.Adresse;
+		CP = DonneesClient.CP;
+		Ville = DonneesClient.Ville;
+		// Instanciation des données Visiteur
+		Matricule = DonneesClient.Matricule;
+		Login = DonneesClient.Login;
+		DateEmbauche = DonneesClient.DateEmbauche;
+		CodeSEC = DonneesClient.CodeSEC;
+		CodeLAB = DonneesClient.CodeLAB;
 	}
 }
