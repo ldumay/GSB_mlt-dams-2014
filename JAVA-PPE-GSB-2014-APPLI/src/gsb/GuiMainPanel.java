@@ -149,7 +149,7 @@ public class GuiMainPanel extends JFrame {
 		contentPane.setLayout(null);
 		
 		/* Seul la page Log doit être visible en 1er */
-		// panelLog();
+		panelLog();
 		
 		/* ICI : 
 		 * 		Décommenter une classe permet d'appeler directement une classe Panel directement dans la Frame de GuiMainPanel.
