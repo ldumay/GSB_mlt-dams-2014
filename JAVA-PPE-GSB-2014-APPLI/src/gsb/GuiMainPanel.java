@@ -167,19 +167,19 @@ public class GuiMainPanel extends JFrame {
 		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = CONNEXION = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 		JLabel lblConnexion = new JLabel("Connexion");
 		lblConnexion.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblConnexion.setBounds(798, 365, 106, 23);
+		lblConnexion.setBounds(798, 354, 106, 23);
 		panelLog.add(lblConnexion);
 		
 		JLabel lblIdentifiant = new JLabel("Identifiant :");
-		lblIdentifiant.setBounds(741, 399, 64, 14);
+		lblIdentifiant.setBounds(716, 388, 76, 14);
 		panelLog.add(lblIdentifiant);
 		
 		JLabel lblMotDePasse = new JLabel("  Mot de passe :");
-		lblMotDePasse.setBounds(716, 427, 89, 14);
+		lblMotDePasse.setBounds(699, 416, 106, 14);
 		panelLog.add(lblMotDePasse);
 		
 		txtIdentifiant = new JTextField();
-		txtIdentifiant.setBounds(815, 396, 89, 20);
+		txtIdentifiant.setBounds(815, 385, 89, 20);
 		panelLog.add(txtIdentifiant);
 		txtIdentifiant.setColumns(10);
 		
@@ -313,7 +313,7 @@ public class GuiMainPanel extends JFrame {
 		
 		txtMotDePasse = new JPasswordField();
 		txtMotDePasse.setToolTipText("");
-		txtMotDePasse.setBounds(815, 424, 89, 20);
+		txtMotDePasse.setBounds(815, 413, 89, 20);
 		panelLog.add(txtMotDePasse);
 		btnValider.setBounds(716, 455, 89, 23);
 		panelLog.add(btnValider);
@@ -330,10 +330,10 @@ public class GuiMainPanel extends JFrame {
 		panelLog.add(btnAnnuler);
 		
 		JLabel lblEtatDuServeur = new JLabel("Etat du serveur : ");
-		lblEtatDuServeur.setBounds(297, 453, 95, 23);
+		lblEtatDuServeur.setBounds(297, 453, 106, 23);
 		panelLog.add(lblEtatDuServeur);
 		
-		lblEtat.setBounds(402, 453, 29, 23);
+		lblEtat.setBounds(413, 455, 29, 23);
 		panelLog.add(lblEtat);
 		
 		JButton btnAbout = new JButton("A propos");
@@ -345,7 +345,7 @@ public class GuiMainPanel extends JFrame {
 				infos.setVisible(true);
 			}
 		});
-		btnAbout.setBounds(10, 425, 89, 23);
+		btnAbout.setBounds(10, 412, 89, 23);
 		panelLog.add(btnAbout);
 		
 		btnRafraichir.addActionListener(new ActionListener() {
@@ -391,7 +391,7 @@ public class GuiMainPanel extends JFrame {
 				}
 			}
 		});
-		btnRafraichir.setBounds(441, 455, 95, 23);
+		btnRafraichir.setBounds(452, 457, 95, 23);
 		panelLog.add(btnRafraichir);
 		
 		panelMenu.setVisible(false);
@@ -587,7 +587,7 @@ public class GuiMainPanel extends JFrame {
 		
 		JLabel lblTitleMedicaments = new JLabel("Médicaments");
 		lblTitleMedicaments.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTitleMedicaments.setBounds(306, 5, 98, 19);
+		lblTitleMedicaments.setBounds(306, 5, 127, 19);
 		panelMedicaments.add(lblTitleMedicaments);
 		
 		JButton button = new JButton("<");
@@ -668,7 +668,7 @@ public class GuiMainPanel extends JFrame {
 		panelPraticiens.setLayout(null);
 		
 		JLabel lblTitlePraticiens = new JLabel("Praticiens");
-		lblTitlePraticiens.setBounds(317, 5, 76, 19);
+		lblTitlePraticiens.setBounds(317, 5, 97, 19);
 		lblTitlePraticiens.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panelPraticiens.add(lblTitlePraticiens);
 		
@@ -796,7 +796,7 @@ public class GuiMainPanel extends JFrame {
 		panelNewRapport.add(btnNewRapportValider);
 		
 		JLabel lblNouveauRapportDe = new JLabel("Nouveau rapport de visite");
-		lblNouveauRapportDe.setBounds(502, 27, 136, 14);
+		lblNouveauRapportDe.setBounds(502, 27, 173, 14);
 		panelNewRapport.add(lblNouveauRapportDe);
 		/* A vérifié
 		panelAccueil.setVisible(false);
