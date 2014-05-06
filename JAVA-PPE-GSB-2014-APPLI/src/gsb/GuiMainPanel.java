@@ -505,6 +505,7 @@ public class GuiMainPanel extends JFrame {
 				txtIdentifiant.setText("");
 				txtMotDePasse.setText("");
 				
+				panelMenu.setVisible(false);
 				panelAccueil.setVisible(false);
 				panelRapport.setVisible(false);
 				panelMedicaments.setVisible(false);
