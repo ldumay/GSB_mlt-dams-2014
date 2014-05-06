@@ -504,6 +504,14 @@ public class GuiMainPanel extends JFrame {
 				// Modifications des Input de Log
 				txtIdentifiant.setText("");
 				txtMotDePasse.setText("");
+				
+				panelAccueil.setVisible(false);
+				panelRapport.setVisible(false);
+				panelMedicaments.setVisible(false);
+				panelPraticiens.setVisible(false);
+				panelAutresVisiteurs.setVisible(false);
+				panelNewRapport.setVisible(false);
+				
 				panelLog();
 			}
 		});
