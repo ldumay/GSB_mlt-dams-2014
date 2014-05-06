@@ -812,7 +812,7 @@ public class GuiMainPanel extends JFrame {
 		
 		final JLabel lblTitleAutresVisiteurs = new JLabel("Autres Visiteurs");
 		lblTitleAutresVisiteurs.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTitleAutresVisiteurs.setBounds(295, 5, 120, 19);
+		lblTitleAutresVisiteurs.setBounds(295, 5, 152, 19);
 		panelAutresVisiteurs.add(lblTitleAutresVisiteurs);
 		
 		JComboBox AutresVisiteursDeptListe = new JComboBox();
@@ -933,9 +933,9 @@ public class GuiMainPanel extends JFrame {
 		btnNewRapportValider.setBounds(443, 413, 89, 25);
 		panelNewRapport.add(btnNewRapportValider);
 		
-		JLabel lblNouveauRapportDe = new JLabel("Nouveau rapport de visite");
+		JLabel lblNouveauRapportDe = new JLabel("Nouveau rapport de visiteur");
 		lblNouveauRapportDe.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNouveauRapportDe.setBounds(502, 27, 173, 14);
+		lblNouveauRapportDe.setBounds(502, 27, 256, 14);
 		panelNewRapport.add(lblNouveauRapportDe);
 	}
 	
