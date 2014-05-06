@@ -300,12 +300,12 @@ public class GuiMainPanel extends JFrame {
 								DonneesClient Client = new DonneesClient();
 								
 								// Vérification des données de l'utilisateur connecté
-								JOptionPane.showMessageDialog(null,"\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville + "\nMatricule : " + Matricule + "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Données Clients", JOptionPane.INFORMATION_MESSAGE);
+								// JOptionPane.showMessageDialog(null,"\nMatricule / ID : " + Matricule + "\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville + "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Données Clients", JOptionPane.INFORMATION_MESSAGE);
 								
 								recupDonneesClient();
 
 								// Vérification des données de l'utilisateur connecté
-								JOptionPane.showMessageDialog(null,"\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville + "\nMatricule : " + Matricule + "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Données Clients", JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null,"\nMatricule / ID : " + Matricule + "\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville +  "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Données Clients", JOptionPane.INFORMATION_MESSAGE);
 								
 								// Passage en client connecter
 								panelLog.setVisible(false);
