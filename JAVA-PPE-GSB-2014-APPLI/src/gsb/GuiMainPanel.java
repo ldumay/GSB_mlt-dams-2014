@@ -34,6 +34,7 @@ import javax.swing.JTextPane;
 
 public class GuiMainPanel extends JFrame {
 
+	private static String version = "v1.13.20"; 
 	private JPanel contentPane;
 	private JTextField txtIdentifiant;
 	public static String Identifiant;
@@ -82,9 +83,7 @@ public class GuiMainPanel extends JFrame {
 	public String CodeSEC = null;
 	public String CodeLAB = null;
 
-	/**
-	 * Launch the application.
-	 */
+	// Démmarre l'application
 	public static void main(String[] args) {
 		// Démarrage de l'interface primaire de l'application
 		EventQueue.invokeLater(new Runnable() {
@@ -123,11 +122,19 @@ public class GuiMainPanel extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+	// Créations des Panel
+	final JPanel panelLog = new JPanel();
+	final JPanel panelAccueil = new JPanel();
+	final JPanel panelMenu = new JPanel();
+	final JPanel panelRapport = new JPanel();
+	final JPanel panelMedicaments = new JPanel();
+	final JPanel panelPraticiens = new JPanel();
+	final JPanel panelAutresVisiteurs = new JPanel();
+	final JPanel panelNewRapport = new JPanel();
+	
+	// Classe Principale
 	public GuiMainPanel() {
-		setTitle("GSB - Compte Rendu - v1.13.20");
+		setTitle("GSB - Compte Rendu - "+version);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 950, 550);
 		contentPane = new JPanel();
@@ -135,23 +142,26 @@ public class GuiMainPanel extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		// Instanciation des variables réccurentes
-		final JPanel panelLog = new JPanel();
-		final JPanel panelAccueil = new JPanel();
-		final JPanel panelMenu = new JPanel();
-		final JPanel panelRapport = new JPanel();
-		final JPanel panelMedicaments = new JPanel();
-		final JPanel panelPraticiens = new JPanel();
-		final JPanel panelAutresVisiteurs = new JPanel();
-		final JPanel panelNewRapport = new JPanel();
+		/* ICI : décommenter une classe permet d'appeler directement une classe Panel directement dans la Frame de GuiMainPanel 
+		 * 		Cela permet une édition simple avec Window Builder
+		 */
+		// panelLog();
+		// panelMenu();
+		// panelAccueil();
+		// panelRapport();
+		// panelMedicaments();
+		// panelPraticiens();
+		// panelAutresVisiteurs();
+		// panelNewRapport();
 		
+		/* Seul la page Log doit être visible en 1er */
+		panelLog();
+		
+	}
+	
+	// Classes Panel
+	public void panelLog(){
 		final JLabel lblEtat = new JLabel(EtatAff);
-		panelRapport.setVisible(false);
-		panelAccueil.setVisible(false);
-		panelMedicaments.setVisible(false);
-		panelPraticiens.setVisible(false);
-		panelAutresVisiteurs.setVisible(false);
-		panelNewRapport.setVisible(false);
 		
 		panelLog.setVisible(true);
 		panelLog.setBounds(10, 11, 914, 489);
@@ -291,8 +301,8 @@ public class GuiMainPanel extends JFrame {
 								
 								// Passage en client connecter
 								panelLog.setVisible(false);
-								panelMenu.setVisible(true);
-								panelAccueil.setVisible(true);
+								panelMenu();
+								panelAccueil();
 							}
 							else{
 								JOptionPane.showMessageDialog(null,"Oups, le mot de passe n'est pas correcte ! \n\n Assurez-vous d'entrer les 3 premières lettres du mois \n dans le mot de passe, tel que : XX-XXX-XX", ErrorLog, JOptionPane.WARNING_MESSAGE);
@@ -393,8 +403,11 @@ public class GuiMainPanel extends JFrame {
 		});
 		btnRafraichir.setBounds(452, 457, 95, 23);
 		panelLog.add(btnRafraichir);
-		
-		panelMenu.setVisible(false);
+	}
+	
+	public void panelMenu(){
+		panelLog.setVisible(false);
+		panelMenu.setVisible(true);
 		
 		panelMenu.setBounds(10, 11, 198, 489);
 		contentPane.add(panelMenu);
@@ -408,23 +421,14 @@ public class GuiMainPanel extends JFrame {
 		JButton btnRapport = new JButton("Rapport de visite");
 		btnRapport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelAccueil.setVisible(false);
-				panelRapport.setVisible(true);
-				panelMedicaments.setVisible(false);
-				panelPraticiens.setVisible(false);
-				panelAutresVisiteurs.setVisible(false);
+				panelRapport();
 			}
 		});
 		
 		JButton btnAccueil = new JButton("Accueil");
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelAccueil.setVisible(true);
-				panelRapport.setVisible(false);
-				panelMedicaments.setVisible(false);
-				panelPraticiens.setVisible(false);
-				panelAutresVisiteurs.setVisible(false);
-				panelNewRapport.setVisible(false);
+				panelAccueil();
 			}
 		});
 		btnAccueil.setBounds(10, 56, 178, 37);
@@ -435,12 +439,7 @@ public class GuiMainPanel extends JFrame {
 		JButton btnMedicaments = new JButton("M\u00E9dicaments");
 		btnMedicaments.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelAccueil.setVisible(false);
-				panelRapport.setVisible(false);
-				panelMedicaments.setVisible(true);
-				panelPraticiens.setVisible(false);
-				panelAutresVisiteurs.setVisible(false);
-				panelNewRapport.setVisible(false);
+				panelMedicaments();
 			}
 		});
 		btnMedicaments.setBounds(10, 152, 178, 37);
@@ -449,12 +448,7 @@ public class GuiMainPanel extends JFrame {
 		JButton btnPraticiens = new JButton("Praticiens");
 		btnPraticiens.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelAccueil.setVisible(false);
-				panelRapport.setVisible(false);
-				panelMedicaments.setVisible(false);
-				panelPraticiens.setVisible(true);
-				panelAutresVisiteurs.setVisible(false);
-				panelNewRapport.setVisible(false);
+				panelPraticiens();
 			}
 		});
 		btnPraticiens.setBounds(10, 200, 178, 37);
@@ -463,12 +457,7 @@ public class GuiMainPanel extends JFrame {
 		JButton btnAutresVisiteurs = new JButton("Autres Visiteurs");
 		btnAutresVisiteurs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelAccueil.setVisible(false);
-				panelRapport.setVisible(false);
-				panelMedicaments.setVisible(false);
-				panelPraticiens.setVisible(false);
-				panelAutresVisiteurs.setVisible(true);
-				panelNewRapport.setVisible(false);
+				panelAutresVisiteurs();
 			}
 		});
 		btnAutresVisiteurs.setBounds(10, 248, 178, 37);
@@ -477,13 +466,7 @@ public class GuiMainPanel extends JFrame {
 		JButton btnAjoutRapport = new JButton("Nouveau Rapport");
 		btnAjoutRapport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				panelMenu.setVisible(true);
-				panelRapport.setVisible(false);
-				panelAccueil.setVisible(false);
-				panelMedicaments.setVisible(false);
-				panelPraticiens.setVisible(false);
-				panelAutresVisiteurs.setVisible(false);
-				panelNewRapport.setVisible(true);
+				panelNewRapport();
 			}
 		});
 		btnAjoutRapport.setBounds(10, 329, 178, 37);
@@ -495,23 +478,20 @@ public class GuiMainPanel extends JFrame {
 				// Modifications des Input de Log
 				txtIdentifiant.setText("");
 				txtMotDePasse.setText("");
-				
-				panelMenu.setVisible(false);
-				panelRapport.setVisible(false);
-				panelAccueil.setVisible(false);
-				panelMedicaments.setVisible(false);
-				panelPraticiens.setVisible(false);
-				panelAutresVisiteurs.setVisible(false);
-				panelNewRapport.setVisible(false);
-				panelLog.setVisible(true);
+				panelLog();
 			}
 		});
-		
 		btnLogOut.setBounds(10, 441, 178, 37);
 		panelMenu.add(btnLogOut);
-		
-		// Masquage
-		panelMenu.setVisible(false);
+	}
+	
+	public void panelAccueil(){
+		panelAccueil.setVisible(true);
+		panelRapport.setVisible(false);
+		panelMedicaments.setVisible(false);
+		panelPraticiens.setVisible(false);
+		panelAutresVisiteurs.setVisible(false);
+		panelNewRapport.setVisible(false);
 		
 		panelAccueil.setBounds(214, 11, 710, 489);
 		contentPane.add(panelAccueil);
@@ -522,12 +502,22 @@ public class GuiMainPanel extends JFrame {
 		lblTitleHome.setBounds(10, 11, 690, 24);
 		panelAccueil.add(lblTitleHome);
 		
-		JLabel lblClientTitle = new JLabel("Bonjour, " + Nom + " " + Prenom + " .");
+		JLabel lblClientTitle = new JLabel("Bonjour, " + Nom + " " + Prenom + ".");
 		lblClientTitle.setBounds(10, 70, 138, 14);
 		panelAccueil.add(lblClientTitle);
-		JLabel lblClientStatut = new JLabel("Vous \u00EAtes : " + ClientType + " .");
+		JLabel lblClientStatut = new JLabel("Vous \u00EAtes : " + ClientType + ".");
 		lblClientStatut.setBounds(10, 95, 138, 14);
 		panelAccueil.add(lblClientStatut);
+	}
+	
+	public void panelRapport(){
+		panelAccueil.setVisible(false);
+		panelMedicaments.setVisible(false);
+		panelPraticiens.setVisible(false);
+		panelAutresVisiteurs.setVisible(false);
+		panelNewRapport.setVisible(false);
+		
+		panelRapport.setVisible(true);
 		
 		panelRapport.setBounds(214, 11, 710, 489);
 		contentPane.add(panelRapport);
@@ -580,6 +570,16 @@ public class GuiMainPanel extends JFrame {
 		JTextArea txtRapportMotif = new JTextArea();
 		txtRapportMotif.setBounds(105, 242, 292, 77);
 		panelRapport.add(txtRapportMotif);
+	}
+	
+	public void panelMedicaments(){
+		panelAccueil.setVisible(false);
+		panelRapport.setVisible(false);
+		panelPraticiens.setVisible(false);
+		panelAutresVisiteurs.setVisible(false);
+		panelNewRapport.setVisible(false);
+		
+		panelMedicaments.setVisible(true);
 		
 		panelMedicaments.setBounds(214, 11, 710, 489);
 		contentPane.add(panelMedicaments);
@@ -661,7 +661,16 @@ public class GuiMainPanel extends JFrame {
 		textField_3.setBounds(79, 92, 41, 20);
 		panelMedicaments.add(textField_3);
 		textField_3.setColumns(10);
+	}
+	
+	public void panelPraticiens(){
+		panelAccueil.setVisible(false);
+		panelRapport.setVisible(false);
 		panelMedicaments.setVisible(false);
+		panelAutresVisiteurs.setVisible(false);
+		panelNewRapport.setVisible(false);
+		
+		panelPraticiens.setVisible(true);
 		
 		panelPraticiens.setBounds(214, 11, 710, 489);
 		contentPane.add(panelPraticiens);
@@ -751,7 +760,16 @@ public class GuiMainPanel extends JFrame {
 		JButton btnPraticienSuivant = new JButton(">");
 		btnPraticienSuivant.setBounds(138, 363, 51, 23);
 		panelPraticiens.add(btnPraticienSuivant);
+	}
+	
+	public void panelAutresVisiteurs(){
+		panelAccueil.setVisible(false);
+		panelRapport.setVisible(false);
+		panelMedicaments.setVisible(false);
 		panelPraticiens.setVisible(false);
+		panelNewRapport.setVisible(false);
+		
+		panelAutresVisiteurs.setVisible(true);
 		
 		panelAutresVisiteurs.setBounds(214, 11, 710, 489);
 		contentPane.add(panelAutresVisiteurs);
@@ -760,6 +778,15 @@ public class GuiMainPanel extends JFrame {
 		lblTitleAutresVisiteurs.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblTitleAutresVisiteurs.setBounds(10, 11, 690, 24);
 		panelAutresVisiteurs.add(lblTitleAutresVisiteurs);
+	}
+	
+	public void panelNewRapport(){
+		panelAccueil.setVisible(false);
+		panelRapport.setVisible(false);
+		panelMedicaments.setVisible(false);
+		panelPraticiens.setVisible(false);
+		panelAutresVisiteurs.setVisible(false);
+		panelNewRapport.setVisible(true);
 		
 		panelNewRapport.setBounds(10, 11, 914, 489);
 		contentPane.add(panelNewRapport);
@@ -798,13 +825,9 @@ public class GuiMainPanel extends JFrame {
 		JLabel lblNouveauRapportDe = new JLabel("Nouveau rapport de visite");
 		lblNouveauRapportDe.setBounds(502, 27, 173, 14);
 		panelNewRapport.add(lblNouveauRapportDe);
-		/* A vérifié
-		panelAccueil.setVisible(false);
-		panelAutresVisiteurs.setVisible(false);
-		// panelLog.setVisible(false);
-		*/
 	}
 	
+	// Others Classes
 	public void recupDonneesClient(){
 		// Récupération et enregistrement des données du client connecté
 		ClientType = DonneesClient.ClientType;
@@ -821,4 +844,5 @@ public class GuiMainPanel extends JFrame {
 		CodeSEC = DonneesClient.CodeSEC;
 		CodeLAB = DonneesClient.CodeLAB;
 	}
+	
 }
