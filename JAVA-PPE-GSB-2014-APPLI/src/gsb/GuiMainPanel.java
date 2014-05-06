@@ -348,10 +348,10 @@ public class GuiMainPanel extends JFrame {
 		panelLog.add(btnAnnuler);
 		
 		JLabel lblEtatDuServeur = new JLabel("Etat du serveur : ");
-		lblEtatDuServeur.setBounds(338, 533, 100, 25);
+		lblEtatDuServeur.setBounds(338, 533, 117, 25);
 		panelLog.add(lblEtatDuServeur);
 		
-		lblEtat.setBounds(435, 533, 44, 25);
+		lblEtat.setBounds(448, 533, 44, 25);
 		panelLog.add(lblEtat);
 		
 		JButton btnAbout = new JButton("A propos");
@@ -409,7 +409,7 @@ public class GuiMainPanel extends JFrame {
 				}
 			}
 		});
-		btnRafraichir.setBounds(489, 533, 95, 25);
+		btnRafraichir.setBounds(502, 533, 95, 25);
 		panelLog.add(btnRafraichir);
 	}
 	
