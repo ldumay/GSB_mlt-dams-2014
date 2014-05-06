@@ -34,7 +34,7 @@ import javax.swing.JTextPane;
 
 public class GuiMainPanel extends JFrame {
 
-	private static String version = "v1.21.56"; 
+	private static String version = "v1.21.66"; 
 	private JPanel contentPane;
 	private JTextField txtIdentifiant;
 	public static String Identifiant;
@@ -149,7 +149,7 @@ public class GuiMainPanel extends JFrame {
 		contentPane.setLayout(null);
 		
 		/* Seul la page Log doit être visible en 1er */
-		panelLog();
+		// panelLog();
 		
 		/* ICI : 
 		 * 		Décommenter une classe permet d'appeler directement une classe Panel directement dans la Frame de GuiMainPanel.
@@ -617,15 +617,15 @@ public class GuiMainPanel extends JFrame {
 		panelMedicaments.add(lblTitleMedicaments);
 		
 		JButton button = new JButton("<");
-		button.setBounds(10, 535, 41, 23);
+		button.setBounds(10, 535, 41, 25);
 		panelMedicaments.add(button);
 		
 		JButton button_1 = new JButton(">");
-		button_1.setBounds(96, 535, 41, 23);
+		button_1.setBounds(109, 535, 41, 25);
 		panelMedicaments.add(button_1);
 		
-		JLabel label = new JLabel("0/0");
-		label.setBounds(61, 539, 25, 14);
+		JLabel label = new JLabel("00/00");
+		label.setBounds(61, 540, 38, 14);
 		panelMedicaments.add(label);
 		
 		JLabel lblNewLabel = new JLabel("PRIX ECHANTILLON : ");
@@ -642,19 +642,19 @@ public class GuiMainPanel extends JFrame {
 		panelMedicaments.add(scrollPane);
 		
 		JLabel lblNewLabel_1 = new JLabel("DEPOT LEGAL :");
-		lblNewLabel_1.setBounds(10, 52, 98, 14);
+		lblNewLabel_1.setBounds(10, 52, 159, 14);
 		panelMedicaments.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("NOM COMMERCIAL :");
-		lblNewLabel_2.setBounds(10, 87, 127, 14);
+		lblNewLabel_2.setBounds(10, 87, 159, 14);
 		panelMedicaments.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("FAMILLE :");
-		lblNewLabel_3.setBounds(10, 118, 59, 14);
+		lblNewLabel_3.setBounds(10, 118, 159, 14);
 		panelMedicaments.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("COMPOSITION :");
-		lblNewLabel_4.setBounds(10, 143, 98, 14);
+		lblNewLabel_4.setBounds(10, 143, 159, 14);
 		panelMedicaments.add(lblNewLabel_4);
 		
 		JLabel lblNewLabel_5 = new JLabel("EFFETS :");
@@ -807,11 +807,12 @@ public class GuiMainPanel extends JFrame {
 		panelAutresVisiteurs.add(lblTitleAutresVisiteurs);
 		
 		JComboBox AutresVisiteursDeptListe = new JComboBox();
-		AutresVisiteursDeptListe.setBounds(43, 73, 308, 20);
+		AutresVisiteursDeptListe.setModel(new DefaultComboBoxModel (new String[] {"Choisir un visiteur", "Exemple"}));
+		AutresVisiteursDeptListe.setBounds(43, 73, 308, 25);
 		panelAutresVisiteurs.add(AutresVisiteursDeptListe);
 		
 		JButton btnAutresVisiteursValider = new JButton("Valider");
-		btnAutresVisiteursValider.setBounds(361, 72, 110, 23);
+		btnAutresVisiteursValider.setBounds(361, 72, 110, 26);
 		panelAutresVisiteurs.add(btnAutresVisiteursValider);
 		
 		JLabel lblAutresVisiteursNom = new JLabel("Nom :");
@@ -869,15 +870,15 @@ public class GuiMainPanel extends JFrame {
 		panelAutresVisiteurs.add(txtAutresVisiteursSecteur);
 		
 		JButton btnAutresVisiteursUp = new JButton("<");
-		btnAutresVisiteursUp.setBounds(43, 299, 41, 23);
+		btnAutresVisiteursUp.setBounds(43, 299, 41, 25);
 		panelAutresVisiteurs.add(btnAutresVisiteursUp);
 		
 		JLabel lblAutresVisiteursPages = new JLabel("00 / 00");
-		lblAutresVisiteursPages.setBounds(94, 303, 46, 14);
+		lblAutresVisiteursPages.setBounds(94, 304, 46, 14);
 		panelAutresVisiteurs.add(lblAutresVisiteursPages);
 		
 		JButton btnAutresVisiteursDown = new JButton(">");
-		btnAutresVisiteursDown.setBounds(150, 299, 41, 23);
+		btnAutresVisiteursDown.setBounds(150, 299, 41, 25);
 		panelAutresVisiteurs.add(btnAutresVisiteursDown);
 	}
 	
@@ -916,14 +917,15 @@ public class GuiMainPanel extends JFrame {
 				textNewRapportMotif.setText("");
 			}
 		});
-		btnNewRapportEffacer.setBounds(344, 413, 89, 23);
+		btnNewRapportEffacer.setBounds(344, 413, 89, 25);
 		panelNewRapport.add(btnNewRapportEffacer);
 		
 		JButton btnNewRapportValider = new JButton("VALIDER");
-		btnNewRapportValider.setBounds(443, 413, 89, 23);
+		btnNewRapportValider.setBounds(443, 413, 89, 25);
 		panelNewRapport.add(btnNewRapportValider);
 		
 		JLabel lblNouveauRapportDe = new JLabel("Nouveau rapport de visite");
+		lblNouveauRapportDe.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNouveauRapportDe.setBounds(502, 27, 173, 14);
 		panelNewRapport.add(lblNouveauRapportDe);
 	}
