@@ -179,13 +179,13 @@ public class GuiMainPanel extends JFrame {
 		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = CHOIX SERVEUR = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 		
 		serveurListe.setModel(new DefaultComboBoxModel (new String[] {"Veulliez choisir un serveur", "Serveur Local", "Serveur Local Mac", "Serveur Hitema [DUMAY Loic]", "Serveur Hitema [COUTEILLON Damien]", "Serveur Personnel [DUMAY Loic]", "Serveur Personnel [COUTEILLON Damien]"}));
-		serveurListe.setBounds(10, 536, 277, 20);
+		serveurListe.setBounds(10, 533, 318, 25);
 		panelLog.add(serveurListe);
 		
 		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = CONNEXION = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 		JLabel lblConnexion = new JLabel("Connexion");
 		lblConnexion.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblConnexion.setBounds(798, 432, 106, 23);
+		lblConnexion.setBounds(750, 432, 106, 23);
 		panelLog.add(lblConnexion);
 		
 		JLabel lblIdentifiant = new JLabel("Identifiant :");
@@ -193,11 +193,11 @@ public class GuiMainPanel extends JFrame {
 		panelLog.add(lblIdentifiant);
 		
 		JLabel lblMotDePasse = new JLabel("  Mot de passe :");
-		lblMotDePasse.setBounds(699, 494, 106, 14);
+		lblMotDePasse.setBounds(699, 502, 106, 14);
 		panelLog.add(lblMotDePasse);
 		
 		txtIdentifiant = new JTextField();
-		txtIdentifiant.setBounds(815, 463, 89, 20);
+		txtIdentifiant.setBounds(798, 461, 106, 25);
 		panelLog.add(txtIdentifiant);
 		txtIdentifiant.setColumns(10);
 		
@@ -331,9 +331,9 @@ public class GuiMainPanel extends JFrame {
 		
 		txtMotDePasse = new JPasswordField();
 		txtMotDePasse.setToolTipText("");
-		txtMotDePasse.setBounds(815, 491, 89, 20);
+		txtMotDePasse.setBounds(798, 497, 106, 25);
 		panelLog.add(txtMotDePasse);
-		btnValider.setBounds(716, 533, 89, 23);
+		btnValider.setBounds(716, 533, 89, 25);
 		panelLog.add(btnValider);
 		
 		JButton btnAnnuler = new JButton("Annuler");
@@ -344,14 +344,14 @@ public class GuiMainPanel extends JFrame {
 				txtMotDePasse.setText("");
 			}
 		});
-		btnAnnuler.setBounds(815, 533, 89, 23);
+		btnAnnuler.setBounds(815, 533, 89, 25);
 		panelLog.add(btnAnnuler);
 		
 		JLabel lblEtatDuServeur = new JLabel("Etat du serveur : ");
-		lblEtatDuServeur.setBounds(297, 531, 106, 23);
+		lblEtatDuServeur.setBounds(338, 533, 100, 25);
 		panelLog.add(lblEtatDuServeur);
 		
-		lblEtat.setBounds(413, 533, 29, 23);
+		lblEtat.setBounds(435, 533, 44, 25);
 		panelLog.add(lblEtat);
 		
 		JButton btnAbout = new JButton("A propos");
@@ -363,7 +363,7 @@ public class GuiMainPanel extends JFrame {
 				infos.setVisible(true);
 			}
 		});
-		btnAbout.setBounds(10, 490, 89, 23);
+		btnAbout.setBounds(10, 497, 89, 25);
 		panelLog.add(btnAbout);
 		
 		btnRafraichir.addActionListener(new ActionListener() {
@@ -409,7 +409,7 @@ public class GuiMainPanel extends JFrame {
 				}
 			}
 		});
-		btnRafraichir.setBounds(452, 535, 95, 23);
+		btnRafraichir.setBounds(489, 533, 95, 25);
 		panelLog.add(btnRafraichir);
 	}
 	
