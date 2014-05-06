@@ -874,11 +874,11 @@ public class GuiMainPanel extends JFrame {
 		panelAutresVisiteurs.add(btnAutresVisiteursUp);
 		
 		JLabel lblAutresVisiteursPages = new JLabel("00 / 00");
-		lblAutresVisiteursPages.setBounds(94, 304, 46, 14);
+		lblAutresVisiteursPages.setBounds(94, 304, 61, 14);
 		panelAutresVisiteurs.add(lblAutresVisiteursPages);
 		
 		JButton btnAutresVisiteursDown = new JButton(">");
-		btnAutresVisiteursDown.setBounds(150, 299, 41, 25);
+		btnAutresVisiteursDown.setBounds(169, 299, 41, 25);
 		panelAutresVisiteurs.add(btnAutresVisiteursDown);
 	}
 	
