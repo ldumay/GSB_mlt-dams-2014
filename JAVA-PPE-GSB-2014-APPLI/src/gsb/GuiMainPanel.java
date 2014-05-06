@@ -34,7 +34,7 @@ import javax.swing.JTextPane;
 
 public class GuiMainPanel extends JFrame {
 
-	private static String version = "v1.21.66"; 
+	private static String version = "v1.22.12"; 
 	private JPanel contentPane;
 	private JTextField txtIdentifiant;
 	public static String Identifiant;
@@ -426,7 +426,7 @@ public class GuiMainPanel extends JFrame {
 		lblTitleMenu.setBounds(10, 11, 178, 24);
 		panelMenu.add(lblTitleMenu);
 		
-		JButton btnRapport = new JButton("Rapport de visite");
+		JButton btnRapport = new JButton("Rapports de visite");
 		btnRapport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRapport();
@@ -501,18 +501,11 @@ public class GuiMainPanel extends JFrame {
 		JButton btnLogOut = new JButton("D\u00E9connexion");
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Clean Frame
+				cleanFrame();
 				// Modifications des Input de Log
 				txtIdentifiant.setText("");
 				txtMotDePasse.setText("");
-				
-				panelMenu.setVisible(false);
-				panelAccueil.setVisible(false);
-				panelRapport.setVisible(false);
-				panelMedicaments.setVisible(false);
-				panelPraticiens.setVisible(false);
-				panelAutresVisiteurs.setVisible(false);
-				panelNewRapport.setVisible(false);
-				
 				panelLog();
 			}
 		});
@@ -630,11 +623,11 @@ public class GuiMainPanel extends JFrame {
 		panelMedicaments.add(button);
 		
 		JButton button_1 = new JButton(">");
-		button_1.setBounds(109, 535, 41, 25);
+		button_1.setBounds(113, 535, 41, 25);
 		panelMedicaments.add(button_1);
 		
 		JLabel label = new JLabel("00/00");
-		label.setBounds(61, 540, 38, 14);
+		label.setBounds(61, 540, 42, 14);
 		panelMedicaments.add(label);
 		
 		JLabel lblNewLabel = new JLabel("PRIX ECHANTILLON : ");
@@ -955,5 +948,15 @@ public class GuiMainPanel extends JFrame {
 		DateEmbauche = DonneesClient.DateEmbauche;
 		CodeSEC = DonneesClient.CodeSEC;
 		CodeLAB = DonneesClient.CodeLAB;
+	}
+	
+	public void cleanFrame(){
+		panelMenu.setVisible(false);
+		panelAccueil.setVisible(false);
+		panelRapport.setVisible(false);
+		panelMedicaments.setVisible(false);
+		panelPraticiens.setVisible(false);
+		panelAutresVisiteurs.setVisible(false);
+		panelNewRapport.setVisible(false);
 	}
 }
