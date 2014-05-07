@@ -1,2 +1,46 @@
-Revoir la coordination des erreurs en page de Log
+// code temporaire : 
 
+
+
+ // Création d'un maximum de lecture pour la liste des médicaments
+  $maxTmp = $bdd->query("SELECT count(MED_DEPOTLEGAL) as result FROM medicament");
+  $max = $maxTmp-> fetch();
+  $_SESSION['User_MedListMax'] = $max['result'];
+  // Vérfification des bouton suivant ou retour qui permettes de déclencher un avancement 
+  // ou un recule dans la liste des médicaments
+  // retour
+  if(isset($_POST['supp'])){
+    if($_SESSION['User_MedList'] > 1){
+      $_SESSION['User_MedList']--;
+    }
+  }
+  // suivant
+  if(isset($_POST['add'])){
+    if($_SESSION['User_MedList'] < $_SESSION['User_MedListMax']){
+      $_SESSION['User_MedList']++;
+    }
+  }
+  // Affectation de ce déplacement de liste
+  $i = $_SESSION['User_MedList'];
+  // echo 'i : '.$i.'<br />';
+
+  // Création de la liste de navigation des médicaments
+  $x = 0;
+  $DepotLegal = $bdd->query("SELECT MED_DEPOTLEGAL FROM medicament ORDER BY MED_DEPOTLEGAL");
+  while($AffDepotLegal = $DepotLegal -> fetch()){
+    $x++;
+    $InsertDepotLegal = $x.'-'.$AffDepotLegal['MED_DEPOTLEGAL'];
+    // echo $InsertDepotLegal.'<br />';
+    $h = strstr($InsertDepotLegal, '-', true);
+    // Vérification du déplacement dans la liste des médicaments vers le médicaments souhaité
+    if($h == $i){
+      // récupération de l'ID du médicaments chercher
+      $tempDpt = strstr($InsertDepotLegal, '-');
+      // Nettoyage
+      $resultDepotLegal = str_replace('-', '', $tempDpt);
+      // echo 'i ==> '.$resultDepotLegal;
+      // echo '<br />';
+    }
+  }
+  
+  

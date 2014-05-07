@@ -50,10 +50,10 @@ public class GuiMainPanel extends JFrame {
 	private Object serveurchoix;
 	public static String serveur = null;
 	// Instanciation de toutes autres intéractions
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField txtPrixEchantillon;
+	private JTextField txtDepotLegal;
+	private JTextField txtNomCommercial;
+	private JTextField txtFamCode;
 	private JTextField txtRapport;
 	private JTextField txtRapportPraticien;
 	private JTextField txtPraticienNumero;
@@ -149,7 +149,7 @@ public class GuiMainPanel extends JFrame {
 		contentPane.setLayout(null);
 		
 		/* Seul la page Log doit être visible en 1er */
-		panelLog();
+		// panelLog();
 		
 		/* ICI : 
 		 * 		Décommenter une classe permet d'appeler directement une classe Panel directement dans la Frame de GuiMainPanel.
@@ -160,7 +160,7 @@ public class GuiMainPanel extends JFrame {
 		// panelMenu();
 		// panelAccueil();
 		// panelRapport();
-		// panelMedicaments();
+		panelMedicaments();
 		// panelPraticiens();
 		// panelAutresVisiteurs();
 		// panelNewRapport();
@@ -601,6 +601,56 @@ public class GuiMainPanel extends JFrame {
 	}
 	
 	public void panelMedicaments(){
+		String tmpIDDepotLegal = null;
+		
+		// Données tmp
+        String tmpDepotLegal = null;
+        String tmpNomCommercial = null;
+        String tmpFamCode = null;
+        String tmpComposition = null;
+        String tmpEffets = null;
+        String tmpContreIndic = null;
+        String tmpPrixEchan = null;
+        
+        // Méthode de récupération des information de connexion à la BDD
+		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
+		String BDD = infosConnexionBDD[0];
+        String url = infosConnexionBDD[1];
+        String user = infosConnexionBDD[2];
+        String passwd = infosConnexionBDD[3];
+		
+        // Vérification des données de l'utilisateur connecté
+     	JOptionPane.showMessageDialog(null, "Dépo Légal : " + tmpDepotLegal + "\nNom commercial : " + tmpNomCommercial + "\nFamille Code : " + tmpFamCode + "\nComposition : " + tmpComposition + "\nEffets : " + tmpEffets + "\nContre Indic : " + tmpContreIndic + "\nPrix échantillon : " + tmpPrixEchan, DEBUGG_MODE + " Données Médicaments", JOptionPane.INFORMATION_MESSAGE);
+     	
+		try {
+            Class.forName("com.mysql.jdbc.Driver");
+            // Connexion à la BDD
+            Connection con = DriverManager.getConnection(url, user, passwd);
+            Statement stmt = con.createStatement();
+            
+            int listeNavMed = 0;
+            ResultSet resultat = null;
+            resultat = stmt.executeQuery("SELECT MED_DEPOTLEGAL FROM medicament ORDER BY MED_DEPOTLEGAL");
+            if (resultat.next()) {
+            	listeNavMed++;
+            }
+            
+            // Récupération des informations du médicaments trouvé pour affichage
+            resultat = null;
+            resultat = stmt.executeQuery("SELECT MED_DEPOTLEGAL FROM medicament WHERE MED_DEPOTLEGAL = '" + tmpIDDepotLegal + "'ORDER BY MED_DEPOTLEGAL");
+			if (resultat.next()) {
+				tmpDepotLegal = resultat.getString("MED_DEPOTLEGAL");
+				tmpNomCommercial = resultat.getString("MED_NOMCOMMERCIAL");
+				tmpFamCode = resultat.getString("FAM_CODE");
+				tmpComposition = resultat.getString("MED_COMPOSITION");
+				tmpEffets = resultat.getString("MED_EFFETS");
+				tmpContreIndic = resultat.getString("MED_CONTREINDIC");
+				tmpPrixEchan = resultat.getString("MED_PRIXECHANTILLON"); 
+			}
+		} catch (Exception e){
+            e.printStackTrace();
+        }
+		
 		panelAccueil.setVisible(false);
 		panelRapport.setVisible(false);
 		panelPraticiens.setVisible(false);
@@ -618,77 +668,80 @@ public class GuiMainPanel extends JFrame {
 		lblTitleMedicaments.setBounds(306, 5, 127, 19);
 		panelMedicaments.add(lblTitleMedicaments);
 		
-		JButton button = new JButton("<");
-		button.setBounds(10, 535, 41, 25);
-		panelMedicaments.add(button);
+		JLabel lblDepotLegal = new JLabel("DEPOT LEGAL :");
+		lblDepotLegal.setBounds(10, 52, 159, 14);
+		panelMedicaments.add(lblDepotLegal);
 		
-		JButton button_1 = new JButton(">");
-		button_1.setBounds(113, 535, 41, 25);
-		panelMedicaments.add(button_1);
+		txtDepotLegal = new JTextField("" + tmpDepotLegal + "");
+		txtDepotLegal.setBounds(179, 49, 178, 20);
+		panelMedicaments.add(txtDepotLegal);
+		txtDepotLegal.setColumns(10);
 		
-		JLabel label = new JLabel("00/00");
-		label.setBounds(61, 540, 42, 14);
-		panelMedicaments.add(label);
+		JLabel lblNomCommercial = new JLabel("NOM COMMERCIAL :");
+		lblNomCommercial.setBounds(10, 87, 159, 14);
+		panelMedicaments.add(lblNomCommercial);
 		
-		JLabel lblNewLabel = new JLabel("PRIX ECHANTILLON : ");
-		lblNewLabel.setBounds(10, 504, 159, 14);
-		panelMedicaments.add(lblNewLabel);
+		txtNomCommercial = new JTextField("" + tmpNomCommercial + "");
+		txtNomCommercial.setBounds(179, 84, 178, 20);
+		panelMedicaments.add(txtNomCommercial);
+		txtNomCommercial.setColumns(10);
 		
-		textField = new JTextField();
-		textField.setBounds(179, 501, 178, 20);
-		panelMedicaments.add(textField);
-		textField.setColumns(10);
+		JLabel lblFamille = new JLabel("FAMILLE :");
+		lblFamille.setBounds(10, 118, 159, 14);
+		panelMedicaments.add(lblFamille);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 168, 690, 83);
-		panelMedicaments.add(scrollPane);
+		txtFamCode = new JTextField("" + tmpFamCode + "");
+		txtFamCode.setBounds(179, 115, 178, 20);
+		panelMedicaments.add(txtFamCode);
+		txtFamCode.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("DEPOT LEGAL :");
-		lblNewLabel_1.setBounds(10, 52, 159, 14);
-		panelMedicaments.add(lblNewLabel_1);
+		JLabel lblComposition = new JLabel("COMPOSITION :");
+		lblComposition.setBounds(10, 143, 159, 14);
+		panelMedicaments.add(lblComposition);
 		
-		JLabel lblNewLabel_2 = new JLabel("NOM COMMERCIAL :");
-		lblNewLabel_2.setBounds(10, 87, 159, 14);
-		panelMedicaments.add(lblNewLabel_2);
+		JTextPane scrollPaneComposition = new JTextPane();
+		scrollPaneComposition.setText("" + tmpComposition + "");
+		scrollPaneComposition.setBounds(10, 168, 690, 83);
+		panelMedicaments.add(scrollPaneComposition);
 		
-		JLabel lblNewLabel_3 = new JLabel("FAMILLE :");
-		lblNewLabel_3.setBounds(10, 118, 159, 14);
-		panelMedicaments.add(lblNewLabel_3);
+		JLabel lblEffets = new JLabel("EFFETS :");
+		lblEffets.setBounds(10, 262, 76, 14);
+		panelMedicaments.add(lblEffets);
 		
-		JLabel lblNewLabel_4 = new JLabel("COMPOSITION :");
-		lblNewLabel_4.setBounds(10, 143, 159, 14);
-		panelMedicaments.add(lblNewLabel_4);
+		JTextPane scrollPaneEffets = new JTextPane();
+		scrollPaneEffets.setText("" + tmpEffets + "");
+		scrollPaneEffets.setBounds(10, 287, 690, 83);
+		panelMedicaments.add(scrollPaneEffets);
 		
-		JLabel lblNewLabel_5 = new JLabel("EFFETS :");
-		lblNewLabel_5.setBounds(10, 262, 76, 14);
-		panelMedicaments.add(lblNewLabel_5);
+		JLabel lblContreIndic = new JLabel("CONTRE INDIC. :");
+		lblContreIndic.setBounds(10, 381, 127, 14);
+		panelMedicaments.add(lblContreIndic);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 287, 690, 83);
-		panelMedicaments.add(scrollPane_1);
+		JTextPane scrollPaneContreIndic = new JTextPane();
+		scrollPaneContreIndic.setText("" + tmpContreIndic + "");
+		scrollPaneContreIndic.setBounds(10, 406, 690, 83);
+		panelMedicaments.add(scrollPaneContreIndic);
 		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(10, 406, 690, 83);
-		panelMedicaments.add(scrollPane_2);
+		JLabel lblPrixEchantillion = new JLabel("PRIX ECHANTILLON : ");
+		lblPrixEchantillion.setBounds(10, 504, 159, 14);
+		panelMedicaments.add(lblPrixEchantillion);
 		
-		JLabel lblNewLabel_6 = new JLabel("CONTRE INDIC. :");
-		lblNewLabel_6.setBounds(10, 381, 127, 14);
-		panelMedicaments.add(lblNewLabel_6);
+		txtPrixEchantillon = new JTextField("" + tmpPrixEchan + "");
+		txtPrixEchantillon.setBounds(179, 501, 178, 20);
+		panelMedicaments.add(txtPrixEchantillon);
+		txtPrixEchantillon.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(179, 49, 178, 20);
-		panelMedicaments.add(textField_1);
-		textField_1.setColumns(10);
+		JButton buttonPrecedent = new JButton("<");
+		buttonPrecedent.setBounds(10, 535, 41, 25);
+		panelMedicaments.add(buttonPrecedent);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(179, 84, 178, 20);
-		panelMedicaments.add(textField_2);
-		textField_2.setColumns(10);
+		JButton buttonSuivant = new JButton(">");
+		buttonSuivant.setBounds(113, 535, 41, 25);
+		panelMedicaments.add(buttonSuivant);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(179, 115, 178, 20);
-		panelMedicaments.add(textField_3);
-		textField_3.setColumns(10);
+		JLabel lblPages = new JLabel("00/00");
+		lblPages.setBounds(61, 540, 42, 14);
+		panelMedicaments.add(lblPages);
 	}
 	
 	public void panelPraticiens(){
