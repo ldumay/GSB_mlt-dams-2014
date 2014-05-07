@@ -32,6 +32,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JEditorPane;
 import javax.swing.JTextPane;
 
+import com.sun.org.apache.xml.internal.security.Init;
+
 public class GuiMainPanel extends JFrame {
 
 	private static String version = "v1.22.12"; 
@@ -82,6 +84,8 @@ public class GuiMainPanel extends JFrame {
 	public String DateEmbauche = null;
 	public String CodeSEC = null;
 	public String CodeLAB = null;
+	// Médicaments - Données de positionnement dans la liste des médicament :
+ 	public int MedMoveList = 1;
 
 	// Démmarre l'application
 	public static void main(String[] args) {
@@ -149,7 +153,7 @@ public class GuiMainPanel extends JFrame {
 		contentPane.setLayout(null);
 		
 		/* Seul la page Log doit être visible en 1er */
-		// panelLog();
+		panelLog();
 		
 		/* ICI : 
 		 * 		Décommenter une classe permet d'appeler directement une classe Panel directement dans la Frame de GuiMainPanel.
@@ -160,7 +164,7 @@ public class GuiMainPanel extends JFrame {
 		// panelMenu();
 		// panelAccueil();
 		// panelRapport();
-		panelMedicaments();
+		// panelMedicaments();
 		// panelPraticiens();
 		// panelAutresVisiteurs();
 		// panelNewRapport();
@@ -601,8 +605,6 @@ public class GuiMainPanel extends JFrame {
 	}
 	
 	public void panelMedicaments(){
-		String tmpIDDepotLegal = null;
-		
 		// Données tmp
         String tmpDepotLegal = null;
         String tmpNomCommercial = null;
@@ -610,7 +612,7 @@ public class GuiMainPanel extends JFrame {
         String tmpComposition = null;
         String tmpEffets = null;
         String tmpContreIndic = null;
-        String tmpPrixEchan = null;
+        float tmpPrixEchan = 0;
         
         // Méthode de récupération des information de connexion à la BDD
 		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
@@ -619,8 +621,9 @@ public class GuiMainPanel extends JFrame {
         String user = infosConnexionBDD[2];
         String passwd = infosConnexionBDD[3];
 		
-        // Vérification des données de l'utilisateur connecté
-     	JOptionPane.showMessageDialog(null, "Dépo Légal : " + tmpDepotLegal + "\nNom commercial : " + tmpNomCommercial + "\nFamille Code : " + tmpFamCode + "\nComposition : " + tmpComposition + "\nEffets : " + tmpEffets + "\nContre Indic : " + tmpContreIndic + "\nPrix échantillon : " + tmpPrixEchan, DEBUGG_MODE + " Données Médicaments", JOptionPane.INFORMATION_MESSAGE);
+     	// Données de navigation da sl a liste des médicaments
+     	int MedListeMax = 0;
+     	String tmpIDDepotLegal = null;
      	
 		try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -628,13 +631,59 @@ public class GuiMainPanel extends JFrame {
             Connection con = DriverManager.getConnection(url, user, passwd);
             Statement stmt = con.createStatement();
             
-            int listeNavMed = 0;
+            // Création d'un maximum de lecture pour la liste des médicaments
             ResultSet resultat = null;
-            resultat = stmt.executeQuery("SELECT MED_DEPOTLEGAL FROM medicament ORDER BY MED_DEPOTLEGAL");
-            if (resultat.next()) {
-            	listeNavMed++;
+            resultat = stmt.executeQuery("SELECT count(MED_DEPOTLEGAL) AS result FROM medicament");
+            while (resultat.next()) {
+            	MedListeMax = resultat.getInt("result");
             }
             
+            String i = Integer.toString(MedMoveList);
+            int x = 0;
+            String InsertDepotLegal = null;
+            String h = null;
+            String f = null;
+            
+            resultat = null;
+            resultat = stmt.executeQuery("SELECT MED_DEPOTLEGAL FROM medicament ORDER BY MED_DEPOTLEGAL");
+            while (resultat.next()) {
+            	x++;
+            		// TEST
+            		// System.out.println("x : " + x);
+            	InsertDepotLegal = "" + x + '-' + resultat.getString("MED_DEPOTLEGAL");
+            		// TEST
+            		// System.out.println("InsertDepotLegal : " + InsertDepotLegal);
+            	// Découpage de l'insertion
+            	String tmpCut[] = InsertDepotLegal.split("-");
+            		// TEST
+            		// System.out.println("tmpCut 1 : " + tmpCut[0]);
+            		// System.out.println("tmpCut 2: " + tmpCut[1]);
+            	// Récupération de la 1er occurence
+            	h = tmpCut[0];
+            	f = tmpCut[1];
+            		// TEST
+            		// System.out.println("i : " + i);
+            		// System.out.println("h : " + h);
+            	// Vérification du déplacement dans la liste des médicaments vers le médicaments souhaité
+            	if(h == i){
+            		// récupération de l'ID du médicaments chercher
+            		tmpIDDepotLegal = f;
+            		// Nettoyage
+            		// String resultDepotLegal = tempDpt.replaceFirst('-','');
+            	}
+            }
+            // TEST
+            System.out.println("# = = = = #");
+            System.out.println("f : " + f);
+            System.out.println("tmpIDDepotLegal : " + tmpIDDepotLegal);
+            System.out.println("MedMoveList : " + MedMoveList);
+            System.out.println("MedListeMax : " + MedListeMax + " <==> x : " + x );
+            System.out.println("InsertDepotLegal : " + InsertDepotLegal);
+            System.out.println("i : " + i + " <==> h : " + h);
+            
+            // Vérification des données de l'utilisateur connecté
+			// JOptionPane.showMessageDialog(null, MedListeMax + "\n" + tmpIDDepotLegal + "\n" + MedMoveList + "\n" + i + "\n" + x + "\n" + InsertDepotLegal + "\n" + h, DEBUGG_MODE + " Test Données ", JOptionPane.INFORMATION_MESSAGE);
+			
             // Récupération des informations du médicaments trouvé pour affichage
             resultat = null;
             resultat = stmt.executeQuery("SELECT MED_DEPOTLEGAL FROM medicament WHERE MED_DEPOTLEGAL = '" + tmpIDDepotLegal + "'ORDER BY MED_DEPOTLEGAL");
@@ -645,11 +694,17 @@ public class GuiMainPanel extends JFrame {
 				tmpComposition = resultat.getString("MED_COMPOSITION");
 				tmpEffets = resultat.getString("MED_EFFETS");
 				tmpContreIndic = resultat.getString("MED_CONTREINDIC");
-				tmpPrixEchan = resultat.getString("MED_PRIXECHANTILLON"); 
+				tmpPrixEchan = resultat.getFloat("MED_PRIXECHANTILLON");
 			}
+			
 		} catch (Exception e){
-            e.printStackTrace();
+            // e.printStackTrace();
+			System.err.println("Oups ! Il y a une erreur SQL !");
         }
+		
+     	// Vérification des données de l'utilisateur connecté
+     	JOptionPane.showMessageDialog(null, "Dépo Légal : " + tmpDepotLegal + "\nNom commercial : " + tmpNomCommercial + "\nFamille Code : " + tmpFamCode + "\nComposition : " + tmpComposition + "\nEffets : " + tmpEffets + "\nContre Indic : " + tmpContreIndic + "\nPrix échantillon : " + tmpPrixEchan, DEBUGG_MODE + " Données Médicaments", JOptionPane.INFORMATION_MESSAGE);
+     	
 		
 		panelAccueil.setVisible(false);
 		panelRapport.setVisible(false);
@@ -732,10 +787,22 @@ public class GuiMainPanel extends JFrame {
 		txtPrixEchantillon.setColumns(10);
 		
 		JButton buttonPrecedent = new JButton("<");
+		buttonPrecedent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MedMoveList--;
+				panelMedicaments();
+			}
+		});
 		buttonPrecedent.setBounds(10, 535, 41, 25);
 		panelMedicaments.add(buttonPrecedent);
 		
 		JButton buttonSuivant = new JButton(">");
+		buttonSuivant.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MedMoveList++;
+				panelMedicaments();
+			}
+		});
 		buttonSuivant.setBounds(113, 535, 41, 25);
 		panelMedicaments.add(buttonSuivant);
 		
