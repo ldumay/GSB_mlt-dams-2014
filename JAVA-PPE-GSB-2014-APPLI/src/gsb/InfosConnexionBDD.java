@@ -80,7 +80,6 @@ public class InfosConnexionBDD {
 	public boolean ConnexionBDD(){
 		String serveur = GuiMainPanel.serveur;
 		
-		System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
         String indic = "-> ";
         
         // Méthode de récupération des information de connexion à la BDD

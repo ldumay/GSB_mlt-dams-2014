@@ -19,10 +19,12 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 import javax.swing.JScrollPane;
@@ -36,7 +38,7 @@ import com.sun.org.apache.xml.internal.security.Init;
 
 public class GuiMainPanel extends JFrame {
 
-	private static String version = "v1.22.12"; 
+	private static String version = "v1.36.25"; 
 	private JPanel contentPane;
 	private JTextField txtIdentifiant;
 	public static String Identifiant;
@@ -84,7 +86,10 @@ public class GuiMainPanel extends JFrame {
 	public String DateEmbauche = null;
 	public String CodeSEC = null;
 	public String CodeLAB = null;
-	// Médicaments - Données de positionnement dans la liste des médicament :
+	// Rapport de Visite
+	public String choixListe = null;
+	private Object choixListeRap;
+	// Médicaments - Données de positionnement dans la liste des médicament
  	public int MedMoveList = 1;
  	public int MedListeMax = 0;
  	public String nbresPages = null;
@@ -95,6 +100,8 @@ public class GuiMainPanel extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
+					
 					// Vérification de l'état du serveur BDD
 					// InfosConnexionBDD connexionTest = new InfosConnexionBDD();
 					// EtatConnexion = InfosConnexionBDD.EtatConnexion;
@@ -551,59 +558,137 @@ public class GuiMainPanel extends JFrame {
 		panelAutresVisiteurs.setVisible(false);
 		panelNewRapport.setVisible(false);
 		
-		panelRapport.setVisible(true);
+		panelRapport.removeAll();
 		
-		panelRapport.setBounds(214, 11, 710, 569);
-		contentPane.add(panelRapport);
-		panelRapport.setLayout(null);
-		
-		JLabel lblTitleRapport = new JLabel("Rapports");
-		lblTitleRapport.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTitleRapport.setBounds(321, 5, 68, 19);
-		panelRapport.add(lblTitleRapport);
-		
-		JComboBox listRapport = new JComboBox();
-		listRapport.setModel(new DefaultComboBoxModel(new String[] {"Choisir la date du rendez-vous", "Rapport n°x du 00/00/0000"}));
-		listRapport.setBounds(27, 67, 481, 29);
-		panelRapport.add(listRapport);
-		
-		JButton btnRapportValider = new JButton("Valider");
-		btnRapportValider.setBounds(532, 66, 106, 30);
-		panelRapport.add(btnRapportValider);
-		
-		JLabel lblRapportNumber = new JLabel("Num\u00E9ro : ");
-		lblRapportNumber.setBounds(27, 128, 68, 14);
-		panelRapport.add(lblRapportNumber);
-		
-		txtRapport = new JTextField();
-		txtRapport.setBounds(105, 125, 175, 20);
-		panelRapport.add(txtRapport);
-		txtRapport.setColumns(10);
-		
-		JLabel lblRapportPraticien = new JLabel("Praticien :");
-		lblRapportPraticien.setBounds(27, 160, 68, 14);
-		panelRapport.add(lblRapportPraticien);
-		
-		txtRapportPraticien = new JTextField();
-		txtRapportPraticien.setBounds(105, 157, 175, 20);
-		panelRapport.add(txtRapportPraticien);
-		txtRapportPraticien.setColumns(10);
-		
-		JLabel lblRapportBilan = new JLabel("Bilan : ");
-		lblRapportBilan.setBounds(27, 199, 46, 14);
-		panelRapport.add(lblRapportBilan);
-		
-		JTextArea textRapportBilan = new JTextArea();
-		textRapportBilan.setBounds(105, 194, 533, 133);
-		panelRapport.add(textRapportBilan);
-		
-		JLabel lblRapportMotif = new JLabel("Motif : ");
-		lblRapportMotif.setBounds(27, 356, 46, 14);
-		panelRapport.add(lblRapportMotif);
-		
-		JTextArea txtRapportMotif = new JTextArea();
-		txtRapportMotif.setBounds(105, 351, 533, 133);
-		panelRapport.add(txtRapportMotif);
+		// Méthode de récupération des information de connexion à la BDD
+		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
+		String BDD = infosConnexionBDD[0];
+	    String url = infosConnexionBDD[1];
+	    String user = infosConnexionBDD[2];
+	    String passwd = infosConnexionBDD[3];
+	    
+		try {
+	        Class.forName("com.mysql.jdbc.Driver");
+	        Connection con = DriverManager.getConnection(url, user, passwd);
+	        Statement stmt = con.createStatement();
+	        
+	        // Id du visiteur connecté
+	        // System.out.println(Matricule);
+	        
+	        // Vérification du nbre total de rapport pour le visiteur connecté
+	        int totalRap = 0;
+	        ResultSet resultat = null;
+            resultat = stmt.executeQuery("SELECT count(SUBSTRING(RAP_DATE,1,10)) AS result FROM rapport_visite WHERE VIS_MATRICULE='" + Matricule + "'");
+            while (resultat.next()) {
+            	totalRap = resultat.getInt("result");
+            }
+            // Equilibre le tableau afin de comptabilisé la ligne par défaut en 0
+            totalRap++;
+            // System.out.println("totalRap : " + totalRap);
+            
+            // Création du tableau
+            String tmpListe[] = new String[totalRap];
+            tmpListe[0] = "Choisir la date du rendez-vous";
+            // System.out.println("tmpListe : " + tmpListe[0] + "\n");
+            
+            // Récupération de tous les rapports
+	        int x = 1;
+	        resultat = null;
+            resultat = stmt.executeQuery("SELECT DISTINCT  VIS_MATRICULE, RAP_NUM, SUBSTRING(RAP_DATE,1,10) AS dateRapport FROM rapport_visite WHERE VIS_MATRICULE='" + Matricule + "'");
+            while(resultat.next()){
+            	String idRap = resultat.getString("RAP_NUM");
+            	
+            	Date date = null;
+            	String tmpDate = null;
+            	
+            	date = resultat.getDate("dateRapport");
+            	SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy");
+            	tmpDate = simpleFormat.format(date);
+            	tmpListe[x] = tmpDate;
+            	tmpListe[x] = "Rapport n°" + x + " du " + tmpDate;
+            	
+            	// System.out.println("n°" + x);
+            	// System.out.println("RAP_NUM : " + idRap);
+            	// System.out.println("tmpListe : " + tmpListe[x]);
+            	
+            	x++;
+            }
+			
+            choixListe = (String) choixListeRap;
+			System.out.println(choixListe);
+			
+            if((choixListe!=null) && (choixListe != "Choisir la date du rendez-vous")){
+				
+				JLabel lblRapportNumber = new JLabel("Num\u00E9ro : ");
+				lblRapportNumber.setBounds(27, 128, 68, 14);
+				panelRapport.add(lblRapportNumber);
+				
+				txtRapport = new JTextField();
+				txtRapport.setBounds(105, 125, 175, 20);
+				panelRapport.add(txtRapport);
+				txtRapport.setColumns(10);
+				
+				JLabel lblRapportPraticien = new JLabel("Praticien :");
+				lblRapportPraticien.setBounds(27, 160, 68, 14);
+				panelRapport.add(lblRapportPraticien);
+				
+				txtRapportPraticien = new JTextField();
+				txtRapportPraticien.setBounds(105, 157, 175, 20);
+				panelRapport.add(txtRapportPraticien);
+				txtRapportPraticien.setColumns(10);
+				
+				JLabel lblRapportBilan = new JLabel("Bilan : ");
+				lblRapportBilan.setBounds(27, 199, 46, 14);
+				panelRapport.add(lblRapportBilan);
+				
+				JTextArea textRapportBilan = new JTextArea();
+				textRapportBilan.setBounds(105, 194, 533, 133);
+				panelRapport.add(textRapportBilan);
+				
+				JLabel lblRapportMotif = new JLabel("Motif : ");
+				lblRapportMotif.setBounds(27, 356, 46, 14);
+				panelRapport.add(lblRapportMotif);
+				
+				JTextArea txtRapportMotif = new JTextArea();
+				txtRapportMotif.setBounds(105, 351, 533, 133);
+				panelRapport.add(txtRapportMotif);
+            }
+            
+            panelRapport.setVisible(true);
+    		
+    		panelRapport.setBounds(190, 11, 710, 569);
+    		contentPane.add(panelRapport);
+    		panelRapport.setLayout(null);
+			
+			JLabel lblTitleRapport = new JLabel("Rapports de visite");
+			lblTitleRapport.setFont(new Font("Tahoma", Font.BOLD, 15));
+			lblTitleRapport.setBounds(311, 5, 150, 19);
+			panelRapport.add(lblTitleRapport);
+			
+			final JComboBox listRapport = new JComboBox();
+			listRapport.setModel(new DefaultComboBoxModel(tmpListe));
+			listRapport.setBounds(27, 67, 481, 29);
+			panelRapport.add(listRapport);
+			
+			JButton btnRapportValider = new JButton("Valider");
+			btnRapportValider.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if((choixListe!=null) && (choixListe != "Choisir la date du rendez-vous")){
+						choixListeRap = listRapport.getSelectedItem();
+						panelRapport();
+					}
+				}
+			});
+			btnRapportValider.setBounds(532, 66, 106, 30);
+			panelRapport.add(btnRapportValider);
+			
+			// Page OK :
+			System.out.println("-> Page Rapport Visite chargé");
+			System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
+	    } catch (Exception e){
+	        // e.printStackTrace();
+	    	System.err.println("Oups ! Il y a une erreur SQL !");
+	    }
 	}
 	
 	public void panelMedicaments(){
@@ -678,14 +763,14 @@ public class GuiMainPanel extends JFrame {
             }
             nbresPages = "" + MedMoveList + "/" + MedListeMax + "";
 			
-            // TEST
-            System.out.println("# = = = = #");
-            System.out.println("f : " + f);
-            System.out.println("i : " + i + " <==> h : " + h + "");
-            System.out.println("MedMoveList : " + MedMoveList);
-            System.out.println("nbresPages : " + nbresPages);
-            System.out.println("tmpIDDepotLegal : " + tmpIDDepotLegal);
-            System.out.println("MedListeMax : " + MedListeMax + " <==> x : " + x );
+            // Vérification de communications des données
+            // System.out.println("f : " + f);
+            // System.out.println("i : " + i + " <==> h : " + h + "");
+            // System.out.println("MedMoveList : " + MedMoveList);
+            // System.out.println("nbresPages : " + nbresPages);
+            // System.out.println("tmpIDDepotLegal : " + tmpIDDepotLegal);
+            // System.out.println("MedListeMax : " + MedListeMax + " <==> x : " + x );
+            // System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
             
             // Vérification des données de l'utilisateur connecté
 			// JOptionPane.showMessageDialog(null, MedListeMax + "\n" + tmpIDDepotLegal + "\n" + MedMoveList + "\n" + i + "\n" + x + "\n" + InsertDepotLegal + "\n" + h, DEBUGG_MODE + " Test Données ", JOptionPane.INFORMATION_MESSAGE);
@@ -783,33 +868,37 @@ public class GuiMainPanel extends JFrame {
 			panelMedicaments.add(lblSigle);
 			
 			lblPages.setText("" + nbresPages + "");
-			lblPages.setBounds(61, 537, 42, 20);
+			lblPages.setBounds(61, 537, 76, 20);
 			panelMedicaments.add(lblPages);
+			
+			JButton buttonPrecedent = new JButton("<");
+			buttonPrecedent.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					MedMoveList--;
+					panelMedicaments();
+				}
+			});
+			buttonPrecedent.setBounds(10, 535, 41, 25);
+			panelMedicaments.add(buttonPrecedent);
+			
+			JButton buttonSuivant = new JButton(">");
+			buttonSuivant.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					MedMoveList++;
+					panelMedicaments();
+				}
+			});
+			buttonSuivant.setBounds(148, 535, 41, 25);
+			panelMedicaments.add(buttonSuivant);
+			
+			// Page OK :
+			System.out.println("-> Page Médicament chargé");
+			System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
 			
 		} catch (Exception e){
             // e.printStackTrace();
 			System.err.println("Oups ! Il y a une erreur SQL !");
         }
-		
-		JButton buttonPrecedent = new JButton("<");
-		buttonPrecedent.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				MedMoveList--;
-				panelMedicaments();
-			}
-		});
-		buttonPrecedent.setBounds(10, 535, 41, 25);
-		panelMedicaments.add(buttonPrecedent);
-		
-		JButton buttonSuivant = new JButton(">");
-		buttonSuivant.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MedMoveList++;
-				panelMedicaments();
-			}
-		});
-		buttonSuivant.setBounds(113, 535, 41, 25);
-		panelMedicaments.add(buttonSuivant);
 	}
 	
 	public void panelPraticiens(){
