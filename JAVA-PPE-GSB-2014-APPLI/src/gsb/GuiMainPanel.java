@@ -86,6 +86,8 @@ public class GuiMainPanel extends JFrame {
 	public String CodeLAB = null;
 	// Médicaments - Données de positionnement dans la liste des médicament :
  	public int MedMoveList = 1;
+ 	public int MedListeMax = 0;
+ 	public String nbresPages = null;
 
 	// Démmarre l'application
 	public static void main(String[] args) {
@@ -605,6 +607,15 @@ public class GuiMainPanel extends JFrame {
 	}
 	
 	public void panelMedicaments(){
+		panelAccueil.setVisible(false);
+		panelRapport.setVisible(false);
+		panelPraticiens.setVisible(false);
+		panelAutresVisiteurs.setVisible(false);
+		panelNewRapport.setVisible(false);
+		
+		panelMedicaments.removeAll();
+		panelMedicaments.setVisible(true);
+		
 		// Données tmp
         String tmpDepotLegal = null;
         String tmpNomCommercial = null;
@@ -622,10 +633,11 @@ public class GuiMainPanel extends JFrame {
         String passwd = infosConnexionBDD[3];
 		
      	// Données de navigation da sl a liste des médicaments
-     	int MedListeMax = 0;
      	String tmpIDDepotLegal = null;
      	
-		try {
+     	try {
+     		JTextField lblPages = new JTextField();
+     		
             Class.forName("com.mysql.jdbc.Driver");
             // Connexion à la BDD
             Connection con = DriverManager.getConnection(url, user, passwd);
@@ -638,6 +650,9 @@ public class GuiMainPanel extends JFrame {
             	MedListeMax = resultat.getInt("result");
             }
             
+            if(MedMoveList<1){ MedMoveList++; }
+            if(MedMoveList>MedListeMax){ MedMoveList--; }
+            
             String i = Integer.toString(MedMoveList);
             int x = 0;
             String InsertDepotLegal = null;
@@ -648,45 +663,36 @@ public class GuiMainPanel extends JFrame {
             resultat = stmt.executeQuery("SELECT MED_DEPOTLEGAL FROM medicament ORDER BY MED_DEPOTLEGAL");
             while (resultat.next()) {
             	x++;
-            		// TEST
-            		// System.out.println("x : " + x);
+            	// - - 
             	InsertDepotLegal = "" + x + '-' + resultat.getString("MED_DEPOTLEGAL");
-            		// TEST
-            		// System.out.println("InsertDepotLegal : " + InsertDepotLegal);
             	// Découpage de l'insertion
             	String tmpCut[] = InsertDepotLegal.split("-");
-            		// TEST
-            		// System.out.println("tmpCut 1 : " + tmpCut[0]);
-            		// System.out.println("tmpCut 2: " + tmpCut[1]);
             	// Récupération de la 1er occurence
             	h = tmpCut[0];
             	f = tmpCut[1];
-            		// TEST
-            		// System.out.println("i : " + i);
-            		// System.out.println("h : " + h);
             	// Vérification du déplacement dans la liste des médicaments vers le médicaments souhaité
-            	if(h == i){
+            	if(x == MedMoveList){
             		// récupération de l'ID du médicaments chercher
             		tmpIDDepotLegal = f;
-            		// Nettoyage
-            		// String resultDepotLegal = tempDpt.replaceFirst('-','');
             	}
             }
+            nbresPages = "" + MedMoveList + "/" + MedListeMax + "";
+			
             // TEST
             System.out.println("# = = = = #");
             System.out.println("f : " + f);
-            System.out.println("tmpIDDepotLegal : " + tmpIDDepotLegal);
+            System.out.println("i : " + i + " <==> h : " + h + "");
             System.out.println("MedMoveList : " + MedMoveList);
+            System.out.println("nbresPages : " + nbresPages);
+            System.out.println("tmpIDDepotLegal : " + tmpIDDepotLegal);
             System.out.println("MedListeMax : " + MedListeMax + " <==> x : " + x );
-            System.out.println("InsertDepotLegal : " + InsertDepotLegal);
-            System.out.println("i : " + i + " <==> h : " + h);
             
             // Vérification des données de l'utilisateur connecté
 			// JOptionPane.showMessageDialog(null, MedListeMax + "\n" + tmpIDDepotLegal + "\n" + MedMoveList + "\n" + i + "\n" + x + "\n" + InsertDepotLegal + "\n" + h, DEBUGG_MODE + " Test Données ", JOptionPane.INFORMATION_MESSAGE);
 			
             // Récupération des informations du médicaments trouvé pour affichage
             resultat = null;
-            resultat = stmt.executeQuery("SELECT MED_DEPOTLEGAL FROM medicament WHERE MED_DEPOTLEGAL = '" + tmpIDDepotLegal + "'ORDER BY MED_DEPOTLEGAL");
+            resultat = stmt.executeQuery("SELECT * FROM medicament WHERE MED_DEPOTLEGAL = '" + tmpIDDepotLegal + "'");
 			if (resultat.next()) {
 				tmpDepotLegal = resultat.getString("MED_DEPOTLEGAL");
 				tmpNomCommercial = resultat.getString("MED_NOMCOMMERCIAL");
@@ -697,94 +703,93 @@ public class GuiMainPanel extends JFrame {
 				tmpPrixEchan = resultat.getFloat("MED_PRIXECHANTILLON");
 			}
 			
+			// Vérification des données de l'utilisateur connecté
+	     	// JOptionPane.showMessageDialog(null, "Dépo Légal : " + tmpDepotLegal + "\nNom commercial : " + tmpNomCommercial + "\nFamille Code : " + tmpFamCode + "\nComposition : " + tmpComposition + "\nEffets : " + tmpEffets + "\nContre Indic : " + tmpContreIndic + "\nPrix échantillon : " + tmpPrixEchan, DEBUGG_MODE + " Données Médicaments", JOptionPane.INFORMATION_MESSAGE);
+	     	
+	     	panelMedicaments.setBounds(214, 11, 710, 569);
+			contentPane.add(panelMedicaments);
+			panelMedicaments.setLayout(null);
+			
+			JLabel lblTitleMedicaments = new JLabel("Médicaments");
+			lblTitleMedicaments.setFont(new Font("Tahoma", Font.BOLD, 15));
+			lblTitleMedicaments.setBounds(306, 5, 127, 19);
+			panelMedicaments.add(lblTitleMedicaments);
+			
+			JLabel lblDepotLegal = new JLabel("DEPOT LEGAL :");
+			lblDepotLegal.setBounds(10, 52, 159, 14);
+			panelMedicaments.add(lblDepotLegal);
+			
+			txtDepotLegal = new JTextField("" + tmpDepotLegal + "");
+			txtDepotLegal.setBounds(179, 49, 178, 20);
+			panelMedicaments.add(txtDepotLegal);
+			txtDepotLegal.setColumns(10);
+			
+			JLabel lblNomCommercial = new JLabel("NOM COMMERCIAL :");
+			lblNomCommercial.setBounds(10, 87, 159, 14);
+			panelMedicaments.add(lblNomCommercial);
+			
+			txtNomCommercial = new JTextField("" + tmpNomCommercial + "");
+			txtNomCommercial.setBounds(179, 84, 178, 20);
+			panelMedicaments.add(txtNomCommercial);
+			txtNomCommercial.setColumns(10);
+			
+			JLabel lblFamille = new JLabel("FAMILLE :");
+			lblFamille.setBounds(10, 118, 159, 14);
+			panelMedicaments.add(lblFamille);
+			
+			txtFamCode = new JTextField("" + tmpFamCode + "");
+			txtFamCode.setBounds(179, 115, 178, 20);
+			panelMedicaments.add(txtFamCode);
+			txtFamCode.setColumns(10);
+			
+			JLabel lblComposition = new JLabel("COMPOSITION :");
+			lblComposition.setBounds(10, 143, 159, 14);
+			panelMedicaments.add(lblComposition);
+			
+			JTextPane scrollPaneComposition = new JTextPane();
+			scrollPaneComposition.setText("" + tmpComposition + "");
+			scrollPaneComposition.setBounds(10, 168, 690, 83);
+			panelMedicaments.add(scrollPaneComposition);
+			
+			JLabel lblEffets = new JLabel("EFFETS :");
+			lblEffets.setBounds(10, 262, 76, 14);
+			panelMedicaments.add(lblEffets);
+			
+			JTextPane scrollPaneEffets = new JTextPane();
+			scrollPaneEffets.setText("" + tmpEffets + "");
+			scrollPaneEffets.setBounds(10, 287, 690, 83);
+			panelMedicaments.add(scrollPaneEffets);
+			
+			JLabel lblContreIndic = new JLabel("CONTRE INDIC. :");
+			lblContreIndic.setBounds(10, 381, 127, 14);
+			panelMedicaments.add(lblContreIndic);
+			
+			JTextPane scrollPaneContreIndic = new JTextPane();
+			scrollPaneContreIndic.setText("" + tmpContreIndic + "");
+			scrollPaneContreIndic.setBounds(10, 406, 690, 83);
+			panelMedicaments.add(scrollPaneContreIndic);
+			
+			JLabel lblPrixEchantillion = new JLabel("PRIX ECHANTILLON : ");
+			lblPrixEchantillion.setBounds(10, 504, 159, 14);
+			panelMedicaments.add(lblPrixEchantillion);
+			
+			txtPrixEchantillon = new JTextField("" + tmpPrixEchan + "");
+			txtPrixEchantillon.setBounds(179, 501, 58, 20);
+			panelMedicaments.add(txtPrixEchantillon);
+			txtPrixEchantillon.setColumns(10);
+			
+			JLabel lblSigle = new JLabel("€");
+			lblSigle.setBounds(247, 504, 47, 14);
+			panelMedicaments.add(lblSigle);
+			
+			lblPages.setText("" + nbresPages + "");
+			lblPages.setBounds(61, 537, 42, 20);
+			panelMedicaments.add(lblPages);
+			
 		} catch (Exception e){
             // e.printStackTrace();
 			System.err.println("Oups ! Il y a une erreur SQL !");
         }
-		
-     	// Vérification des données de l'utilisateur connecté
-     	JOptionPane.showMessageDialog(null, "Dépo Légal : " + tmpDepotLegal + "\nNom commercial : " + tmpNomCommercial + "\nFamille Code : " + tmpFamCode + "\nComposition : " + tmpComposition + "\nEffets : " + tmpEffets + "\nContre Indic : " + tmpContreIndic + "\nPrix échantillon : " + tmpPrixEchan, DEBUGG_MODE + " Données Médicaments", JOptionPane.INFORMATION_MESSAGE);
-     	
-		
-		panelAccueil.setVisible(false);
-		panelRapport.setVisible(false);
-		panelPraticiens.setVisible(false);
-		panelAutresVisiteurs.setVisible(false);
-		panelNewRapport.setVisible(false);
-		
-		panelMedicaments.setVisible(true);
-		
-		panelMedicaments.setBounds(214, 11, 710, 569);
-		contentPane.add(panelMedicaments);
-		panelMedicaments.setLayout(null);
-		
-		JLabel lblTitleMedicaments = new JLabel("Médicaments");
-		lblTitleMedicaments.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTitleMedicaments.setBounds(306, 5, 127, 19);
-		panelMedicaments.add(lblTitleMedicaments);
-		
-		JLabel lblDepotLegal = new JLabel("DEPOT LEGAL :");
-		lblDepotLegal.setBounds(10, 52, 159, 14);
-		panelMedicaments.add(lblDepotLegal);
-		
-		txtDepotLegal = new JTextField("" + tmpDepotLegal + "");
-		txtDepotLegal.setBounds(179, 49, 178, 20);
-		panelMedicaments.add(txtDepotLegal);
-		txtDepotLegal.setColumns(10);
-		
-		JLabel lblNomCommercial = new JLabel("NOM COMMERCIAL :");
-		lblNomCommercial.setBounds(10, 87, 159, 14);
-		panelMedicaments.add(lblNomCommercial);
-		
-		txtNomCommercial = new JTextField("" + tmpNomCommercial + "");
-		txtNomCommercial.setBounds(179, 84, 178, 20);
-		panelMedicaments.add(txtNomCommercial);
-		txtNomCommercial.setColumns(10);
-		
-		JLabel lblFamille = new JLabel("FAMILLE :");
-		lblFamille.setBounds(10, 118, 159, 14);
-		panelMedicaments.add(lblFamille);
-		
-		txtFamCode = new JTextField("" + tmpFamCode + "");
-		txtFamCode.setBounds(179, 115, 178, 20);
-		panelMedicaments.add(txtFamCode);
-		txtFamCode.setColumns(10);
-		
-		JLabel lblComposition = new JLabel("COMPOSITION :");
-		lblComposition.setBounds(10, 143, 159, 14);
-		panelMedicaments.add(lblComposition);
-		
-		JTextPane scrollPaneComposition = new JTextPane();
-		scrollPaneComposition.setText("" + tmpComposition + "");
-		scrollPaneComposition.setBounds(10, 168, 690, 83);
-		panelMedicaments.add(scrollPaneComposition);
-		
-		JLabel lblEffets = new JLabel("EFFETS :");
-		lblEffets.setBounds(10, 262, 76, 14);
-		panelMedicaments.add(lblEffets);
-		
-		JTextPane scrollPaneEffets = new JTextPane();
-		scrollPaneEffets.setText("" + tmpEffets + "");
-		scrollPaneEffets.setBounds(10, 287, 690, 83);
-		panelMedicaments.add(scrollPaneEffets);
-		
-		JLabel lblContreIndic = new JLabel("CONTRE INDIC. :");
-		lblContreIndic.setBounds(10, 381, 127, 14);
-		panelMedicaments.add(lblContreIndic);
-		
-		JTextPane scrollPaneContreIndic = new JTextPane();
-		scrollPaneContreIndic.setText("" + tmpContreIndic + "");
-		scrollPaneContreIndic.setBounds(10, 406, 690, 83);
-		panelMedicaments.add(scrollPaneContreIndic);
-		
-		JLabel lblPrixEchantillion = new JLabel("PRIX ECHANTILLON : ");
-		lblPrixEchantillion.setBounds(10, 504, 159, 14);
-		panelMedicaments.add(lblPrixEchantillion);
-		
-		txtPrixEchantillon = new JTextField("" + tmpPrixEchan + "");
-		txtPrixEchantillon.setBounds(179, 501, 178, 20);
-		panelMedicaments.add(txtPrixEchantillon);
-		txtPrixEchantillon.setColumns(10);
 		
 		JButton buttonPrecedent = new JButton("<");
 		buttonPrecedent.addActionListener(new ActionListener() {
@@ -805,10 +810,6 @@ public class GuiMainPanel extends JFrame {
 		});
 		buttonSuivant.setBounds(113, 535, 41, 25);
 		panelMedicaments.add(buttonSuivant);
-		
-		JLabel lblPages = new JLabel("00/00");
-		lblPages.setBounds(61, 540, 42, 14);
-		panelMedicaments.add(lblPages);
 	}
 	
 	public void panelPraticiens(){
@@ -1070,7 +1071,7 @@ public class GuiMainPanel extends JFrame {
 		CodeLAB = DonneesClient.CodeLAB;
 	}
 	
-	public void cleanFrame(){
+ 	public void cleanFrame(){
 		panelMenu.setVisible(false);
 		panelAccueil.setVisible(false);
 		panelRapport.setVisible(false);
