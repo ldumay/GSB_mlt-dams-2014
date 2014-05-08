@@ -38,7 +38,7 @@ import com.sun.org.apache.xml.internal.security.Init;
 
 public class GuiMainPanel extends JFrame {
 
-	private static String version = "v1.40.32"; 
+	private static String version = "v1.60.32"; 
 	private JPanel contentPane;
 	private JTextField txtIdentifiant;
 	public static String Identifiant;
@@ -93,7 +93,11 @@ public class GuiMainPanel extends JFrame {
 	// Médicaments - Données de positionnement dans la liste des médicament
  	public int MedMoveList = 1;
  	public int MedListeMax = 0;
- 	public String nbresPages = null;
+ 	public String MednbresPages = null;
+ 	// Praticiens - Données de positionnement dans la liste des praticiens
+  	public int PratMoveList = 1;
+  	public int PratListeMax = 0;
+  	public String PratnbresPages = null;
 
 	// Démmarre l'application
 	public static void main(String[] args) {
@@ -609,7 +613,6 @@ public class GuiMainPanel extends JFrame {
             	date = resultat.getDate("dateRapport");
             	SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy");
             	tmpDate = simpleFormat.format(date);
-            	tmpListe[x] = tmpDate;
             	tmpListe[x] = "Rapport n°" + x + " du " + tmpDate;
             	// TEST
             	// System.out.println("n°" + x);
@@ -816,13 +819,13 @@ public class GuiMainPanel extends JFrame {
             		tmpIDDepotLegal = f;
             	}
             }
-            nbresPages = "" + MedMoveList + "/" + MedListeMax + "";
+            MednbresPages = "" + MedMoveList + "/" + MedListeMax + "";
 			
             // Vérification de communications des données
             // System.out.println("f : " + f);
             // System.out.println("i : " + i + " <==> h : " + h + "");
             // System.out.println("MedMoveList : " + MedMoveList);
-            // System.out.println("nbresPages : " + nbresPages);
+            // System.out.println("MednbresPages : " + MednbresPages);
             // System.out.println("tmpIDDepotLegal : " + tmpIDDepotLegal);
             // System.out.println("MedListeMax : " + MedListeMax + " <==> x : " + x );
             // System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
@@ -922,7 +925,7 @@ public class GuiMainPanel extends JFrame {
 			lblSigle.setBounds(247, 504, 47, 14);
 			panelMedicaments.add(lblSigle);
 			
-			lblPages.setText("" + nbresPages + "");
+			lblPages.setText("" + MednbresPages + "");
 			lblPages.setBounds(61, 537, 76, 20);
 			panelMedicaments.add(lblPages);
 			
@@ -963,96 +966,217 @@ public class GuiMainPanel extends JFrame {
 		panelAutresVisiteurs.setVisible(false);
 		panelNewRapport.setVisible(false);
 		
-		panelPraticiens.setVisible(true);
+		panelPraticiens.removeAll();
 		
-		panelPraticiens.setBounds(214, 11, 710, 569);
-		contentPane.add(panelPraticiens);
-		panelPraticiens.setLayout(null);
+		// Données tmp
+        int tmpPraNum = 0;
+		String tmpPraNom = null;
+		String tmpPraPrenom = null;
+		String tmpPraAdresse = null;
+		String tmpPraCP = null;
+		String tmpPraVille = null;
+		float tmpPraCoef = 0;
+		String tmpTypeCode = null;
+        
+        // Méthode de récupération des information de connexion à la BDD
+		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
+		String BDD = infosConnexionBDD[0];
+        String url = infosConnexionBDD[1];
+        String user = infosConnexionBDD[2];
+        String passwd = infosConnexionBDD[3];
+     	
+     	try {
+            Class.forName("com.mysql.jdbc.Driver");
+            // Connexion à la BDD
+            Connection con = DriverManager.getConnection(url, user, passwd);
+            Statement stmt = con.createStatement();
+            
+            // Création d'un maximum de lecture pour la liste des médicaments
+            ResultSet resultat = null;
+            resultat = stmt.executeQuery("SELECT count(PRA_NUM) AS result FROM praticien");
+            while (resultat.next()) {
+            	PratListeMax = resultat.getInt("result");
+            }
+            
+            if(PratMoveList<1){ PratMoveList++; }
+            if(PratMoveList>PratListeMax){ PratMoveList--; }
+            
+            int totalRap = PratListeMax++;
+            
+            // Création du tableau pour la jcombox des prat
+            final String tmpListePraNum[] = new String[totalRap];
+            tmpListePraNum[0] = "0";
+            
+            // Récupération de tous les rapports
+	        int x = 1;
+	        resultat = null;
+            resultat = stmt.executeQuery("SELECT * FROM praticien ORDER BY PRA_NOM");
+            while(resultat.next()){
+            	// Enregistrement des id prat
+            	int PraNum = resultat.getInt("PRA_NUM");
+            	String PraNom = resultat.getString("PRA_NOM");
+            	String PraPrenom = resultat.getString("PRA_PRENOM");
+            	System.out.println("" + x + " - " + PraNum + " - " + PraNom + " " + PraPrenom + "");
+            	// tmpListePraNum[x] = "" + x + " - " + PraNum + " - " + PraNom + " " + PraPrenom + "";
+            	x++;
+            }
+            System.err.println("A finir");
+            
+            PratnbresPages = "" + PratMoveList + "/" + PratListeMax + "";
+            
+            // Récupération des informations du médicaments trouvé pour affichage
+            resultat = null;
+            resultat = stmt.executeQuery("SELECT * FROM praticien WHERE PRA_NUM='" + PratMoveList + "'");
+			if(resultat.next()) {
+				tmpPraNum = resultat.getInt("PRA_NUM");
+				tmpPraNom = resultat.getString("PRA_NOM");
+				tmpPraPrenom = resultat.getString("PRA_PRENOM");
+				tmpPraAdresse = resultat.getString("PRA_ADRESSE");
+				tmpPraCP = resultat.getString("PRA_CP");
+				tmpPraVille = resultat.getString("PRA_VILLE");
+				tmpPraCoef = resultat.getFloat("PRA_COEFNOTORIETE");
+				tmpTypeCode = resultat.getString("TYP_CODE");
+			}
+			
+			panelPraticiens.setBounds(214, 11, 710, 569);
+			contentPane.add(panelPraticiens);
+			panelPraticiens.setLayout(null);
+			
+			JComboBox listPrat = new JComboBox();
+			listPrat.setModel(new DefaultComboBoxModel(tmpListePraNum));
+			listPrat.setBounds(26, 40, 446, 25);
+			panelPraticiens.add(listPrat);
+			
+			JButton btnValider_1 = new JButton("Valider");
+			btnValider_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int x = Integer.parseInt(PratnbresPages);
+					int y = PratListeMax;
+					for(int i=0; i<y; i++){
+						if(i==x){
+							PratMoveList = Integer.parseInt(tmpListePraNum[x]);
+							panelPraticiens();
+						}
+					}
+				}
+			});
+			btnValider_1.setBounds(482, 40, 102, 25);
+			panelPraticiens.add(btnValider_1);
+			
+			JLabel lblTitlePraticiens = new JLabel("Praticiens");
+			lblTitlePraticiens.setBounds(317, 5, 97, 19);
+			lblTitlePraticiens.setFont(new Font("Tahoma", Font.BOLD, 15));
+			panelPraticiens.add(lblTitlePraticiens);
+			
+			JLabel lblPraticienNumero = new JLabel("Num\u00E9ro : ");
+			lblPraticienNumero.setBounds(26, 79, 127, 14);
+			panelPraticiens.add(lblPraticienNumero);
+			
+			txtPraticienNumero = new JTextField();
+			txtPraticienNumero.setBounds(174, 76, 200, 20);
+			txtPraticienNumero.setText("" + tmpPraNum + "");
+			panelPraticiens.add(txtPraticienNumero);
+			txtPraticienNumero.setColumns(10);
+			
+			JLabel lblPraticienNom = new JLabel("Nom : ");
+			lblPraticienNom.setBounds(26, 110, 127, 14);
+			panelPraticiens.add(lblPraticienNom);
+			
+			txtPraticienNom = new JTextField();
+			txtPraticienNom.setBounds(174, 107, 200, 20);
+			txtPraticienNom.setText(tmpPraNom);
+			panelPraticiens.add(txtPraticienNom);
+			txtPraticienNom.setColumns(10);
+			
+			JLabel lblPraticienPrenom = new JLabel("Pr\u00E9nom : ");
+			lblPraticienPrenom.setBounds(26, 141, 127, 14);
+			panelPraticiens.add(lblPraticienPrenom);
+			
+			txtPraticienPrenom = new JTextField();
+			txtPraticienPrenom.setBounds(174, 138, 200, 20);
+			txtPraticienPrenom.setText(tmpPraPrenom);
+			panelPraticiens.add(txtPraticienPrenom);
+			txtPraticienPrenom.setColumns(10);
+			
+			JLabel lblPraticienAdresse = new JLabel("Adresse :");
+			lblPraticienAdresse.setBounds(26, 172, 127, 14);
+			panelPraticiens.add(lblPraticienAdresse);
+			
+			txtPraticienAdresse = new JTextField();
+			txtPraticienAdresse.setBounds(174, 169, 200, 20);
+			txtPraticienAdresse.setText(tmpPraAdresse);
+			panelPraticiens.add(txtPraticienAdresse);
+			txtPraticienAdresse.setColumns(10);
+			
+			JLabel lblPraticienVille = new JLabel("Ville :");
+			lblPraticienVille.setBounds(26, 203, 127, 14);
+			panelPraticiens.add(lblPraticienVille);
+			
+			txtPraticienVille = new JTextField();
+			txtPraticienVille.setBounds(174, 200, 200, 20);
+			txtPraticienVille.setText(tmpPraVille);
+			panelPraticiens.add(txtPraticienVille);
+			txtPraticienVille.setColumns(10);
+			
+			txtPraticienCP = new JTextField();
+			txtPraticienCP.setBounds(384, 200, 200, 20);
+			txtPraticienCP.setText(tmpPraCP);
+			panelPraticiens.add(txtPraticienCP);
+			txtPraticienCP.setColumns(10);
+			
+			JLabel lblPraticienCoef = new JLabel("Coef. Notori\u00E9t\u00E9");
+			lblPraticienCoef.setBounds(26, 234, 127, 14);
+			panelPraticiens.add(lblPraticienCoef);
+			
+			txtPraticienCoef = new JTextField();
+			txtPraticienCoef.setBounds(174, 231, 200, 20);
+			txtPraticienCoef.setText("" + tmpPraCoef + "");
+			panelPraticiens.add(txtPraticienCoef);
+			txtPraticienCoef.setColumns(10);
+			
+			JLabel lblPraticienTypeCode = new JLabel("Type code");
+			lblPraticienTypeCode.setBounds(26, 265, 127, 14);
+			panelPraticiens.add(lblPraticienTypeCode);
+			
+			txtPraticienTypeCode = new JTextField();
+			txtPraticienTypeCode.setBounds(174, 262, 200, 20);
+			txtPraticienTypeCode.setText(tmpTypeCode);
+			panelPraticiens.add(txtPraticienTypeCode);
+			txtPraticienTypeCode.setColumns(10);
+			
+			JButton btnPraticienPrecedent = new JButton("<");
+			btnPraticienPrecedent.setBounds(26, 329, 51, 25);
+			btnPraticienPrecedent.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					PratMoveList--;
+					panelPraticiens();
+				}
+			});
+			panelPraticiens.add(btnPraticienPrecedent);
+			
+			JTextField lblPraticienTtl = new JTextField("" + PratnbresPages + "");
+			lblPraticienTtl.setBounds(97, 334, 46, 14);
+			panelPraticiens.add(lblPraticienTtl);
+			
+			JButton btnPraticienSuivant = new JButton(">");
+			btnPraticienSuivant.setBounds(153, 326, 51, 30);
+			btnPraticienSuivant.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					PratMoveList++;
+					panelPraticiens();
+				}
+			});
+			panelPraticiens.add(btnPraticienSuivant);
 		
-		JLabel lblTitlePraticiens = new JLabel("Praticiens");
-		lblTitlePraticiens.setBounds(317, 5, 97, 19);
-		lblTitlePraticiens.setFont(new Font("Tahoma", Font.BOLD, 15));
-		panelPraticiens.add(lblTitlePraticiens);
-		
-		JLabel lblPraticienNumero = new JLabel("Num\u00E9ro : ");
-		lblPraticienNumero.setBounds(28, 55, 127, 14);
-		panelPraticiens.add(lblPraticienNumero);
-		
-		txtPraticienNumero = new JTextField();
-		txtPraticienNumero.setBounds(176, 52, 200, 20);
-		panelPraticiens.add(txtPraticienNumero);
-		txtPraticienNumero.setColumns(10);
-		
-		JLabel lblPraticienNom = new JLabel("Nom : ");
-		lblPraticienNom.setBounds(28, 86, 127, 14);
-		panelPraticiens.add(lblPraticienNom);
-		
-		txtPraticienNom = new JTextField();
-		txtPraticienNom.setBounds(176, 83, 200, 20);
-		panelPraticiens.add(txtPraticienNom);
-		txtPraticienNom.setColumns(10);
-		
-		JLabel lblPraticienPrenom = new JLabel("Pr\u00E9nom : ");
-		lblPraticienPrenom.setBounds(28, 117, 127, 14);
-		panelPraticiens.add(lblPraticienPrenom);
-		
-		txtPraticienPrenom = new JTextField();
-		txtPraticienPrenom.setBounds(176, 114, 200, 20);
-		panelPraticiens.add(txtPraticienPrenom);
-		txtPraticienPrenom.setColumns(10);
-		
-		JLabel lblPraticienAdresse = new JLabel("Adresse :");
-		lblPraticienAdresse.setBounds(28, 148, 127, 14);
-		panelPraticiens.add(lblPraticienAdresse);
-		
-		txtPraticienAdresse = new JTextField();
-		txtPraticienAdresse.setBounds(176, 145, 200, 20);
-		panelPraticiens.add(txtPraticienAdresse);
-		txtPraticienAdresse.setColumns(10);
-		
-		JLabel lblPraticienVille = new JLabel("Ville :");
-		lblPraticienVille.setBounds(28, 179, 127, 14);
-		panelPraticiens.add(lblPraticienVille);
-		
-		txtPraticienVille = new JTextField();
-		txtPraticienVille.setBounds(176, 176, 200, 20);
-		panelPraticiens.add(txtPraticienVille);
-		txtPraticienVille.setColumns(10);
-		
-		txtPraticienCP = new JTextField();
-		txtPraticienCP.setBounds(386, 176, 200, 20);
-		panelPraticiens.add(txtPraticienCP);
-		txtPraticienCP.setColumns(10);
-		
-		JLabel lblPraticienCoef = new JLabel("Coef. Notori\u00E9t\u00E9");
-		lblPraticienCoef.setBounds(28, 210, 127, 14);
-		panelPraticiens.add(lblPraticienCoef);
-		
-		txtPraticienCoef = new JTextField();
-		txtPraticienCoef.setBounds(176, 207, 200, 20);
-		panelPraticiens.add(txtPraticienCoef);
-		txtPraticienCoef.setColumns(10);
-		
-		JLabel lblPraticienTypeCode = new JLabel("Type code");
-		lblPraticienTypeCode.setBounds(28, 241, 127, 14);
-		panelPraticiens.add(lblPraticienTypeCode);
-		
-		txtPraticienTypeCode = new JTextField();
-		txtPraticienTypeCode.setBounds(176, 238, 200, 20);
-		panelPraticiens.add(txtPraticienTypeCode);
-		txtPraticienTypeCode.setColumns(10);
-		
-		JButton btnPraticienPrecedent = new JButton("<");
-		btnPraticienPrecedent.setBounds(28, 305, 51, 25);
-		panelPraticiens.add(btnPraticienPrecedent);
-		
-		JLabel lblPraticienTtl = new JLabel("00/00");
-		lblPraticienTtl.setBounds(99, 310, 46, 14);
-		panelPraticiens.add(lblPraticienTtl);
-		
-		JButton btnPraticienSuivant = new JButton(">");
-		btnPraticienSuivant.setBounds(155, 302, 51, 30);
-		panelPraticiens.add(btnPraticienSuivant);
+			// Page OK :
+			System.out.println("-> Page Praticiens chargé");
+			System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
+			
+		} catch (Exception e){
+	        // e.printStackTrace();
+			System.err.println("Oups ! Il y a une erreur SQL !");
+	    }
+     	panelPraticiens.setVisible(true);
 	}
 	
 	public void panelAutresVisiteurs(){
