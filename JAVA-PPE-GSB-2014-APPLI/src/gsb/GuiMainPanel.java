@@ -38,7 +38,7 @@ import com.sun.org.apache.xml.internal.security.Init;
 
 public class GuiMainPanel extends JFrame {
 
-	private static String version = "v1.36.25"; 
+	private static String version = "v1.40.32"; 
 	private JPanel contentPane;
 	private JTextField txtIdentifiant;
 	public static String Identifiant;
@@ -89,6 +89,7 @@ public class GuiMainPanel extends JFrame {
 	// Rapport de Visite
 	public String choixListe = null;
 	private Object choixListeRap;
+	public String ID_RAP = null;
 	// Médicaments - Données de positionnement dans la liste des médicament
  	public int MedMoveList = 1;
  	public int MedListeMax = 0;
@@ -586,9 +587,12 @@ public class GuiMainPanel extends JFrame {
             totalRap++;
             // System.out.println("totalRap : " + totalRap);
             
-            // Création du tableau
+            // Création du tableau pour la jcombox des rapports
             String tmpListe[] = new String[totalRap];
             tmpListe[0] = "Choisir la date du rendez-vous";
+            // Création du tableau pour la jcombox des num de rapports
+            final String tmpListeRapNum[] = new String[totalRap];
+            tmpListeRapNum[0] = "0";
             // System.out.println("tmpListe : " + tmpListe[0] + "\n");
             
             // Récupération de tous les rapports
@@ -596,63 +600,28 @@ public class GuiMainPanel extends JFrame {
 	        resultat = null;
             resultat = stmt.executeQuery("SELECT DISTINCT  VIS_MATRICULE, RAP_NUM, SUBSTRING(RAP_DATE,1,10) AS dateRapport FROM rapport_visite WHERE VIS_MATRICULE='" + Matricule + "'");
             while(resultat.next()){
+            	// Enregistrement des numéros de rapport
             	String idRap = resultat.getString("RAP_NUM");
-            	
+            	tmpListeRapNum[x] = "" + idRap + "";
+            	// Enregistrement de choix de rapports
             	Date date = null;
             	String tmpDate = null;
-            	
             	date = resultat.getDate("dateRapport");
             	SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy");
             	tmpDate = simpleFormat.format(date);
             	tmpListe[x] = tmpDate;
             	tmpListe[x] = "Rapport n°" + x + " du " + tmpDate;
-            	
+            	// TEST
             	// System.out.println("n°" + x);
             	// System.out.println("RAP_NUM : " + idRap);
             	// System.out.println("tmpListe : " + tmpListe[x]);
-            	
             	x++;
             }
 			
+            // System.out.println("choixListeRap : " + choixListeRap);
             choixListe = (String) choixListeRap;
-			System.out.println(choixListe);
-			
-            if((choixListe!=null) && (choixListe != "Choisir la date du rendez-vous")){
-				
-				JLabel lblRapportNumber = new JLabel("Num\u00E9ro : ");
-				lblRapportNumber.setBounds(27, 128, 68, 14);
-				panelRapport.add(lblRapportNumber);
-				
-				txtRapport = new JTextField();
-				txtRapport.setBounds(105, 125, 175, 20);
-				panelRapport.add(txtRapport);
-				txtRapport.setColumns(10);
-				
-				JLabel lblRapportPraticien = new JLabel("Praticien :");
-				lblRapportPraticien.setBounds(27, 160, 68, 14);
-				panelRapport.add(lblRapportPraticien);
-				
-				txtRapportPraticien = new JTextField();
-				txtRapportPraticien.setBounds(105, 157, 175, 20);
-				panelRapport.add(txtRapportPraticien);
-				txtRapportPraticien.setColumns(10);
-				
-				JLabel lblRapportBilan = new JLabel("Bilan : ");
-				lblRapportBilan.setBounds(27, 199, 46, 14);
-				panelRapport.add(lblRapportBilan);
-				
-				JTextArea textRapportBilan = new JTextArea();
-				textRapportBilan.setBounds(105, 194, 533, 133);
-				panelRapport.add(textRapportBilan);
-				
-				JLabel lblRapportMotif = new JLabel("Motif : ");
-				lblRapportMotif.setBounds(27, 356, 46, 14);
-				panelRapport.add(lblRapportMotif);
-				
-				JTextArea txtRapportMotif = new JTextArea();
-				txtRapportMotif.setBounds(105, 351, 533, 133);
-				panelRapport.add(txtRapportMotif);
-            }
+			// System.out.println("choixListe : " + choixListe);
+			// System.out.println("ID_RAP : " + ID_RAP);
             
             panelRapport.setVisible(true);
     		
@@ -665,6 +634,75 @@ public class GuiMainPanel extends JFrame {
 			lblTitleRapport.setBounds(311, 5, 150, 19);
 			panelRapport.add(lblTitleRapport);
 			
+			if(ID_RAP!=null){
+				panelRapport.removeAll();
+				
+				panelRapport.setBounds(190, 11, 710, 569);
+	    		contentPane.add(panelRapport);
+	    		panelRapport.setLayout(null);
+				
+				lblTitleRapport = new JLabel("Rapports de visite");
+				lblTitleRapport.setFont(new Font("Tahoma", Font.BOLD, 15));
+				lblTitleRapport.setBounds(311, 5, 150, 19);
+				panelRapport.add(lblTitleRapport);
+				
+				resultat = null;
+	            resultat = stmt.executeQuery("SELECT * FROM rapport_visite WHERE VIS_MATRICULE='" + Matricule + "' AND RAP_NUM= '" + ID_RAP + "'");
+	            if(resultat.next()){
+	            	// Enregistrement des numéros de rapport
+	            	String idRap = resultat.getString("RAP_NUM");
+	            	String idPrat = resultat.getString("PRA_NUM");
+	            	String RapBilan = resultat.getString("RAP_BILAN");
+	            	String RapMotif = resultat.getString("RAP_MOTIF");
+	            	
+	            	// System.out.println("idRap : " + idRap);
+	            	// System.out.println("idPrat : " + idPrat);
+	            	// System.out.println("RapBilan : " + RapBilan);
+	            	// System.out.println("RapMotif : " + RapMotif);
+				
+					JLabel lblRapportNumber = new JLabel("Num\u00E9ro : ");
+					lblRapportNumber.setBounds(27, 128, 68, 14);
+					
+					txtRapport = new JTextField();
+					txtRapport.setBounds(105, 125, 175, 20);
+					txtRapport.setText(idRap);
+					txtRapport.setColumns(10);
+					
+					JLabel lblRapportPraticien = new JLabel("Praticien :");
+					lblRapportPraticien.setBounds(27, 160, 68, 14);
+					
+					txtRapportPraticien = new JTextField();
+					txtRapportPraticien.setBounds(105, 157, 175, 20);
+					txtRapportPraticien.setText(idPrat);
+					txtRapportPraticien.setColumns(10);
+					
+					JLabel lblRapportBilan = new JLabel("Bilan : ");
+					lblRapportBilan.setBounds(27, 199, 46, 14);
+					
+					JTextPane textRapportBilan = new JTextPane();
+					textRapportBilan.setBounds(105, 194, 533, 133);
+					textRapportBilan.setText(RapBilan);
+					
+					JLabel lblRapportMotif = new JLabel("Motif : ");
+					lblRapportMotif.setBounds(27, 356, 46, 14);
+					
+					JTextPane txtRapportMotif = new JTextPane();
+					txtRapportMotif.setBounds(105, 351, 533, 133);
+					txtRapportMotif.setText(RapMotif);
+					
+					panelRapport.add(lblRapportNumber);
+					panelRapport.add(lblRapportPraticien);
+					panelRapport.add(lblRapportBilan);
+					panelRapport.add(lblRapportMotif);
+					
+					panelRapport.add(txtRapport);
+					panelRapport.add(txtRapportPraticien);
+					panelRapport.add(textRapportBilan);
+					panelRapport.add(txtRapportMotif);
+	            }
+	            panelRapport.setVisible(true);
+            }
+			
 			final JComboBox listRapport = new JComboBox();
 			listRapport.setModel(new DefaultComboBoxModel(tmpListe));
 			listRapport.setBounds(27, 67, 481, 29);
@@ -673,8 +711,25 @@ public class GuiMainPanel extends JFrame {
 			JButton btnRapportValider = new JButton("Valider");
 			btnRapportValider.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					choixListeRap = listRapport.getSelectedItem();
+					// System.out.println("choixListeRap : " + choixListeRap);
+		            choixListe = (String) choixListeRap;
+					// System.out.println("choixListe : " + choixListe);
+					
 					if((choixListe!=null) && (choixListe != "Choisir la date du rendez-vous")){
-						choixListeRap = listRapport.getSelectedItem();
+						String tmpchoix[] = choixListe.split("n°");
+						// System.out.println("=> " + tmpchoix[0] + " || " + tmpchoix[1] + " || ");
+						String tmpNumChoix = tmpchoix[1];
+						String tmpNum[] = tmpNumChoix.split("du");
+						// System.out.println("=> " + tmpNum[0] + " || " + tmpNum[1] + " || ");
+						String tmpChoixResult = tmpNum[0];
+						tmpChoixResult = tmpChoixResult.replaceAll(" ", "");
+						// System.out.println("=> |" + tmpChoixResult + "|");
+						int x;
+						x = Integer.parseInt(tmpChoixResult);
+						ID_RAP = tmpListeRapNum[x];
+						// System.out.println("ID_RAP : " + ID_RAP);
+						
 						panelRapport();
 					}
 				}
