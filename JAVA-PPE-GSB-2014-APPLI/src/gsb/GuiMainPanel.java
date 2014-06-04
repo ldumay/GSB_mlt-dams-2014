@@ -38,7 +38,7 @@ import com.sun.org.apache.xml.internal.security.Init;
 
 public class GuiMainPanel extends JFrame {
 
-	private static String version = "v1.60.32"; 
+	private static String version = "v1.65.32"; 
 	private JPanel contentPane;
 	private JTextField txtIdentifiant;
 	public static String Identifiant;
@@ -98,6 +98,15 @@ public class GuiMainPanel extends JFrame {
   	public int PratMoveList = 1;
   	public int PratListeMax = 0;
   	public String PratnbresPages = null;
+  	// NewRapport - Données de stockage
+	public static String tmpVIS_MATRICULE = null;
+	public static String tmpPRA_NUM = null;
+	public static String tmpRAP_BILAN = null;
+	public static String tmpRAP_MOTIF = null;
+	public static String tmpMED_DEPOTLEGAL_1 = null;
+	public static String tmpMED_DEPOTLEGAL_2 = null;
+	public static String tmpQteMed_1 = null;
+  	public static String tmpQteMed_2 = null;
 
 	// Démmarre l'application
 	public static void main(String[] args) {
@@ -155,6 +164,8 @@ public class GuiMainPanel extends JFrame {
 	private JTextField txtAutresVisiteursCP;
 	private JTextField txtAutresVisiteursVille;
 	private JTextField txtAutresVisiteursSecteur;
+	private JTextField QteMed_1;
+	private JTextField QteMed_2;
 	
 	// Classe Principale
 	public GuiMainPanel() {
@@ -1281,44 +1292,191 @@ public class GuiMainPanel extends JFrame {
 		panelAutresVisiteurs.setVisible(false);
 		panelNewRapport.setVisible(true);
 		
-		panelNewRapport.setBounds(10, 11, 914, 569);
-		contentPane.add(panelNewRapport);
-		panelNewRapport.setLayout(null);
-		
-		JLabel lblNewRapportBilan = new JLabel("Bilan : ");
-		lblNewRapportBilan.setBounds(344, 72, 46, 14);
-		panelNewRapport.add(lblNewRapportBilan);
-		
-		JLabel lblNewRapportMotif = new JLabel("Motif : ");
-		lblNewRapportMotif.setBounds(344, 231, 46, 14);
-		panelNewRapport.add(lblNewRapportMotif);
-		
-		final JTextPane textNewRapportBilan = new JTextPane();
-		textNewRapportBilan.setBounds(344, 97, 485, 123);
-		panelNewRapport.add(textNewRapportBilan);
-		
-		final JTextPane textNewRapportMotif = new JTextPane();
-		textNewRapportMotif.setBounds(344, 256, 485, 123);
-		panelNewRapport.add(textNewRapportMotif);
-		
-		JButton btnNewRapportEffacer = new JButton("EFFACER");
-		btnNewRapportEffacer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				textNewRapportBilan.setText("");
-				textNewRapportMotif.setText("");
-			}
-		});
-		btnNewRapportEffacer.setBounds(344, 413, 89, 25);
-		panelNewRapport.add(btnNewRapportEffacer);
-		
-		JButton btnNewRapportValider = new JButton("VALIDER");
-		btnNewRapportValider.setBounds(443, 413, 89, 25);
-		panelNewRapport.add(btnNewRapportValider);
-		
-		JLabel lblNouveauRapportDe = new JLabel("Nouveau rapport de visiteur");
-		lblNouveauRapportDe.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNouveauRapportDe.setBounds(502, 27, 256, 14);
-		panelNewRapport.add(lblNouveauRapportDe);
+		// Méthode de récupération des information de connexion à la BDD
+		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
+		String BDD = infosConnexionBDD[0];
+        String url = infosConnexionBDD[1];
+        String user = infosConnexionBDD[2];
+        String passwd = infosConnexionBDD[3];
+        
+		try {
+     		JTextField lblPages = new JTextField();
+     		
+            Class.forName("com.mysql.jdbc.Driver");
+            // Connexion à la BDD
+            Connection con = DriverManager.getConnection(url, user, passwd);
+            Statement stmt = con.createStatement();
+            
+            // Vérification du nbre total de médicament
+	        int totalMed = 0;
+	        ResultSet resultat = null;
+            resultat = stmt.executeQuery("SELECT count(MED_DEPOTLEGAL) AS result FROM medicament ORDER BY MED_DEPOTLEGAL");
+            while (resultat.next()) {
+            	totalMed = resultat.getInt("result");
+            }
+            // Equilibre
+            totalMed++;
+            // Vérification du nbre total de praticien
+	        int totalPrat = 0;
+	        resultat = null;
+            resultat = stmt.executeQuery("SELECT count(PRA_NUM) AS result FROM praticien ORDER BY PRA_NUM");
+            while (resultat.next()) {
+            	totalPrat = resultat.getInt("result");
+            }
+            // Equilibre
+            totalPrat++;
+            
+            int x = 0;
+            String Medicament_ID = "";
+            String Medicament_NOM = "";
+            int y = 0;
+            String Praticien_Nom = "";
+            String Praticien_Prenom = "";
+            
+            // Création du tableau pour la jcombox des médicaments
+            final String Med_List[] = new String[totalMed];
+            Med_List[0] = "Choisir un médicament";
+            
+            resultat = null;
+            resultat = stmt.executeQuery("SELECT MED_DEPOTLEGAL,MED_NOMCOMMERCIAL FROM medicament ORDER BY MED_DEPOTLEGAL");
+            while (resultat.next()) {
+            	x++;
+            	// - - 
+            	Medicament_ID = resultat.getString("MED_DEPOTLEGAL");
+            	Medicament_NOM = resultat.getString("MED_NOMCOMMERCIAL");
+            	// - -
+            	Med_List[x] = Medicament_NOM;
+            }
+            // Création du tableau pour la jcombox des praticiens
+            String Prat_List[] = new String[totalPrat];
+            Prat_List[0] = "Choisir un praticien";
+            
+            resultat = null;
+            resultat = stmt.executeQuery("SELECT PRA_NUM, PRA_NOM, PRA_PRENOM FROM praticien ORDER BY PRA_NUM");
+            while (resultat.next()) {
+            	y++;
+            	// - - 
+            	Praticien_Nom = resultat.getString("PRA_NOM");
+            	Praticien_Prenom = resultat.getString("PRA_PRENOM");
+            	// - -
+            	Prat_List[y] = Praticien_Nom + " " + Praticien_Prenom;
+            }
+            
+            panelNewRapport.setBounds(10, 11, 914, 569);
+    		contentPane.add(panelNewRapport);
+    		panelNewRapport.setLayout(null);
+    		
+    		JLabel lblChoixPrat = new JLabel("Nouveau rapport de visiteur");
+    		lblChoixPrat.setFont(new Font("Tahoma", Font.BOLD, 15));
+    		lblChoixPrat.setBounds(502, 27, 256, 14);
+    		panelNewRapport.add(lblChoixPrat);
+    		
+    		final JComboBox ChoixPrat = new JComboBox(Prat_List);
+    		ChoixPrat.setBounds(443, 90, 222, 25);
+    		panelNewRapport.add(ChoixPrat);
+    		
+    		JLabel lblNewRapportBilan = new JLabel("Bilan : ");
+    		lblNewRapportBilan.setBounds(344, 203, 63, 14);
+    		panelNewRapport.add(lblNewRapportBilan);
+    		
+    		final JTextPane textNewRapportBilan = new JTextPane();
+    		textNewRapportBilan.setBounds(344, 228, 485, 167);
+    		panelNewRapport.add(textNewRapportBilan);
+    		
+    		JLabel lblNewRapportMotif = new JLabel("Motif : ");
+    		lblNewRapportMotif.setBounds(344, 120, 63, 14);
+    		panelNewRapport.add(lblNewRapportMotif);
+    		
+    		final JTextPane textNewRapportMotif = new JTextPane();
+    		textNewRapportMotif.setBounds(344, 145, 485, 47);
+    		panelNewRapport.add(textNewRapportMotif);
+    		
+    		JLabel lblChoixMed = new JLabel("Choix du M\u00E9dicament :");
+    		lblChoixMed.setBounds(344, 406, 188, 23);
+    		panelNewRapport.add(lblChoixMed);
+    		
+    		final JComboBox ChoixMed_1 = new JComboBox();
+    		ChoixMed_1.setModel(new DefaultComboBoxModel(Med_List));
+    		ChoixMed_1.setBounds(344, 440, 188, 25);
+    		panelNewRapport.add(ChoixMed_1);
+    		
+    		final JComboBox ChoixMed_2 = new JComboBox();
+    		ChoixMed_2.setModel(new DefaultComboBoxModel(Med_List));
+    		ChoixMed_2.setBounds(344, 476, 188, 25);
+    		panelNewRapport.add(ChoixMed_2);
+    		
+    		JLabel lblQteMed = new JLabel("Quantit\u00E9 de M\u00E9dicament : ");
+    		lblQteMed.setBounds(542, 406, 202, 23);
+    		panelNewRapport.add(lblQteMed);
+    		
+    		QteMed_1 = new JTextField();
+    		QteMed_1.setBounds(542, 476, 123, 25);
+    		panelNewRapport.add(QteMed_1);
+    		QteMed_1.setColumns(10);
+    		
+    		QteMed_2 = new JTextField();
+    		QteMed_2.setBounds(542, 440, 123, 25);
+    		panelNewRapport.add(QteMed_2);
+    		QteMed_2.setColumns(10);
+    		
+    		JButton btnNewRapportEffacer = new JButton("EFFACER");
+    		btnNewRapportEffacer.addActionListener(new ActionListener() {
+    			public void actionPerformed(ActionEvent arg0) {
+    				textNewRapportBilan.setText("");
+    				textNewRapportMotif.setText("");
+    				QteMed_1.setText("");
+    				QteMed_2.setText("");
+    			}
+    		});
+    		btnNewRapportEffacer.setBounds(344, 512, 89, 25);
+    		panelNewRapport.add(btnNewRapportEffacer);
+    		
+    		JButton btnNewRapportValider = new JButton("VALIDER");
+    		btnNewRapportValider.addActionListener(new ActionListener() {
+    			public void actionPerformed(ActionEvent arg0) {
+    				// Préparation des données
+    				Object tmpChoixPrat;
+    				Object tmpChoixMed_1;
+    				Object tmpChoixMed_2;
+    				// Coordonnées
+    				tmpChoixPrat = ChoixPrat.getSelectedItem();
+    				tmpVIS_MATRICULE = Matricule;
+		            tmpPRA_NUM = (String) tmpChoixPrat;
+		            // Motif & Bilan
+		            tmpRAP_BILAN = textNewRapportBilan.getText();
+    				tmpRAP_MOTIF = textNewRapportMotif.getText();
+		            // Les 2 noms de médicaments
+		            tmpChoixMed_1 = ChoixMed_1.getSelectedItem();
+					tmpMED_DEPOTLEGAL_1 = (String) tmpChoixMed_1;
+					tmpChoixMed_2 = ChoixMed_2.getSelectedItem();
+					tmpMED_DEPOTLEGAL_2 = (String) tmpChoixMed_2;
+    				// Les 2 quantités de médicaments
+    				tmpQteMed_1 = QteMed_1.getText();
+    				tmpQteMed_2 = QteMed_2.getText();
+    				// Exécution des la réquète
+    				NewRapport NewRapport = new NewRapport();
+    				// Clean
+    				textNewRapportBilan.setText("");
+    				textNewRapportMotif.setText("");
+    				QteMed_1.setText("");
+    				QteMed_2.setText("");
+    			}
+    		});
+    		btnNewRapportValider.setBounds(443, 512, 89, 25);
+    		panelNewRapport.add(btnNewRapportValider);
+    		
+    		JLabel lblPraticien = new JLabel("Praticien :");
+    		lblPraticien.setBounds(344, 95, 82, 14);
+    		panelNewRapport.add(lblPraticien);
+			
+			// Page OK :
+			System.out.println("-> Page New Rapport chargé");
+			System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
+			
+		} catch (Exception e){
+            // e.printStackTrace();
+			System.err.println("Oups ! Il y a une erreur SQL !");
+        }
 	}
 	
 	// Others Classes
