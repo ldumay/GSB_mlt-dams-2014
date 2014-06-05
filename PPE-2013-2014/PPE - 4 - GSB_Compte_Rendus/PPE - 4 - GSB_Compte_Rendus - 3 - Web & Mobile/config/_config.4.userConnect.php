@@ -71,4 +71,7 @@
 			if(!isset($_SESSION['User_Ajout'])){
 				$_SESSION['User_Ajout'] = '';
 			}
+			if(!isset($_SESSION['User_PratSearch'])){
+				$_SESSION['User_PratSearch'] = 0;
+			}
 ?>

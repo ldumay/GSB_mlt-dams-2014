@@ -41,6 +41,9 @@
       <a href="formMEDICAMENT.php">Médicaments</a>
     </li>
     <li class="smenu">
+      <a href="formSearchMEDICAMENT.php">Recherche de Médicaments</a>
+    </li>
+    <li class="smenu">
       <a href="formPRATICIEN.php">Praticiens</a>
     </li>
     <li class="smenu">
