@@ -46,10 +46,10 @@ public class InfosConnexionBDD {
 			tmpPass = "";
 		}
 		else if (serveur == "personnelLoic"){
-			tmpBDD = "dumayloi_mtl";
-			tmpURL = "web1.quatdev.fr";
-			tmpUser = "dumayloi_mtl";
-			tmpPass = "BPJrtj34r5A4";
+			tmpBDD = "c0_gsb";
+			tmpURL = "sd-69140.dedibox.fr";
+			tmpUser = "c0_mectrankil78";
+			tmpPass = "MeuT92YQ8h5nW7m";
 		}
 		else if (serveur == "personnelDamien"){
 			tmpBDD = "";
@@ -82,7 +82,7 @@ public class InfosConnexionBDD {
 		
         String indic = "-> ";
         
-        // Méthode de récupération des information de connexion à la BDD
+        // Mï¿½thode de rï¿½cupï¿½ration des information de connexion ï¿½ la BDD
 		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
 		String BDD = infosConnexionBDD[0];
         String url = infosConnexionBDD[1];
@@ -95,7 +95,7 @@ public class InfosConnexionBDD {
 
             Connection conn = DriverManager.getConnection(url, user, passwd);
             System.out.println(indic + "Connexion reussi !");
-            System.out.println(indic + "Serveur connecté : " + serveur);
+            System.out.println(indic + "Serveur connectï¿½ : " + serveur);
             System.out.println(indic + "Adresse du serveur : " + url);
             System.out.println(indic + "Base de donnee connectee : '" + BDD + "'");
             System.out.println(indic + "Application connectee en tant que : '" + user + "'");
@@ -109,22 +109,22 @@ public class InfosConnexionBDD {
         return EtatConnexion;
 	}
 	
-	// Méthode de vérification de l'état du serveur
+	// Mï¿½thode de vï¿½rification de l'ï¿½tat du serveur
 	public static String VerifServiceBDD(boolean EtatConnexion){
 		
-		// Affiche le bouton d'actualisation de l'état du serveur si inactif
+		// Affiche le bouton d'actualisation de l'ï¿½tat du serveur si inactif
 		if(EtatConnexion == true){
 			EtatAff = "ON";
 			btnRafraichir.setVisible(false);
 			
-			// Vérification console
+			// Vï¿½rification console
 			System.out.println("-> Etat du serveur : " + EtatAff);
 		}
 		if(EtatConnexion == false){
 			EtatAff = "OFF";
 			btnRafraichir.setVisible(true);
 			
-			// Vérification console
+			// Vï¿½rification console
 			System.out.println("-> Etat du serveur : " + EtatAff);
 		}
 		

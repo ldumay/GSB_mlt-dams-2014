@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class NewRapport {
-	// Données à insérer :
+	// Donnï¿½es ï¿½ insï¿½rer :
 	// -> ID
 	public String tmpVIS_MATRICULE = GuiMainPanel.tmpVIS_MATRICULE;
 	public String tmpPRA_NUM = GuiMainPanel.tmpPRA_NUM;
@@ -21,7 +21,7 @@ public class NewRapport {
   	public static String tmpQteMed_2 = GuiMainPanel.tmpQteMed_2;
 	
 	public NewRapport(){
-		// Données de connexion : 
+		// Donnï¿½es de connexion : 
 		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
 		// String BDD = infosConnexionBDD[0];
         String url = infosConnexionBDD[1];
@@ -30,7 +30,7 @@ public class NewRapport {
         
         // Verif
         System.out.println("Matricule : " + tmpVIS_MATRICULE);
-        System.out.println("N° Prat : " + tmpPRA_NUM);
+        System.out.println("Nï¿½ Prat : " + tmpPRA_NUM);
         System.out.println("Txt Bilan : " + tmpRAP_BILAN);
         System.out.println("Txt Motif : " + tmpRAP_MOTIF);
         System.out.println("Med 1 :  " + tmpMED_DEPOTLEGAL_1);
@@ -51,9 +51,9 @@ public class NewRapport {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, passwd);
             
-            // But, découper la donnée "tmpPRA_NUM" en 2 pour avoir le Nom & le Prénom. la valeur " "  sépare ses 2 données.
-            Char tmpNOM = tmpPRA_NUM.varPhp.strstr(" ");
-            Char tmpPRENOM = tmpPRA_NUM.varPhp.strstr(" ");
+            // But, dï¿½couper la donnï¿½e "tmpPRA_NUM" en 2 pour avoir le Nom & le Prï¿½nom. la valeur " "  sï¿½pare ses 2 donnï¿½es.
+            char tmpNOM = tmpPRA_NUM.varPhp.strstr(" ");
+            char tmpPRENOM = tmpPRA_NUM.varPhp.strstr(" ");
             
             ResultSet resultat = null;
             Statement stmt = conn.createStatement();
@@ -62,13 +62,13 @@ public class NewRapport {
             	tmpPRA_NUM = resultat.getString("PRA_NUM");
             }
             
-            // Création du rapport
+            // Crï¿½ation du rapport
             PreparedStatement prepare1 = conn.prepareStatement("INSERT INTO `rapport_visite` (`PRA_NUM`,`VIS_MATRICULE`,`RAP_DATE`,`RAP_BILAN`,`RAP_MOTIF`) VALUES ('"+tmpPRA_NUM+"','"+tmpVIS_MATRICULE+"',NOW(),'"+tmpRAP_BILAN+"','"+tmpRAP_MOTIF+"')");
             prepare1.executeUpdate();
             prepare1.close();
             System.out.println("Etape 1 - OK");
             
-            // Récupération du N° du rapport
+            // Rï¿½cupï¿½ration du Nï¿½ du rapport
             int tmpRAP_NUM = 0;
             resultat = stmt.executeQuery("SELECT RAP_NUM,VIS_MATRICULE,RAP_MOTIF FROM rapport_visite WHERE VIS_MATRICULE='"+tmpVIS_MATRICULE+"' AND RAP_MOTIF='"+tmpRAP_MOTIF+"'");
             while (resultat.next()) {
@@ -76,7 +76,7 @@ public class NewRapport {
             }
             System.out.println("Etape 2 - OK");
             
-            // Insertion des échantillions pour le rapport créé
+            // Insertion des ï¿½chantillions pour le rapport crï¿½ï¿½
             while(x<2){
             	x++;
             	if((x==1) && (tmpMED_DEPOTLEGAL_1!=null) && (QteMed_1!=0)){
@@ -100,7 +100,7 @@ public class NewRapport {
         catch (Exception e) {
             e.printStackTrace();
             System.err.println("Oups, Erreur!");
-            System.err.println("Le problème peut venir de votre\nDriver JDBC de MySQL");
+            System.err.println("Le problï¿½me peut venir de votre\nDriver JDBC de MySQL");
             System.exit(0);
         }
 	}
