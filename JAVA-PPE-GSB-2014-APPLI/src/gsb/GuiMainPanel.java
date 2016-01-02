@@ -45,7 +45,7 @@ public class GuiMainPanel extends JFrame {
 	public String MotDePasse;
 	// Type d'utilisateur
 	public static String TypeUser;
-	// Instanciation des variable de l'actualisation de l'�tat du serveur
+	// Instanciation des variable de l'actualisation de l'etat du serveur
 	final static JButton btnRafraichir = new JButton("Rafraichir");
 	public static String EtatAff = null;
 	static boolean EtatConnexion = InfosConnexionBDD.EtatConnexion;
@@ -53,7 +53,7 @@ public class GuiMainPanel extends JFrame {
 	final JComboBox serveurListe = new JComboBox();
 	private Object serveurchoix;
 	public static String serveur = null;
-	// Instanciation de toutes autres int�ractions
+	// Instanciation de toutes autres interactions
 	private JTextField txtPrixEchantillon;
 	private JTextField txtDepotLegal;
 	private JTextField txtNomCommercial;
@@ -72,15 +72,15 @@ public class GuiMainPanel extends JFrame {
 	// Code Erreur
 	public String ErrorLog = "Erreur de connexion";
 	public String DEBUGG_MODE = "DEBUGG MODE : ";
-	// Instanciation du type client connect�
+	// Instanciation du type client connecte
 	public String ClientType = null;
-    // Instanciation des donn�es Communes
+    // Instanciation des donnees Communes
 	public String Nom = null;
 	public String Prenom = null;
 	public String Adresse = null;
 	public String CP = null;
 	public String Ville = null;
-	// Instanciation des donn�es Visiteur
+	// Instanciation des donnees Visiteur
 	public String Matricule = null;
 	public String Login = null;
 	public String DateEmbauche = null;
@@ -90,15 +90,15 @@ public class GuiMainPanel extends JFrame {
 	public String choixListe = null;
 	private Object choixListeRap;
 	public String ID_RAP = null;
-	// M�dicaments - Donn�es de positionnement dans la liste des m�dicament
+	// Medicaments - Donnees de positionnement dans la liste des medicament
  	public int MedMoveList = 1;
  	public int MedListeMax = 0;
  	public String MednbresPages = null;
- 	// Praticiens - Donn�es de positionnement dans la liste des praticiens
+ 	// Praticiens - Donnees de positionnement dans la liste des praticiens
   	public int PratMoveList = 1;
   	public int PratListeMax = 0;
   	public String PratnbresPages = null;
-  	// NewRapport - Donn�es de stockage
+  	// NewRapport - Donnees de stockage
 	public static String tmpVIS_MATRICULE = null;
 	public static String tmpPRA_NUM = null;
 	public static String tmpRAP_BILAN = null;
@@ -108,9 +108,9 @@ public class GuiMainPanel extends JFrame {
 	public static String tmpQteMed_1 = null;
   	public static String tmpQteMed_2 = null;
 
-	// D�mmarre l'application
+	// Demmarre l'application
 	public static void main(String[] args) {
-		// D�marrage de l'interface primaire de l'application
+		// Demarrage de l'interface primaire de l'application
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -149,7 +149,7 @@ public class GuiMainPanel extends JFrame {
 		});
 	}
 
-	// Cr�ations des Panel
+	// Creations des Panel
 	final JPanel panelLog = new JPanel();
 	final JPanel panelAccueil = new JPanel();
 	final JPanel panelMenu = new JPanel();
@@ -177,13 +177,13 @@ public class GuiMainPanel extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		/* Seul la page Log doit �tre visible en 1er */
+		/* Seul la page Log doit etre visible en 1er */
 		panelLog();
 		
 		/* ICI : 
-		 * 		D�commenter une classe permet d'appeler directement une classe Panel directement dans la Frame de GuiMainPanel.
-		 * 		Cela permet une �dition simple avec Window Builder. 
-		 * 		Il faut alors mettre en commentaire le panelLog avant l'�dition en window builder.
+		 * 		Decommenter une classe permet d'appeler directement une classe Panel directement dans la Frame de GuiMainPanel.
+		 * 		Cela permet une edition simple avec Window Builder. 
+		 * 		Il faut alors mettre en commentaire le panelLog avant l'edition en window builder.
 		 */
 		// panelLog();
 		// panelMenu();
@@ -234,11 +234,11 @@ public class GuiMainPanel extends JFrame {
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				// R�cup�ration des Inputs de Log
+				// Recuperation des Inputs de Log
 				Identifiant = txtIdentifiant.getText();
 				MotDePasse = txtMotDePasse.getText();
 				
-				// V�rification de l'�tat du serveur BDD
+				// Verification de l'etat du serveur BDD
 				InfosConnexionBDD connexionTest2 = new InfosConnexionBDD();
 				EtatConnexion = InfosConnexionBDD.EtatConnexion;
 				EtatAff = InfosConnexionBDD.EtatAff;
@@ -252,20 +252,20 @@ public class GuiMainPanel extends JFrame {
 					JOptionPane.showMessageDialog(null,"Veuillez choisir un type SVP", ErrorLog, JOptionPane.WARNING_MESSAGE);
 				}
 				else if((Identifiant.isEmpty()) && (MotDePasse.isEmpty()) ){
-					JOptionPane.showMessageDialog(null,"L'identifiant et le mot de passe n'ont pas �t� saisi !", ErrorLog, JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"L'identifiant et le mot de passe n'ont pas ete saisi !", ErrorLog, JOptionPane.WARNING_MESSAGE);
 				}
 				else if(Identifiant.isEmpty()){
-					JOptionPane.showMessageDialog(null,"L'identifiant n'a pas �t� saisi !", ErrorLog, JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"L'identifiant n'a pas ete saisi !", ErrorLog, JOptionPane.WARNING_MESSAGE);
 				}
 				else if(MotDePasse.isEmpty()){
-					JOptionPane.showMessageDialog(null,"Le mot de passe n'a pas �t� saisi !", ErrorLog, JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Le mot de passe n'a pas ete saisi !", ErrorLog, JOptionPane.WARNING_MESSAGE);
 				}
 				else{
 					String pilote = "com.mysql.jdbc.Driver";
 					try {
 						Class.forName(pilote);
 						
-						// M�thode de r�cup�ration des information de connexion � la BDD
+						// Methode de recuperation des information de connexion a la BDD
 						String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
 						String BDD = infosConnexionBDD[0];
 				        String url = infosConnexionBDD[1];
@@ -279,7 +279,7 @@ public class GuiMainPanel extends JFrame {
 						
 						String idUser = null;
 						
-						// V�rification du type d'utilisateur
+						// Verification du type d'utilisateur
 						/*
 						resultat = stmt.executeQuery("SELECT VIS_MATRICULE,VIS_NOM FROM visiteur WHERE VIS_NOM='"+ txtIdentifiant.getText() + "'");
 						if (resultat.next()) {
@@ -321,20 +321,20 @@ public class GuiMainPanel extends JFrame {
 							String date_emb = jour + "-" + mois + "-" + annee;
 							String mdp = txtMotDePasse.getText();
 							
-							// V�rification du MDP
+							// Verification du MDP
 							// JOptionPane.showMessageDialog(null,"DONNEES : "+date_emb+" - "+mdp);
 							
 							if( mdp.equals(date_emb)){
-								// R�cup�ration des informations du client connect�
+								// Recuperation des informations du client connecte
 								DonneesClient Client = new DonneesClient();
 								
-								// V�rification des donn�es de l'utilisateur connect�
-								// JOptionPane.showMessageDialog(null,"\nMatricule / ID : " + Matricule + "\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville + "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Donn�es Clients", JOptionPane.INFORMATION_MESSAGE);
+								// Verification des donnees de l'utilisateur connecte
+								// JOptionPane.showMessageDialog(null,"\nMatricule / ID : " + Matricule + "\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville + "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Donnees Clients", JOptionPane.INFORMATION_MESSAGE);
 								
 								recupDonneesClient();
 
-								// V�rification des donn�es de l'utilisateur connect�
-								JOptionPane.showMessageDialog(null,"\nMatricule / ID : " + Matricule + "\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville +  "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Donn�es Clients", JOptionPane.INFORMATION_MESSAGE);
+								// Verification des donnees de l'utilisateur connecte
+								JOptionPane.showMessageDialog(null,"\nMatricule / ID : " + Matricule + "\nClientType : " + ClientType + "\nNom : " + Nom + "\n Prenom : " + Prenom + "\nAdresse : " + Adresse + "\nCP : " + CP  + "\nVille : " + Ville +  "\nLogin : " + Login + "\nDateEmbauche : " + DateEmbauche + "\nCodeSEC : " + CodeSEC + "\nCodeLAB : " + CodeLAB + "\n", DEBUGG_MODE + " Donnees Clients", JOptionPane.INFORMATION_MESSAGE);
 								
 								// Passage en client connecter
 								panelLog.setVisible(false);
@@ -342,7 +342,7 @@ public class GuiMainPanel extends JFrame {
 								panelAccueil();
 							}
 							else{
-								JOptionPane.showMessageDialog(null,"Oups, le mot de passe n'est pas correcte ! \n\n Assurez-vous d'entrer les 3 premi�res lettres du mois \n dans le mot de passe, tel que : XX-XXX-XX", ErrorLog, JOptionPane.WARNING_MESSAGE);
+								JOptionPane.showMessageDialog(null,"Oups, le mot de passe n'est pas correcte ! \n\n Assurez-vous d'entrer les 3 premieres lettres du mois \n dans le mot de passe, tel que : XX-XXX-XX", ErrorLog, JOptionPane.WARNING_MESSAGE);
 								// JOptionPane.showMessageDialog(null,txtMotDePasse.getText().length()+" et " +date_emb.length());
 							}
 						}
@@ -387,7 +387,7 @@ public class GuiMainPanel extends JFrame {
 		btnAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Infos infos = new Infos();
-				// Permet de centr� la JFrame A propos
+				// Permet de centre la JFrame A propos
 				infos.setLocationRelativeTo(null);
 				infos.setVisible(true);
 			}
@@ -397,7 +397,7 @@ public class GuiMainPanel extends JFrame {
 		
 		btnRafraichir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// V�rification de la s�lection
+				// Verification de la selection
 				serveurchoix = serveurListe.getSelectedItem();
 				if(serveurchoix != "Veulliez choisir un serveur"){
 					if(serveurchoix == "Serveur Local"){
@@ -419,11 +419,11 @@ public class GuiMainPanel extends JFrame {
 						serveur = "personnelDamien";
 					}
 					// JOptionPane.showMessageDialog(null," " + serveurchoix + " - " + serveur, "Informations du serveur choisit", JOptionPane.WARNING_MESSAGE);
-					// V�rification de l'�tat du serveur BDD
+					// Verification de l'etat du serveur BDD
 					InfosConnexionBDD connexionTest2 = new InfosConnexionBDD();
 					EtatConnexion = InfosConnexionBDD.EtatConnexion;
 					EtatAff = InfosConnexionBDD.EtatAff;
-					// V�rification de EtatAff
+					// Verification de EtatAff
 					if(EtatAff == "ON"){
 						lblEtat.setText(EtatAff);
 						// btnRafraichir.setVisible(false);
@@ -576,7 +576,7 @@ public class GuiMainPanel extends JFrame {
 		
 		panelRapport.removeAll();
 		
-		// M�thode de r�cup�ration des information de connexion � la BDD
+		// Methode de recuperation des information de connexion a la BDD
 		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
 		String BDD = infosConnexionBDD[0];
 	    String url = infosConnexionBDD[1];
@@ -588,34 +588,34 @@ public class GuiMainPanel extends JFrame {
 	        Connection con = DriverManager.getConnection(url, user, passwd);
 	        Statement stmt = con.createStatement();
 	        
-	        // Id du visiteur connect�
+	        // Id du visiteur connecte
 	        // System.out.println(Matricule);
 	        
-	        // V�rification du nbre total de rapport pour le visiteur connect�
+	        // Verification du nbre total de rapport pour le visiteur connecte
 	        int totalRap = 0;
 	        ResultSet resultat = null;
             resultat = stmt.executeQuery("SELECT count(SUBSTRING(RAP_DATE,1,10)) AS result FROM rapport_visite WHERE VIS_MATRICULE='" + Matricule + "'");
             while (resultat.next()) {
             	totalRap = resultat.getInt("result");
             }
-            // Equilibre le tableau afin de comptabilis� la ligne par d�faut en 0
+            // Equilibre le tableau afin de comptabilise la ligne par defaut en 0
             totalRap++;
             // System.out.println("totalRap : " + totalRap);
             
-            // Cr�ation du tableau pour la jcombox des rapports
+            // Creation du tableau pour la jcombox des rapports
             String tmpListe[] = new String[totalRap];
             tmpListe[0] = "Choisir la date du rendez-vous";
-            // Cr�ation du tableau pour la jcombox des num de rapports
+            // Creation du tableau pour la jcombox des num de rapports
             final String tmpListeRapNum[] = new String[totalRap];
             tmpListeRapNum[0] = "0";
             // System.out.println("tmpListe : " + tmpListe[0] + "\n");
             
-            // R�cup�ration de tous les rapports
+            // Recuperation de tous les rapports
 	        int x = 1;
 	        resultat = null;
             resultat = stmt.executeQuery("SELECT DISTINCT  VIS_MATRICULE, RAP_NUM, SUBSTRING(RAP_DATE,1,10) AS dateRapport FROM rapport_visite WHERE VIS_MATRICULE='" + Matricule + "'");
             while(resultat.next()){
-            	// Enregistrement des num�ros de rapport
+            	// Enregistrement des numeros de rapport
             	String idRap = resultat.getString("RAP_NUM");
             	tmpListeRapNum[x] = "" + idRap + "";
             	// Enregistrement de choix de rapports
@@ -624,9 +624,9 @@ public class GuiMainPanel extends JFrame {
             	date = resultat.getDate("dateRapport");
             	SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy");
             	tmpDate = simpleFormat.format(date);
-            	tmpListe[x] = "Rapport n�" + x + " du " + tmpDate;
+            	tmpListe[x] = "Rapport num" + x + " du " + tmpDate;
             	// TEST
-            	// System.out.println("n�" + x);
+            	// System.out.println("num" + x);
             	// System.out.println("RAP_NUM : " + idRap);
             	// System.out.println("tmpListe : " + tmpListe[x]);
             	x++;
@@ -663,7 +663,7 @@ public class GuiMainPanel extends JFrame {
 				resultat = null;
 	            resultat = stmt.executeQuery("SELECT * FROM rapport_visite WHERE VIS_MATRICULE='" + Matricule + "' AND RAP_NUM= '" + ID_RAP + "'");
 	            if(resultat.next()){
-	            	// Enregistrement des num�ros de rapport
+	            	// Enregistrement des numeros de rapport
 	            	String idRap = resultat.getString("RAP_NUM");
 	            	String idPrat = resultat.getString("PRA_NUM");
 	            	String RapBilan = resultat.getString("RAP_BILAN");
@@ -731,7 +731,7 @@ public class GuiMainPanel extends JFrame {
 					// System.out.println("choixListe : " + choixListe);
 					
 					if((choixListe!=null) && (choixListe != "Choisir la date du rendez-vous")){
-						String tmpchoix[] = choixListe.split("n�");
+						String tmpchoix[] = choixListe.split("num");
 						// System.out.println("=> " + tmpchoix[0] + " || " + tmpchoix[1] + " || ");
 						String tmpNumChoix = tmpchoix[1];
 						String tmpNum[] = tmpNumChoix.split("du");
@@ -752,7 +752,7 @@ public class GuiMainPanel extends JFrame {
 			panelRapport.add(btnRapportValider);
 			
 			// Page OK :
-			System.out.println("-> Page Rapport Visite charg�");
+			System.out.println("-> Page Rapport Visite charge");
 			System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
 	    } catch (Exception e){
 	        // e.printStackTrace();
@@ -770,7 +770,7 @@ public class GuiMainPanel extends JFrame {
 		panelMedicaments.removeAll();
 		panelMedicaments.setVisible(true);
 		
-		// Donn�es tmp
+		// Donnees tmp
         String tmpDepotLegal = null;
         String tmpNomCommercial = null;
         String tmpFamCode = null;
@@ -779,25 +779,25 @@ public class GuiMainPanel extends JFrame {
         String tmpContreIndic = null;
         float tmpPrixEchan = 0;
         
-        // M�thode de r�cup�ration des information de connexion � la BDD
+        // Methode de recuperation des information de connexion a la BDD
 		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
 		String BDD = infosConnexionBDD[0];
         String url = infosConnexionBDD[1];
         String user = infosConnexionBDD[2];
         String passwd = infosConnexionBDD[3];
 		
-     	// Donn�es de navigation da sl a liste des m�dicaments
+     	// Donnees de navigation da sl a liste des medicaments
      	String tmpIDDepotLegal = null;
      	
      	try {
      		JTextField lblPages = new JTextField();
      		
             Class.forName("com.mysql.jdbc.Driver");
-            // Connexion � la BDD
+            // Connexion a la BDD
             Connection con = DriverManager.getConnection(url, user, passwd);
             Statement stmt = con.createStatement();
             
-            // Cr�ation d'un maximum de lecture pour la liste des m�dicaments
+            // Creation d'un maximum de lecture pour la liste des medicaments
             ResultSet resultat = null;
             resultat = stmt.executeQuery("SELECT count(MED_DEPOTLEGAL) AS result FROM medicament");
             while (resultat.next()) {
@@ -819,20 +819,20 @@ public class GuiMainPanel extends JFrame {
             	x++;
             	// - - 
             	InsertDepotLegal = "" + x + '-' + resultat.getString("MED_DEPOTLEGAL");
-            	// D�coupage de l'insertion
+            	// Decoupage de l'insertion
             	String tmpCut[] = InsertDepotLegal.split("-");
-            	// R�cup�ration de la 1er occurence
+            	// Recuperation de la 1er occurence
             	h = tmpCut[0];
             	f = tmpCut[1];
-            	// V�rification du d�placement dans la liste des m�dicaments vers le m�dicaments souhait�
+            	// Verification du deplacement dans la liste des medicaments vers le medicaments souhaite
             	if(x == MedMoveList){
-            		// r�cup�ration de l'ID du m�dicaments chercher
+            		// recuperation de l'ID du medicaments chercher
             		tmpIDDepotLegal = f;
             	}
             }
             MednbresPages = "" + MedMoveList + "/" + MedListeMax + "";
 			
-            // V�rification de communications des donn�es
+            // Verification de communications des donnees
             // System.out.println("f : " + f);
             // System.out.println("i : " + i + " <==> h : " + h + "");
             // System.out.println("MedMoveList : " + MedMoveList);
@@ -841,10 +841,10 @@ public class GuiMainPanel extends JFrame {
             // System.out.println("MedListeMax : " + MedListeMax + " <==> x : " + x );
             // System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
             
-            // V�rification des donn�es de l'utilisateur connect�
-			// JOptionPane.showMessageDialog(null, MedListeMax + "\n" + tmpIDDepotLegal + "\n" + MedMoveList + "\n" + i + "\n" + x + "\n" + InsertDepotLegal + "\n" + h, DEBUGG_MODE + " Test Donn�es ", JOptionPane.INFORMATION_MESSAGE);
+            // Verification des donnees de l'utilisateur connecte
+			// JOptionPane.showMessageDialog(null, MedListeMax + "\n" + tmpIDDepotLegal + "\n" + MedMoveList + "\n" + i + "\n" + x + "\n" + InsertDepotLegal + "\n" + h, DEBUGG_MODE + " Test Donnees ", JOptionPane.INFORMATION_MESSAGE);
 			
-            // R�cup�ration des informations du m�dicaments trouv� pour affichage
+            // Recuperation des informations du medicaments trouve pour affichage
             resultat = null;
             resultat = stmt.executeQuery("SELECT * FROM medicament WHERE MED_DEPOTLEGAL = '" + tmpIDDepotLegal + "'");
 			if (resultat.next()) {
@@ -857,14 +857,14 @@ public class GuiMainPanel extends JFrame {
 				tmpPrixEchan = resultat.getFloat("MED_PRIXECHANTILLON");
 			}
 			
-			// V�rification des donn�es de l'utilisateur connect�
-	     	// JOptionPane.showMessageDialog(null, "D�po L�gal : " + tmpDepotLegal + "\nNom commercial : " + tmpNomCommercial + "\nFamille Code : " + tmpFamCode + "\nComposition : " + tmpComposition + "\nEffets : " + tmpEffets + "\nContre Indic : " + tmpContreIndic + "\nPrix �chantillon : " + tmpPrixEchan, DEBUGG_MODE + " Donn�es M�dicaments", JOptionPane.INFORMATION_MESSAGE);
+			// Verification des donnees de l'utilisateur connecte
+	     	// JOptionPane.showMessageDialog(null, "Depo Legal : " + tmpDepotLegal + "\nNom commercial : " + tmpNomCommercial + "\nFamille Code : " + tmpFamCode + "\nComposition : " + tmpComposition + "\nEffets : " + tmpEffets + "\nContre Indic : " + tmpContreIndic + "\nPrix echantillon : " + tmpPrixEchan, DEBUGG_MODE + " Donnees Medicaments", JOptionPane.INFORMATION_MESSAGE);
 	     	
 	     	panelMedicaments.setBounds(214, 11, 710, 569);
 			contentPane.add(panelMedicaments);
 			panelMedicaments.setLayout(null);
 			
-			JLabel lblTitleMedicaments = new JLabel("M�dicaments");
+			JLabel lblTitleMedicaments = new JLabel("Medicaments");
 			lblTitleMedicaments.setFont(new Font("Tahoma", Font.BOLD, 15));
 			lblTitleMedicaments.setBounds(306, 5, 127, 19);
 			panelMedicaments.add(lblTitleMedicaments);
@@ -926,13 +926,13 @@ public class GuiMainPanel extends JFrame {
 			JLabel lblPrixEchantillion = new JLabel("PRIX ECHANTILLON : ");
 			lblPrixEchantillion.setBounds(10, 504, 159, 14);
 			panelMedicaments.add(lblPrixEchantillion);
-			
+		
 			txtPrixEchantillon = new JTextField("" + tmpPrixEchan + "");
 			txtPrixEchantillon.setBounds(179, 501, 58, 20);
 			panelMedicaments.add(txtPrixEchantillon);
 			txtPrixEchantillon.setColumns(10);
 			
-			JLabel lblSigle = new JLabel("�");
+			JLabel lblSigle = new JLabel("Euro");
 			lblSigle.setBounds(247, 504, 47, 14);
 			panelMedicaments.add(lblSigle);
 			
@@ -961,7 +961,7 @@ public class GuiMainPanel extends JFrame {
 			panelMedicaments.add(buttonSuivant);
 			
 			// Page OK :
-			System.out.println("-> Page M�dicament charg�");
+			System.out.println("-> Page Medicament charge");
 			System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
 			
 		} catch (Exception e){
@@ -979,7 +979,7 @@ public class GuiMainPanel extends JFrame {
 		
 		panelPraticiens.removeAll();
 		
-		// Donn�es tmp
+		// Donnees tmp
         int tmpPraNum = 0;
 		String tmpPraNom = null;
 		String tmpPraPrenom = null;
@@ -989,7 +989,7 @@ public class GuiMainPanel extends JFrame {
 		float tmpPraCoef = 0;
 		String tmpTypeCode = null;
         
-        // M�thode de r�cup�ration des information de connexion � la BDD
+        // Methode de recuperation des information de connexion a la BDD
 		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
 		String BDD = infosConnexionBDD[0];
         String url = infosConnexionBDD[1];
@@ -998,11 +998,11 @@ public class GuiMainPanel extends JFrame {
      	
      	try {
             Class.forName("com.mysql.jdbc.Driver");
-            // Connexion � la BDD
+            // Connexion a la BDD
             Connection con = DriverManager.getConnection(url, user, passwd);
             Statement stmt = con.createStatement();
             
-            // Cr�ation d'un maximum de lecture pour la liste des m�dicaments
+            // Creation d'un maximum de lecture pour la liste des medicaments
             ResultSet resultat = null;
             resultat = stmt.executeQuery("SELECT count(PRA_NUM) AS result FROM praticien");
             while (resultat.next()) {
@@ -1014,11 +1014,11 @@ public class GuiMainPanel extends JFrame {
             
             int totalRap = PratListeMax++;
             
-            // Cr�ation du tableau pour la jcombox des prat
+            // Creation du tableau pour la jcombox des prat
             final String tmpListePraNum[] = new String[totalRap];
             tmpListePraNum[0] = "0";
             
-            // R�cup�ration de tous les rapports
+            // Recuperation de tous les rapports
 	        int x = 1;
 	        resultat = null;
             resultat = stmt.executeQuery("SELECT * FROM praticien ORDER BY PRA_NOM");
@@ -1035,7 +1035,7 @@ public class GuiMainPanel extends JFrame {
             
             PratnbresPages = "" + PratMoveList + "/" + PratListeMax + "";
             
-            // R�cup�ration des informations du m�dicaments trouv� pour affichage
+            // Recuperation des informations du medicaments trouve pour affichage
             resultat = null;
             resultat = stmt.executeQuery("SELECT * FROM praticien WHERE PRA_NUM='" + PratMoveList + "'");
 			if(resultat.next()) {
@@ -1180,7 +1180,7 @@ public class GuiMainPanel extends JFrame {
 			panelPraticiens.add(btnPraticienSuivant);
 		
 			// Page OK :
-			System.out.println("-> Page Praticiens charg�");
+			System.out.println("-> Page Praticiens charge");
 			System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
 			
 		} catch (Exception e){
@@ -1292,7 +1292,7 @@ public class GuiMainPanel extends JFrame {
 		panelAutresVisiteurs.setVisible(false);
 		panelNewRapport.setVisible(true);
 		
-		// M�thode de r�cup�ration des information de connexion � la BDD
+		// Methode de recuperation des information de connexion a la BDD
 		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
 		String BDD = infosConnexionBDD[0];
         String url = infosConnexionBDD[1];
@@ -1303,11 +1303,11 @@ public class GuiMainPanel extends JFrame {
      		JTextField lblPages = new JTextField();
      		
             Class.forName("com.mysql.jdbc.Driver");
-            // Connexion � la BDD
+            // Connexion a la BDD
             Connection con = DriverManager.getConnection(url, user, passwd);
             Statement stmt = con.createStatement();
             
-            // V�rification du nbre total de m�dicament
+            // Verification du nbre total de medicament
 	        int totalMed = 0;
 	        ResultSet resultat = null;
             resultat = stmt.executeQuery("SELECT count(MED_DEPOTLEGAL) AS result FROM medicament ORDER BY MED_DEPOTLEGAL");
@@ -1316,7 +1316,7 @@ public class GuiMainPanel extends JFrame {
             }
             // Equilibre
             totalMed++;
-            // V�rification du nbre total de praticien
+            // Verification du nbre total de praticien
 	        int totalPrat = 0;
 	        resultat = null;
             resultat = stmt.executeQuery("SELECT count(PRA_NUM) AS result FROM praticien ORDER BY PRA_NUM");
@@ -1333,9 +1333,9 @@ public class GuiMainPanel extends JFrame {
             String Praticien_Nom = "";
             String Praticien_Prenom = "";
             
-            // Cr�ation du tableau pour la jcombox des m�dicaments
+            // Creation du tableau pour la jcombox des medicaments
             final String Med_List[] = new String[totalMed];
-            Med_List[0] = "Choisir un m�dicament";
+            Med_List[0] = "Choisir un medicament";
             
             resultat = null;
             resultat = stmt.executeQuery("SELECT MED_DEPOTLEGAL,MED_NOMCOMMERCIAL FROM medicament ORDER BY MED_DEPOTLEGAL");
@@ -1347,7 +1347,7 @@ public class GuiMainPanel extends JFrame {
             	// - -
             	Med_List[x] = Medicament_NOM;
             }
-            // Cr�ation du tableau pour la jcombox des praticiens
+            // Creation du tableau pour la jcombox des praticiens
             String Prat_List[] = new String[totalPrat];
             Prat_List[0] = "Choisir un praticien";
             
@@ -1434,26 +1434,26 @@ public class GuiMainPanel extends JFrame {
     		JButton btnNewRapportValider = new JButton("VALIDER");
     		btnNewRapportValider.addActionListener(new ActionListener() {
     			public void actionPerformed(ActionEvent arg0) {
-    				// Pr�paration des donn�es
+    				// Preparation des donnees
     				Object tmpChoixPrat;
     				Object tmpChoixMed_1;
     				Object tmpChoixMed_2;
-    				// Coordonn�es
+    				// Coordonnees
     				tmpChoixPrat = ChoixPrat.getSelectedItem();
     				tmpVIS_MATRICULE = Matricule;
 		            tmpPRA_NUM = (String) tmpChoixPrat;
 		            // Motif & Bilan
 		            tmpRAP_BILAN = textNewRapportBilan.getText();
     				tmpRAP_MOTIF = textNewRapportMotif.getText();
-		            // Les 2 noms de m�dicaments
+		            // Les 2 noms de medicaments
 		            tmpChoixMed_1 = ChoixMed_1.getSelectedItem();
 					tmpMED_DEPOTLEGAL_1 = (String) tmpChoixMed_1;
 					tmpChoixMed_2 = ChoixMed_2.getSelectedItem();
 					tmpMED_DEPOTLEGAL_2 = (String) tmpChoixMed_2;
-    				// Les 2 quantit�s de m�dicaments
+    				// Les 2 quantites de medicaments
     				tmpQteMed_1 = QteMed_1.getText();
     				tmpQteMed_2 = QteMed_2.getText();
-    				// Ex�cution des la r�qu�te
+    				// Execution des la requete
     				NewRapport NewRapport = new NewRapport();
     				// Clean
     				textNewRapportBilan.setText("");
@@ -1470,7 +1470,7 @@ public class GuiMainPanel extends JFrame {
     		panelNewRapport.add(lblPraticien);
 			
 			// Page OK :
-			System.out.println("-> Page New Rapport charg�");
+			System.out.println("-> Page New Rapport charge");
 			System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
 			
 		} catch (Exception e){
@@ -1481,15 +1481,15 @@ public class GuiMainPanel extends JFrame {
 	
 	// Others Classes
 	public void recupDonneesClient(){
-		// R�cup�ration et enregistrement des donn�es du client connect�
+		// Recuperation et enregistrement des donnees du client connecte
 		ClientType = DonneesClient.ClientType;
-	    // Instanciation des donn�es Communes
+	    // Instanciation des donnees Communes
 		Nom = DonneesClient.Nom;
 		Prenom = DonneesClient.Prenom;
 		Adresse = DonneesClient.Adresse;
 		CP = DonneesClient.CP;
 		Ville = DonneesClient.Ville;
-		// Instanciation des donn�es Visiteur
+		// Instanciation des donnees Visiteur
 		Matricule = DonneesClient.Matricule;
 		Login = DonneesClient.Login;
 		DateEmbauche = DonneesClient.DateEmbauche;

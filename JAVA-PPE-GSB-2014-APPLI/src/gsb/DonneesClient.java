@@ -10,15 +10,15 @@ import javax.swing.JOptionPane;
 public class DonneesClient {
 	public String TempLogin = GuiMainPanel.Identifiant;
 	
-	// Instanciation du type client connecté avec un cast de modification entre l'objet et le string de la donnée transférée
+	// Instanciation du type client connecte avec un cast de modification entre l'objet et le string de la donnee transferee
 	public static String ClientType = "";
-    // Instanciation des données Communes
+    // Instanciation des donnees Communes
 	public static String Nom = "";
 	public static String Prenom = "";
 	public static String Adresse = "";
 	public static String CP = "";
 	public static String Ville = "";
-	// Instanciation des données Visiteur
+	// Instanciation des donnees Visiteur
 	public static String Matricule = "";
 	public static String Login = "";
 	public static String DateEmbauche = "";
@@ -27,7 +27,7 @@ public class DonneesClient {
 	
 	public DonneesClient(){
 		
-		// Méthode de récupération des information de connexion à la BDD
+		// Methode de recuperation des information de connexion e la BDD
 		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
 		String BDD = infosConnexionBDD[0];
         String url = infosConnexionBDD[1];
@@ -36,32 +36,32 @@ public class DonneesClient {
 		
 		try {
             Class.forName("com.mysql.jdbc.Driver");
-            // Connexion à la BDD
+            // Connexion a la BDD
             Connection con = DriverManager.getConnection(url, user, passwd);
             Statement stmt = con.createStatement();
-            // Création des données temporaires nécessaires
+            // Creation des donnees temporaires necessaires
             String tmpClientType = null;
             String tmpMatricule = null;
-            // Récupération du l'id de l'utilisateur
+            // Recuperation du l'id de l'utilisateur
             ResultSet resultat = null;
 			resultat = stmt.executeQuery("SELECT VIS_MATRICULE,VIS_NOM FROM visiteur WHERE VIS_NOM='" + TempLogin + "'");
 			if (resultat.next()) {
 				tmpMatricule = resultat.getString("VIS_MATRICULE");
 			}
-			// Récupération du type de l'utilisateur
+			// Recuperation du type de l'utilisateur
 			resultat = null;
 			resultat = stmt.executeQuery("SELECT VIS_MATRICULE,JJMMAA,TRA_ROLE FROM travailler WHERE JJMMAA=(SELECT max(JJMMAA) FROM travailler WHERE VIS_MATRICULE='" + tmpMatricule + "') AND VIS_MATRICULE='" + tmpMatricule + "'");
 			if (resultat.next()) {
 				tmpClientType = resultat.getString("TRA_ROLE");
 			}
-			// Mémorisation des données de l'utilisateur en session
+			// Memorisation des donnees de l'utilisateur en session
 			resultat = null;
 			resultat = stmt.executeQuery("SELECT * FROM visiteur WHERE VIS_NOM='" + TempLogin + "'");
 			if (resultat.next()) {
 				// Infos basiques
 				Matricule = tmpMatricule;
 				Login = resultat.getString("VIS_NOM");
-				// Infos complètes
+				// Infos completes
 				Nom = resultat.getString("VIS_NOM");
 				Prenom = resultat.getString("VIS_PRENOM");
 				ClientType = tmpClientType;

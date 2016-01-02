@@ -82,7 +82,7 @@ public class InfosConnexionBDD {
 		
         String indic = "-> ";
         
-        // M�thode de r�cup�ration des information de connexion � la BDD
+        // Methode de recuperation des information de connexion a la BDD
 		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
 		String BDD = infosConnexionBDD[0];
         String url = infosConnexionBDD[1];
@@ -95,7 +95,7 @@ public class InfosConnexionBDD {
 
             Connection conn = DriverManager.getConnection(url, user, passwd);
             System.out.println(indic + "Connexion reussi !");
-            System.out.println(indic + "Serveur connect� : " + serveur);
+            System.out.println(indic + "Serveur connecte : " + serveur);
             System.out.println(indic + "Adresse du serveur : " + url);
             System.out.println(indic + "Base de donnee connectee : '" + BDD + "'");
             System.out.println(indic + "Application connectee en tant que : '" + user + "'");
@@ -109,22 +109,22 @@ public class InfosConnexionBDD {
         return EtatConnexion;
 	}
 	
-	// M�thode de v�rification de l'�tat du serveur
+	// Methode de verification de l'etat du serveur
 	public static String VerifServiceBDD(boolean EtatConnexion){
 		
-		// Affiche le bouton d'actualisation de l'�tat du serveur si inactif
+		// Affiche le bouton d'actualisation de l'etat du serveur si inactif
 		if(EtatConnexion == true){
 			EtatAff = "ON";
 			btnRafraichir.setVisible(false);
 			
-			// V�rification console
+			// Verification console
 			System.out.println("-> Etat du serveur : " + EtatAff);
 		}
 		if(EtatConnexion == false){
 			EtatAff = "OFF";
 			btnRafraichir.setVisible(true);
 			
-			// V�rification console
+			// Verification console
 			System.out.println("-> Etat du serveur : " + EtatAff);
 		}
 		
