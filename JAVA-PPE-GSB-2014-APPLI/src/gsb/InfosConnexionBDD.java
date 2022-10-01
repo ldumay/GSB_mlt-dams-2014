@@ -2,132 +2,94 @@ package gsb;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
 public class InfosConnexionBDD {
-	
-	public static boolean EtatConnexion = false;
-	final static JButton btnRafraichir = new JButton("Rafraichir");
-	public static String EtatAff = null;
-	// Choix du serveur
-	public static String tmpBDD = null;
-	public static String tmpURL = null;
-	public static String tmpUser = null;
-	public static String tmpPass = null;
-	
-	public static String[] InfosConnexionBDD(){
-		
-		// Liste des serveurs de l'application
-		String serveur = GuiMainPanel.serveur;
-		if (serveur == "localhost"){
-			tmpBDD = "gsb";
-			tmpURL = "localhost";
-			tmpUser = "root";
-			tmpPass = "";
-		}
-		else if (serveur == "localhostMac"){
-			tmpBDD = "gsb";
-			tmpURL = "localhost";
-			tmpUser = "root";
-			tmpPass = "root";
-		}
-		else if (serveur == "hitemaLoic"){
-			tmpBDD = "dumayl";
-			tmpURL = "89.158.158.137";
-			tmpUser = "dumayl";
-			tmpPass = "221093o";
-		}
-		else if (serveur == "hitemaDamien"){
-			tmpBDD = "";
-			tmpURL = "";
-			tmpUser = "";
-			tmpPass = "";
-		}
-		else if (serveur == "personnelLoic"){
-			tmpBDD = "c0_gsb";
-			tmpURL = "sd-69140.dedibox.fr";
-			tmpUser = "c0_mectrankil78";
-			tmpPass = "MeuT92YQ8h5nW7m";
-		}
-		else if (serveur == "personnelDamien"){
-			tmpBDD = "";
-			tmpURL = "";
-			tmpUser = "";
-			tmpPass = "";
-		}
-		else{
-			tmpBDD = null;
-			tmpURL = null;
-			tmpUser = null;
-			tmpPass = null;
-		}
-		
-        String BDD = tmpBDD;
-        String url = "jdbc:mysql://" + tmpURL + ":3306/" + BDD;
-        String user = tmpUser;
-        String passwd = tmpPass;
-        
-        String TotalInfosBDD[] = {BDD, url, user, passwd};
-		return TotalInfosBDD;
-	}
-	
-	public InfosConnexionBDD(){
-		ConnexionBDD();
-	}
-	
-	public boolean ConnexionBDD(){
-		String serveur = GuiMainPanel.serveur;
-		
-        String indic = "-> ";
-        
-        // Methode de recuperation des information de connexion a la BDD
-		String[] infosConnexionBDD = InfosConnexionBDD.InfosConnexionBDD();
-		String BDD = infosConnexionBDD[0];
-        String url = infosConnexionBDD[1];
-        String user = infosConnexionBDD[2];
-        String passwd = infosConnexionBDD[3];
-        
-		try {
-            Class.forName("com.mysql.jdbc.Driver");
-            System.out.println(indic + "Driver O.K.");
-
-            Connection conn = DriverManager.getConnection(url, user, passwd);
-            System.out.println(indic + "Connexion reussi !");
-            System.out.println(indic + "Serveur connecte : " + serveur);
-            System.out.println(indic + "Adresse du serveur : " + url);
-            System.out.println(indic + "Base de donnee connectee : '" + BDD + "'");
-            System.out.println(indic + "Application connectee en tant que : '" + user + "'");
-            EtatConnexion = true;
-        } catch (Exception e){
-            // e.printStackTrace();
-        }
-		System.out.println(indic + "Etat du serveur : " + EtatConnexion);
-		VerifServiceBDD(EtatConnexion);
-        System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
-        return EtatConnexion;
-	}
-	
-	// Methode de verification de l'etat du serveur
-	public static String VerifServiceBDD(boolean EtatConnexion){
-		
-		// Affiche le bouton d'actualisation de l'etat du serveur si inactif
-		if(EtatConnexion == true){
-			EtatAff = "ON";
-			btnRafraichir.setVisible(false);
-			
-			// Verification console
-			System.out.println("-> Etat du serveur : " + EtatAff);
-		}
-		if(EtatConnexion == false){
-			EtatAff = "OFF";
-			btnRafraichir.setVisible(true);
-			
-			// Verification console
-			System.out.println("-> Etat du serveur : " + EtatAff);
-		}
-		
-		return EtatAff;
-	}
+  public static boolean EtatConnexion = false;
+  
+  static final JButton btnRafraichir = new JButton("Rafraichir");
+  
+  public static String EtatAff = null;
+  
+  public static String tmpBDD = null;
+  
+  public static String tmpURL = null;
+  
+  public static String tmpUser = null;
+  
+  public static String tmpPass = null;
+  
+  public static String[] InfosConnexionBDD() {
+    String serveur = GuiMainPanel.serveur;
+    if (serveur == "localhost") {
+      tmpBDD = "gsb";
+      tmpURL = "localhost";
+      tmpUser = "root";
+      tmpPass = "";
+    } else if (serveur == "localhostMac") {
+      tmpBDD = "gsb";
+      tmpURL = "localhost";
+      tmpUser = "root";
+      tmpPass = "root";
+    } else if (serveur == "personnelLoic") {
+      tmpBDD = "mectrank_gsb";
+      tmpURL = "109.234.161.177";
+      tmpUser = "mectrank_user";
+      tmpPass = "oZ,oT~}wx!;3";
+    } else {
+      tmpBDD = null;
+      tmpURL = null;
+      tmpUser = null;
+      tmpPass = null;
+    } 
+    String BDD = tmpBDD;
+    String url = "jdbc:mysql://" + tmpURL + ":3306/" + BDD;
+    String user = tmpUser;
+    String passwd = tmpPass;
+    String[] TotalInfosBDD = { BDD, url, user, passwd };
+    return TotalInfosBDD;
+  }
+  
+  public InfosConnexionBDD() {
+    ConnexionBDD();
+  }
+  
+  public boolean ConnexionBDD() {
+    String serveur = GuiMainPanel.serveur;
+    String indic = "-> ";
+    String[] infosConnexionBDD = InfosConnexionBDD();
+    String BDD = infosConnexionBDD[0];
+    String url = infosConnexionBDD[1];
+    String user = infosConnexionBDD[2];
+    String passwd = infosConnexionBDD[3];
+    try {
+      Class.forName("com.mysql.jdbc.Driver");
+      System.out.println(String.valueOf(indic) + "Driver O.K.");
+      Connection conn = DriverManager.getConnection(url, user, passwd);
+      System.out.println(String.valueOf(indic) + "Connexion reussi !");
+      System.out.println(String.valueOf(indic) + "Serveur connecte : " + serveur);
+      System.out.println(String.valueOf(indic) + "Adresse du serveur : " + url);
+      System.out.println(String.valueOf(indic) + "Base de donnee connectee : '" + BDD + "'");
+      System.out.println(String.valueOf(indic) + "Application connectee en tant que : '" + user + "'");
+      EtatConnexion = true;
+    } catch (Exception exception) {}
+    System.out.println(String.valueOf(indic) + "Etat du serveur : " + EtatConnexion);
+    VerifServiceBDD(EtatConnexion);
+    System.out.println("# - - - - - - - - - - - - - - - - - - - - - - - - - - - #");
+    return EtatConnexion;
+  }
+  
+  public static String VerifServiceBDD(boolean EtatConnexion) {
+    if (EtatConnexion) {
+      EtatAff = "ON";
+      btnRafraichir.setVisible(false);
+      System.out.println("-> Etat du serveur : " + EtatAff);
+    } 
+    if (!EtatConnexion) {
+      EtatAff = "OFF";
+      btnRafraichir.setVisible(true);
+      System.out.println("-> Etat du serveur : " + EtatAff);
+    } 
+    return EtatAff;
+  }
 }

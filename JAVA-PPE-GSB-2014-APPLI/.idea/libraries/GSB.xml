@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="GSB">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/GSB.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
